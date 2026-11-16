@@ -42,7 +42,7 @@
 
   /* ---------- Ansichten ---------- */
   const VIEWS = {
-    login: o => `<h3 id="acTitle">Anmelden</h3><p class="sub">${o.gate ? 'Für den Planer brauchst du ein kostenloses Konto – dauert eine Minute.' : 'Willkommen zurück bei TIGRIS.'}</p>
+    login: o => `<h3 id="acTitle">Anmelden</h3><p class="sub">${o.gate ? 'Planen ist frei. Zum Herunterladen (Stückliste, PNG, JSON) brauchst du ein kostenloses Konto – dauert eine Minute. Dein Layout bleibt erhalten.' : 'Willkommen zurück bei TIGRIS.'}</p>
       <button class="gbtn" id="aG" type="button">${G}Mit Google fortfahren</button><div class="or">oder mit E-Mail</div>
       <form id="aF">${fld('email', 'E-Mail', '', { type: 'email', req: 1, ac: 'email' })}${fld('password', 'Passwort', '', { type: 'password', req: 1, ac: 'current-password' })}
       <div class="acts"><button class="btn solid" type="submit">Anmelden</button></div><div class="msg"></div></form>
@@ -157,8 +157,9 @@
     pending = fn;
     if (C.user) open('profile'); else open('login', { gate: true });
   }
-  qa('[data-open]').forEach(b => b.onclick = () => requireAccount(() => { openApp(); C.track('open_planner') }));
-  qa('[data-demo]').forEach(b => b.onclick = () => requireAccount(() => { openApp(); setTimeout(loadDemo, 80); C.track('open_planner', { demo: true }) }));
+  // Planen geht ohne Konto; nur das Herunterladen (Export) verlangt ein kostenloses Konto
+  qa('[data-open]').forEach(b => b.onclick = () => { openApp(); C.track('open_planner') });
+  qa('[data-demo]').forEach(b => b.onclick = () => { openApp(); setTimeout(loadDemo, 80); C.track('open_planner', { demo: true }) });
 
   /* ---------- Klick-Tracking (nur mit Einwilligung, Cloud.track prüft das) ---------- */
   document.addEventListener('click', e => {
@@ -175,8 +176,8 @@
     if (fromAuth) { u.searchParams.delete('auth'); history.replaceState(null, '', u.pathname + u.search + '#planer') }
     if (C.recovery) { open('newpw'); return }
     if (fromAuth || location.hash === '#planer') {
-      if (location.hash === '#planer' && q('#app').classList.contains('on') && C.user && !C.needsProfile()) return;
-      if (!q('#app').classList.contains('on') || !C.user || C.needsProfile()) { if (window.openLanding) openLanding(); requireAccount(() => { openApp(); C.track('open_planner') }) }
+      if (!q('#app').classList.contains('on')) { openApp(); C.track('open_planner') }
+      if (C.user && C.needsProfile()) open('profile');
     }
   });
   window.Account = { open, requireAccount };

@@ -142,6 +142,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .help{font-size:11px;color:var(--cream-d);line-height:1.6}
 .help kbd{border:1px solid var(--line2);padding:0 5px;border-radius:2px;font-family:inherit;color:var(--cream)}
 @media(max-width:1000px){.hero{grid-template-columns:1fr}.steps,.disc,.stats{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
+.cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
 <link rel="stylesheet" href="account.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -275,30 +276,45 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const fmt=(n,d=1)=>n.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
 const COL={navy:'#10295A',navyD:'#0B1D42',navyDD:'#08142E',cream:'#EDE3CC',creamD:'#BDB4A0',red:'#E0625A',ink:'#0A0B10'};
-const CATS={kraft:{n:'Kraft',c:'#EDE3CC'},cardio:{n:'Cardio',c:'#7E9BD1'},func:{n:'Functional / HYROX',c:'#B9B3A3'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},service:{n:'Service / Räume',c:'#4A5166'}};
-// id, Name, Kategorie, Breite, Tiefe, Höhe, Abstand, Zone?
+const CATS={kraft:{n:'Kraft',c:'#EDE3CC'},cardio:{n:'Cardio',c:'#7E9BD1'},func:{n:'Functional / HYROX',c:'#B9B3A3'},kampf:{n:'Kampfsport / MMA',c:'#C98B62'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},platz:{n:'Platzhalter',c:'#8C93A8'},service:{n:'Service / Räume',c:'#4A5166'}};
+// id, Name, Kategorie, Breite, Tiefe, Höhe, Abstand, Zone?, Personen (bei Zonen: m² pro Person), rund?
 const LIB=[
- ['smith','Multipresse','kraft',2.4,2.0,2.4,.8],['rack','Power Rack','kraft',1.4,1.6,2.4,1],['bench','Hantelbank','kraft',1.4,.7,1.1,.6],
- ['legpress','Beinpresse','kraft',2.3,1.5,1.3,.8],['cable','Kabelzug','kraft',1.8,1.0,2.2,.8],['dbrack','Hantelablage','kraft',2.0,.7,.9,.6],
- ['platform','Deadlift-Plattform','kraft',2.4,1.2,.1,.8],['fwzone','Freihantelzone','kraft',8,5,.02,0,1],
- ['tread','Laufband','cardio',.9,2.0,1.5,.6],['cross','Crosstrainer','cardio',.7,1.8,1.7,.5],['bike','Indoor-Bike','cardio',.6,1.2,1.2,.5],['rower','Rudergerät','cardio',.6,2.4,.9,.6],
- ['rig','CrossFit-Rig','func',6,2.5,2.8,1.2],['hyrox','HYROX-Bahn','func',15,3,.02,0,1],['sled','Schlittenbahn','func',12,1.5,.02,0,1],['plyo','Plyo-Boxen','func',1.6,.6,.75,.8],
- ['boulder','Boulderwand','sport',6,3,4.5,.5],['padel','Padelplatz','sport',20,10,4,1],['ring','Boxring','sport',6,6,2.5,1],['course','Kursfläche','sport',8,6,.02,0,1],
- ['reception','Rezeption','service',3,1,1.1,.8],['locker','Umkleide','service',5,4,2.4,.5],['sauna','Sauna','service',3,2.5,2.2,.6],['storage','Lager','service',3,3,2.4,.3],['block','Platzblocker','service',1,1,1,.3]
-].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7]}));
+ ['smith','Multipresse','kraft',2.4,2.0,2.4,.8,0,1],['rack','Power Rack','kraft',1.4,1.6,2.4,1,0,1],['halfrack','Half Rack','kraft',1.4,1.4,2.3,1,0,1],['bench','Hantelbank','kraft',1.4,.7,1.1,.6,0,1],
+ ['legpress','Beinpresse','kraft',2.3,1.5,1.3,.8,0,1],['hacksq','Hackenschmidt','kraft',2.1,1.4,1.6,.8,0,1],['legext','Beinstrecker / -beuger','kraft',1.5,1.2,1.3,.6,0,1],['chest','Brustpresse','kraft',1.6,1.5,1.6,.6,0,1],
+ ['latpull','Latzug','kraft',1.6,1.4,2.3,.6,0,1],['row','Rudermaschine (Kraft)','kraft',1.8,1.0,1.5,.6,0,1],['cable','Kabelzug (doppelt)','kraft',1.8,1.0,2.2,.8,0,2],['multi','Multistation 4-fach','kraft',3.5,3.5,2.2,.8,0,4],
+ ['hip','Hip-Thrust-Station','kraft',1.6,1.2,.8,.6,0,1],['ghd','Glute-Ham-Bank','kraft',1.8,.8,1.1,.6,0,1],['dbrack','Hantelablage','kraft',2.0,.7,.9,.6,0,2],['kbrack','Kettlebell-Regal','kraft',1.6,.5,.9,.6,0,0],
+ ['plates','Scheibenständer','kraft',.8,.8,1.2,.3,0,0],['platform','Deadlift-Plattform','kraft',2.4,1.2,.1,.8,0,1],['fwzone','Freihantelzone','kraft',8,5,.02,0,1,6],
+ ['tread','Laufband','cardio',.9,2.0,1.5,.6,0,1],['curve','Curve-Laufband','cardio',.9,2.0,1.6,.6,0,1],['cross','Crosstrainer','cardio',.7,1.8,1.7,.5,0,1],['bike','Indoor-Bike','cardio',.6,1.2,1.2,.5,0,1],
+ ['airbike','Air-Bike','cardio',.7,1.3,1.3,.5,0,1],['rower','Rudergerät','cardio',.6,2.4,.9,.6,0,1],['ski','SkiErg','cardio',.6,1.2,2.2,.6,0,1],['stair','Treppensteiger','cardio',.9,1.5,1.9,.5,0,1],
+ ['rig','CrossFit-Rig','func',6,2.5,2.8,1.2,0,8],['trx','Suspension-Rig (TRX)','func',3,1,2.5,1,0,4],['cali','Calisthenics-Station','func',4,2,2.5,1,0,4],['wallball','Wallball-Ziel','func',1,.5,3.2,1.2,0,1],
+ ['rope','Battle-Rope-Station','func',1,.5,.6,1,0,1],['plyo','Plyo-Boxen','func',1.6,.6,.75,.8,0,2],['hyrox','HYROX-Bahn','func',15,3,.02,0,1,8],['sled','Schlittenbahn','func',12,1.5,.02,0,1,6],
+ ['kbzone','Kettlebell-Zone','func',4,3,.02,0,1,4],['stretch','Stretching-Zone','func',4,3,.02,0,1,3],
+ ['bag','Boxsack (hängend)','kampf',.45,.45,1.8,1,0,1,1],['halfbag','Halbboxsack','kampf',.4,.4,1,.9,0,1,1],['standbag','Standboxsack','kampf',.6,.6,1.7,.9,0,1,1],['dee','Doppelendball','kampf',.3,.3,2.5,.9,0,1,1],
+ ['speed','Speedball-Plattform','kampf',.7,.6,2.2,.6,0,1],['wallpad','Wandpolster / Uppercut','kampf',1.2,.4,1.5,1,0,1],['dummy','Grappling-Dummy','kampf',1.2,.5,.4,.8,0,1],
+ ['bagrack','Boxsack-Reihe (6 Säcke)','kampf',6,1,2.6,1,0,6],['ring','Boxring','kampf',6,6,2.5,1,0,4],['cage','MMA-Käfig (Octagon)','kampf',7.3,7.3,2,1,0,4],
+ ['mat','Mattenfläche (BJJ / Judo)','kampf',8,8,.05,0,1,5],['mmazone','MMA-Trainingsfläche','kampf',10,8,.05,0,1,6],['gear','Regal Handschuhe / Pratzen','kampf',2,.5,1.8,.5,0,0],
+ ['boulder','Boulderwand','sport',6,3,4.5,.5,0,4],['padel','Padelplatz','sport',20,10,4,1,0,4],['squash','Squash-Court','sport',9.75,6.4,5,.3,0,2],['tt','Tischtennis','sport',2.74,1.53,.76,2,0,2],
+ ['course','Kursfläche','sport',8,6,.02,0,1,4],['kids','Kinderbereich','sport',5,4,.02,0,1,4],
+ ['ph_s','Platzhalter Gerät S','platz',1,1,1.2,.5,0,1],['ph_m','Platzhalter Gerät M','platz',2,1.5,1.8,.8,0,1],['ph_l','Platzhalter Gerät L','platz',3,2,2.2,1,0,2],
+ ['ph_st','Platzhalter Station (4 Pers.)','platz',4,3,2.2,1,0,4],['ph_zone','Platzhalter Trainingsfläche','platz',6,4,.02,0,1,5],
+ ['reception','Rezeption','service',3,1,1.1,.8],['locker','Umkleide','service',5,4,2.4,.5],['shower','Duschen','service',4,3,2.4,.3],['wc','WC','service',3,2.5,2.4,.3],
+ ['sauna','Sauna','service',3,2.5,2.2,.6],['physio','Physio-Raum','service',4,3,2.4,.3],['office','Büro','service',3,3,2.4,.3],['bar','Getränketheke','service',3,1,1.1,.8],
+ ['water','Trinkbrunnen','service',.5,.4,1,.5],['mirror','Spiegelwand','service',4,.1,2,.3],['storage','Lager','service',3,3,2.4,.3],['block','Platzblocker / Stütze','service',1,1,1,.3]
+].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7],p:a[8]||0,round:!!a[9]}));
 const T=id=>LIB.find(t=>t.id===id);
+const persons=it=>it.p??(T(it.type)||{}).p??0;
 const trk=(t,d)=>{try{window.Cloud&&Cloud.track(t,d)}catch(e){}};
 
 const S={room:{w:26,d:15},plan:null,items:[],sel:null,mode:'2d',view:{ox:0,oy:0,z:30},cam:{yaw:.55,pitch:.72,dist:34},snap:true,clr:true,showPlan:true,calib:null,undo:[],cat:'all',q:'',name:'Neues Studio'};
 let uid=1;
-const mk=(type,x,y,o={})=>{const t=T(type);return Object.assign({id:uid++,type,name:t.name,cat:t.cat,x,y,w:t.w,d:t.d,h:t.h,rot:0,clr:t.clr,zone:t.zone,locked:false},o)};
+const mk=(type,x,y,o={})=>{const t=T(type);return Object.assign({id:uid++,type,name:t.name,cat:t.cat,x,y,w:t.w,d:t.d,h:t.h,rot:0,clr:t.clr,zone:t.zone,p:t.p,round:t.round,locked:false},o)};
 
 function demoItems(){
   const L=[];const a=(t,x,y,o)=>L.push(mk(t,x,y,o));
   a('locker',3.5,12,{w:6.5,d:5.5});a('reception',12,13.6);
   a('fwzone',21,11.2,{w:8,d:5.4});
   a('rack',19,12.8);a('rack',22.5,12.8);a('bench',19,10.4);a('bench',22.5,10.4);a('dbrack',24.4,10.6,{rot:90});
-  [4.8,6,7.2,8.4].forEach(x=>a('tread',x,2.3));[10.2,11,11.8].forEach(x=>a('bike',x,1.9));a('cross',13.4,2.2);
+  [4.1,5.65,7.2,8.75].forEach(x=>a('tread',x,2.3));[10.4,11.55,12.7].forEach(x=>a('bike',x,1.9));a('cross',14,2.2);
   a('rig',21,3);a('hyrox',13,7.2);a('boulder',2,6.2,{rot:90});a('sauna',24,7);
   [[9,5],[17,5],[9,10],[17,10]].forEach(p=>a('block',p[0],p[1],{w:.4,d:.4,h:3,name:'Stütze',locked:true,clr:0}));
   return L;
@@ -530,7 +546,7 @@ function analyze(){
 }
 const snapv=v=>S.snap?Math.round(v*10)/10:v;
 const pushUndo=()=>{S.undo.push(JSON.stringify({items:S.items,room:S.room}));if(S.undo.length>80)S.undo.shift()};
-function save(){try{localStorage.setItem('tigris.v1',JSON.stringify({room:S.room,items:S.items,name:S.name}))}catch(e){}try{window.Cloud&&Cloud.saveProject(S.name,{room:S.room,items:S.items})}catch(e){}}
+function save(){try{localStorage.setItem('tigris.v1',JSON.stringify({room:S.room,items:S.items,name:S.name,capM2:S.capM2}))}catch(e){}try{window.Cloud&&Cloud.saveProject(S.name,{room:S.room,items:S.items})}catch(e){}}
 
 /* ============ Canvas Setup ============ */
 const cv=$('#cv'),ctx=cv.getContext('2d'),stage=$('#stage');
@@ -577,15 +593,16 @@ function draw2D(){
     c.save();c.translate(cx,cy);c.rotate(rad(it.rot));
     const w=it.w*z,d=it.d*z;
     if(it.zone){c.fillStyle=hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
-    else{c.fillStyle=it.type==='block'&&!it.locked?'rgba(237,227,204,.18)':hexA(col,.9);c.fillRect(-w/2,-d/2,w,d);
+    else{const shp=()=>{c.beginPath();if(it.round)c.ellipse(0,0,w/2,d/2,0,0,Math.PI*2);else c.rect(-w/2,-d/2,w,d)};
+      c.fillStyle=it.type==='block'&&!it.locked?'rgba(237,227,204,.18)':hexA(col,.9);shp();c.fill();
       // Schraffur für Blocker / Stütze
       if(it.type==='block'){c.save();c.beginPath();c.rect(-w/2,-d/2,w,d);c.clip();c.strokeStyle='rgba(237,227,204,.55)';c.lineWidth=1;for(let i=-w-d;i<w+d;i+=7){c.beginPath();c.moveTo(i,d/2);c.lineTo(i+d,-d/2);c.stroke()}c.restore()}
-      c.lineWidth=bad?2.5:1.2;c.strokeStyle=bad?COL.red:COL.ink;c.strokeRect(-w/2,-d/2,w,d);
-      if(bad){c.fillStyle='rgba(224,98,90,.35)';c.fillRect(-w/2,-d/2,w,d)}}
+      c.lineWidth=bad?2.5:1.2;c.strokeStyle=bad?COL.red:COL.ink;shp();c.stroke();
+      if(bad){c.fillStyle='rgba(224,98,90,.35)';shp();c.fill()}}
     c.restore();
     // Beschriftung
     if(Math.min(it.w,it.d)*z>26||Math.max(it.w,it.d)*z>70){c.save();c.translate(cx,cy);c.textAlign='center';c.textBaseline='middle';
-      const dark=!it.zone&&['kraft','cardio','func'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
+      const dark=!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
       const fs=Math.max(9,Math.min(13,z*.42));c.font=`600 ${fs}px Helvetica,Arial`;
       const big=Math.max(it.w,it.d)*z>fs*it.name.length*.55;if(big){c.fillText(it.name,0,it.zone?-it.d*z/2+14:0);if(!it.zone&&Math.min(it.w,it.d)*z>fs*3.2){c.font=`${fs-2}px Helvetica,Arial`;c.globalAlpha=.7;c.fillText(`${fmt(it.w)} × ${fmt(it.d)}`,0,fs+1);c.globalAlpha=1}}c.restore()}
     if(it.locked&&it.type!=='block'){/* noop */}
@@ -661,7 +678,7 @@ function render3D(c,W,H,cam,room,items,o={}){
       const q=f.v.map(p=>proj(C,p));if(!q.every(Boolean))return;const top=f.n[2]===1,k=top?1:.5+.4*Math.max(0,v3.dot(f.n,L));
       c.beginPath();q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
       c.fillStyle=`rgb(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0})`;c.fill();c.lineWidth=sel?2.4:1;c.strokeStyle=bad?COL.red:(sel?'#fff':'rgba(10,11,16,.75)');c.stroke();
-      if(top&&o.labels&&Math.hypot(q[0][0]-q[2][0],q[0][1]-q[2][1])>46){const m=proj(C,[cx,cy,h]);const dark=['kraft','cardio','func'].includes(it.cat);c.fillStyle=dark?COL.ink:COL.cream;c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}});
+      if(top&&o.labels&&Math.hypot(q[0][0]-q[2][0],q[0][1]-q[2][1])>46){const m=proj(C,[cx,cy,h]);const dark=['kraft','cardio','func','kampf','platz'].includes(it.cat);c.fillStyle=dark?COL.ink:COL.cream;c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}});
   });
   return C;
 }
@@ -933,25 +950,52 @@ function renderInspector(){
   <div class="row"><label class="fld">Höhe m<input id="fH" type="number" step=".1" min=".01" value="${it.h}"></label><label class="fld">Drehung °<input id="fR" type="number" step="15" value="${it.rot}"></label></div>
   <div class="row"><label class="fld">X m<input id="fX" type="number" step=".1" value="${it.x}"></label><label class="fld">Y m<input id="fY" type="number" step=".1" value="${it.y}"></label></div>
   <div class="row"><label class="fld">Abstand m<input id="fC" type="number" step=".1" min="0" value="${it.clr}"></label><label class="fld" style="justify-content:flex-end"><button class="btn sm ghost" id="fL" style="justify-content:center">${it.locked?'Entsperren':'Sperren'}</button></label></div>
+  ${it.cat==='service'?'':`<label class="fld">${it.zone?'m² pro Person':'Personen gleichzeitig'}<input id="fP" type="number" step="${it.zone?.5:1}" min="${it.zone?.5:0}" value="${persons(it)}"></label>`}
   <div class="grid2" style="margin-top:12px"><button class="btn sm" id="fRot" style="justify-content:center">Drehen 90°</button><button class="btn sm" id="fDup" style="justify-content:center">Duplizieren</button></div>
   <button class="btn sm ghost" id="fDel" style="width:100%;justify-content:center;margin-top:8px">Löschen</button>`;
   const num=(id,key,min)=>$(id).onchange=e=>{pushUndo();it[key]=Math.max(min??-1e9,+e.target.value||0);commit()};
-  $('#fName').onchange=e=>{it.name=e.target.value||it.name;commit()};num('#fW','w',.1);num('#fD','d',.1);num('#fH','h',.01);num('#fX','x');num('#fY','y');num('#fC','clr',0);
+  $('#fName').onchange=e=>{it.name=e.target.value||it.name;commit()};num('#fW','w',.1);num('#fD','d',.1);num('#fH','h',.01);num('#fX','x');num('#fY','y');num('#fC','clr',0);if($('#fP'))num('#fP','p',it.zone?.5:0);
   $('#fR').onchange=e=>{pushUndo();it.rot=((+e.target.value||0)%360+360)%360;commit()};
   $('#fL').onclick=()=>{it.locked=!it.locked;commit()};$('#fRot').onclick=()=>{pushUndo();it.rot=(it.rot+90)%360;commit()};$('#fDup').onclick=()=>dupItem(it);$('#fDel').onclick=()=>delItem(it);
 }
 function syncFields(){const it=S.items.find(i=>i.id===S.sel);if(!it||!$('#fW'))return;const set=(id,v)=>{const e=$(id);if(e&&document.activeElement!==e)e.value=v};set('#fW',+it.w.toFixed(2));set('#fD',+it.d.toFixed(2));set('#fX',+it.x.toFixed(2));set('#fY',+it.y.toFixed(2))}
+/* Kapazität: wie viele Menschen gleichzeitig trainieren können, ohne dass sich Geräte oder Bewegungsflächen überschneiden */
+function capacity(st,area){
+  const m2=S.capM2||4,sol=S.items.filter(i=>!i.zone);let dev=0,zone=0,skip=0,svc=0;
+  // Nutzbare Geräte: ohne Kollision, im Raum. Zwei Geräte mit Nutzern überschneiden sich, wenn der Spalt zwischen ihnen
+  // kleiner ist als ihr mittlerer Abstand – dann ist nur eins davon gleichzeitig nutzbar (gierige Auswahl, größte zuerst).
+  const users=[];sol.forEach(it=>{if(it.cat==='service'){svc+=it.w*it.d;return}const p=persons(it);if(!p)return;
+    if(st.coll.has(it.id)||st.oob.has(it.id))skip+=p;else users.push(it)});
+  const conf=(a,b)=>{const g=((a.clr||0)+(b.clr||0))/2;return g>0&&sat(pts(a,g-.001),pts(b))};
+  const picked=[];users.sort((a,b)=>persons(b)-persons(a)).forEach(it=>{if(picked.some(q=>conf(it,q)))skip+=persons(it);else{picked.push(it);dev+=persons(it)}});
+  S.items.filter(i=>i.zone).forEach(z=>{const ppm=Math.max(.5,persons(z)||5),r=-rad(z.rot);let a=z.w*z.d;
+    // Geräte (mit Abstand) innerhalb der Zone belegen deren Fläche
+    sol.forEach(it=>{const dx=it.x-z.x,dy=it.y-z.y,lx=dx*Math.cos(r)-dy*Math.sin(r),ly=dx*Math.sin(r)+dy*Math.cos(r);
+      if(Math.abs(lx)<=z.w/2&&Math.abs(ly)<=z.d/2)a-=(it.w+2*(it.clr||0))*(it.d+2*(it.clr||0))});
+    zone+=Math.floor(Math.max(0,a)/ppm)});
+  const train=Math.max(0,area-svc),lim=Math.floor(train/m2),sum=dev+zone;
+  return{dev,zone,skip,train,lim,m2,sum,total:Math.min(sum,lim),byArea:lim<sum};
+}
 function renderStats(){
   const st=analyze(),sol=S.items.filter(i=>!i.zone&&i.type!=='block'),area=S.room.poly?Math.max(0,polyArea(S.room.poly)-(S.room.walls||[]).reduce((s,q)=>s+wLen(q)*q.t,0)):S.room.w*S.room.d,used=S.items.filter(i=>!i.zone).reduce((s,i)=>s+i.w*i.d,0),pct=area?Math.min(100,used/area*100):0;
+  const cp=capacity(st,area);S.capInfo=cp;
   const counts={};S.items.forEach(i=>{if(i.type==='block'&&i.locked)return;const k=i.name;counts[k]=(counts[k]||0)+1});
   $('#stats').innerHTML=`<h4>Übersicht</h4><div class="kv"><span>Raumfläche</span><b>${fmt(area)} m²</b><span>Belegte Fläche</span><b>${fmt(used)} m²</b><span>Auslastung</span><b>${fmt(pct,0)} %</b><span>Elemente</span><b>${S.items.length}</b><span>Kollisionen</span><b class="${st.coll.size?'warn':''}">${st.coll.size}</b><span>Außerhalb Raum</span><b class="${st.oob.size?'warn':''}">${st.oob.size}</b><span>Abstandshinweise</span><b class="${st.warn.size?'warn':''}">${st.warn.size}</b></div>
-  <div class="meter"><i style="width:${pct}%"></i></div><h4 style="margin-top:14px">Stückliste</h4><div class="bom">${Object.keys(counts).length?Object.entries(counts).map(([k,v])=>`<div><span>${k}</span><b>${v}×</b></div>`).join(''):'<span style="color:var(--cream-d)">Noch keine Geräte eingeplant.</span>'}</div>`;
+  <div class="meter"><i style="width:${pct}%"></i></div>
+  <h4 style="margin-top:14px">Kapazität</h4>
+  <div class="cap"><b>${cp.total}</b><span>Personen können gleichzeitig trainieren</span></div>
+  <div class="kv"><span>Geräteplätze</span><b>${cp.dev}</b><span>Plätze auf Trainingsflächen</span><b>${cp.zone}</b><span>Trainingsfläche</span><b>${fmt(cp.train)} m²</b><span>Flächenlimit</span><b class="${cp.byArea?'warn':''}">${cp.lim}</b>${cp.skip?`<span>Nicht gezählt (Überschneidung)</span><b class="warn">${cp.skip}</b>`:''}</div>
+  <label class="fld" style="margin-top:8px">Mindestfläche m² pro Person<input id="capM2" type="number" step=".5" min="1" value="${cp.m2}"></label>
+  <p class="help" style="margin-top:6px">Formel: min(Geräteplätze + Σ freie Zonenfläche ÷ m² pro Person der Zone, Trainingsfläche ÷ ${fmt(cp.m2)} m²). Geräte mit Kollision, außerhalb des Raums oder mit überschnittenem Abstand zählen nicht. ${cp.byArea?'Hier begrenzt die Fläche.':'Hier begrenzen die Geräte.'} Richtwert, ersetzt keine Prüfung nach Bau- und Arbeitsstättenrecht.</p>
+  <h4 style="margin-top:14px">Stückliste</h4><div class="bom">${Object.keys(counts).length?Object.entries(counts).map(([k,v])=>`<div><span>${k}</span><b>${v}×</b></div>`).join(''):'<span style="color:var(--cream-d)">Noch keine Geräte eingeplant.</span>'}</div>`;
+  $('#capM2').onchange=e=>{S.capM2=Math.max(1,+e.target.value||4);save();renderStats()};
 }
 /* Export */
 function dl(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-$('#bJson').onclick=()=>trk('export',{format:'json'})||dl((S.name||'studio')+'.json',new Blob([JSON.stringify({room:S.room,items:S.items},null,1)],{type:'application/json'}));
-$('#bCsv').onclick=()=>{trk('export',{format:'csv',items:S.items.length});const rows=[['Bezeichnung','Typ','Kategorie','Breite m','Tiefe m','Höhe m','X m','Y m','Drehung']];S.items.forEach(i=>rows.push([i.name,i.type,CATS[i.cat].n,i.w,i.d,i.h,i.x,i.y,i.rot]));dl((S.name||'studio')+'-stueckliste.csv',new Blob(['﻿'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv'}))};
-$('#bPng').onclick=()=>{trk('export',{format:'png'});dirty=true;drawMain();cv.toBlob(b=>dl((S.name||'studio')+'.png',b))};
+const needAcct=fn=>window.Account?Account.requireAccount(fn):fn();
+$('#bJson').onclick=()=>needAcct(()=>trk('export',{format:'json'})||dl((S.name||'studio')+'.json',new Blob([JSON.stringify({room:S.room,items:S.items},null,1)],{type:'application/json'})));
+$('#bCsv').onclick=()=>needAcct(()=>{trk('export',{format:'csv',items:S.items.length});const rows=[['Bezeichnung','Typ','Kategorie','Breite m','Tiefe m','Höhe m','X m','Y m','Drehung']];S.items.forEach(i=>rows.push([i.name,i.type,(CATS[i.cat]||{n:i.cat}).n,i.w,i.d,i.h,i.x,i.y,i.rot]));const cp=S.capInfo;if(cp)rows.push([],['Max. gleichzeitig trainierende Personen',cp.total],['Geräteplätze',cp.dev],['Plätze auf Trainingsflächen',cp.zone],['Flächenlimit ('+cp.m2+' m² pro Person)',cp.lim]);dl((S.name||'studio')+'-stueckliste.csv',new Blob(['﻿'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv'}))});
+$('#bPng').onclick=()=>needAcct(()=>{trk('export',{format:'png'});dirty=true;drawMain();cv.toBlob(b=>dl((S.name||'studio')+'.png',b))});
 $('#projName').oninput=e=>{S.name=e.target.value};
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),3200)}
 
@@ -969,7 +1013,7 @@ $('#home').onclick=openLanding;
     t+=.0035;render3D(c,r.width,r.height,{yaw:.5+Math.sin(t)*.7,pitch:.78,dist:36},room,items,{dpr,labels:false})}requestAnimationFrame(frame)}frame()})();
 
 /* Start */
-try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;uid=Math.max(0,...S.items.map(i=>i.id))+1;$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
+try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 </script>
 <script src="account.js"></script>
