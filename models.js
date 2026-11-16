@@ -5,11 +5,13 @@
 const MAT = {
   frame: [92, 99, 115], dark: [44, 47, 57], steel: [186, 192, 204], pad: [36, 38, 46], belt: [22, 23, 27],
   screen: [126, 168, 228], body: [218, 212, 198], wood: [182, 142, 98], rubber: [52, 56, 66], turf: [72, 122, 88],
-  red: [196, 74, 64], blue: [62, 98, 170], gold: [214, 180, 110], glass: [150, 185, 230], mesh: [150, 156, 168], white: [236, 232, 222]
+  red: [196, 74, 64], blue: [62, 98, 170], gold: [214, 180, 110], glass: [150, 185, 230], mesh: [150, 156, 168], white: [236, 232, 222],
+  // Centr × HYROX: schwarzer Stahl und Turf, HYROX-Gelb
+  hxblack: [30, 30, 33], hxyel: [255, 222, 0], hxturf: [38, 39, 43]
 };
 const MAT_ALPHA = { glass: .3, mesh: .28 };
 // Bodenmaterial für Zonen
-const ZMAT = { fwzone: 'rubber', hyrox: 'turf', sled: 'turf', kbzone: 'rubber', stretch: 'blue', mat: 'blue', mmazone: 'rubber',
+const ZMAT = { fwzone: 'rubber', hyrox: 'hxturf', sled: 'hxturf', kbzone: 'rubber', stretch: 'blue', mat: 'blue', mmazone: 'rubber',
   course: 'wood', kids: 'blue', cfzone: 'rubber', ph_zone: null };
 
 const MODELS = (() => {
@@ -134,12 +136,18 @@ const MODELS = (() => {
     }
     p.push(P('frame', 0, 1, .04, .04 + ty, .96, 1), P('frame', 0, 1, .96 - ty, .96, .96, 1), P('rubber', 0, 1, 0, 1, 0, .006));
     for (let i = 0; i < n; i += 2) { const x = (i + .5) / n; p.push(P('steel', x - .02, x + .02, .45, .55, .2, .22), P('dark', x - .03, x + .03, .4, .6, .006, .05)) }
+    if (it.hx) { p.forEach(q => { if (q[0] === 'frame') q[0] = 'hxblack' }); p.push(P('hxyel', 0, 1, .04, .04 + ty * .4, .9, .93), P('hxyel', 0, 1, .96 - ty * .4, .96, .9, .93)) }
     return p;
   };
   M.trx = [post(0, .45, .03, .1), post(.97, .45, .03, .1), P('frame', 0, 1, .45, .55, .95, 1), P('dark', .2, .22, .5, .52, .4, .95), P('dark', .5, .52, .5, .52, .4, .95), P('dark', .78, .8, .5, .52, .4, .95), P('rubber', 0, 1, 0, 1, 0, .01)];
   M.cali = [post(0, .1, .02, .05), post(.98, .1, .02, .05), post(0, .85, .02, .05), post(.98, .85, .02, .05),
     P('steel', 0, 1, .1, .15, .92, .95), P('steel', 0, 1, .85, .9, .7, .73), P('steel', .3, .32, .1, .9, .45, .47), P('steel', .68, .7, .1, .9, .45, .47), P('rubber', 0, 1, 0, 1, 0, .01)];
-  M.wallball = [P('frame', .4, .6, 0, .2, 0, 1), P('red', .2, .8, 0, .15, .9, 1), P('dark', .3, .44, .55, .85, 0, .1, 1), P('dark', .56, .7, .55, .85, 0, .1, 1)];
+  // Centr × HYROX Rig Target: Halter am Rig, Zielplatte 62,8 cm hoch, Markierungen für 2,70 m und 3,00 m
+  M.wallball = [P('hxblack', .3, .7, 0, .75, .84, .95), P('hxblack', 0, 1, .75, .93, .81, 1), P('hxyel', .06, .94, .93, 1, .812, .835), P('hxyel', .06, .94, .93, 1, .9, .922), P('hxyel', .06, .94, .93, 1, .975, 1)];
+  // Centr × HYROX Competition Power Sled
+  M.hxsled = [P('hxblack', .04, .22, 0, 1, 0, .07), P('hxblack', .78, .96, 0, 1, 0, .07), P('hxblack', .04, .96, .15, .85, .06, .17),
+    P('steel', .44, .56, .38, .62, .17, .55, 1), P('steel', .1, .17, .84, .94, .07, 1), P('steel', .83, .9, .84, .94, .07, 1),
+    P('hxblack', .06, .94, .86, .93, .9, 1), P('hxyel', .22, .78, .94, 1, .22, .42), P('dark', .3, .7, .3, .7, .17, .26, 1)];
   M.rope = [P('frame', .35, .65, 0, .3, 0, 1), P('dark', .2, .3, .2, 1, 0, .1), P('dark', .7, .8, .2, 1, 0, .1)];
   M.plyo = [P('wood', 0, .3, 0, 1, 0, .68), P('wood', .35, .65, 0, 1, 0, .82), P('wood', .7, 1, 0, 1, 0, 1)];
   /* ---------- Kampfsport ---------- */

@@ -124,6 +124,8 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .legend span{display:flex;align-items:center;gap:6px}.legend i{width:10px;height:10px;display:inline-block;border:1px solid var(--cream)}
 .card{position:absolute;z-index:4;background:var(--ink);border:1px solid var(--cream);padding:16px 18px;width:310px;left:50%;top:70px;transform:translateX(-50%);display:none}
 .card.on{display:block}
+#propCard{width:320px;left:auto;right:14px;transform:none;max-height:calc(100% - 90px);overflow:auto}#propCard select{width:100%;background:var(--navy-dd);color:var(--cream);border:1px solid var(--line);padding:8px 10px;font:inherit;font-size:13px;margin-top:4px}.chk{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--cream-d);margin:10px 0 4px;cursor:pointer}
+.pres{margin:10px 0 0!important;color:var(--cream)!important;font-size:13px!important;line-height:1.5}.pres:empty{display:none}.pres b{font-family:var(--serif);font-size:26px;color:var(--cream);display:block}
 .card h5{font-family:var(--serif);font-size:17px;margin-bottom:6px}.card p{color:var(--cream-d);font-size:12px;margin-bottom:10px}
 .proc{position:absolute;inset:0;z-index:6;background:rgba(8,20,46,.88);display:none;place-items:center}
 .proc.on{display:grid}
@@ -157,11 +159,11 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 @media(max-width:1000px){.hero{grid-template-columns:1fr;padding-right:22px}.hero .cv{margin-right:0}.steps,.disc,.stats,.show{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
-<link rel="stylesheet" href="account.css?v=3">
+<link rel="stylesheet" href="account.css?v=4">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="config.js?v=3"></script>
-<script src="cloud.js?v=3"></script>
-<script src="models.js?v=3"></script>
+<script src="config.js?v=4"></script>
+<script src="cloud.js?v=4"></script>
+<script src="models.js?v=4"></script>
 </head>
 <body>
 
@@ -192,7 +194,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
     <div class="steps">
       <article><div class="n">01</div><h3>Plan hochladen</h3><p>Gebäudeplan oder Raumplan als Bild. Die Software bereinigt ihn, erkennt Außenmaße und lässt dich den Maßstab mit einer Referenzstrecke kalibrieren.</p></article>
-      <article><div class="n">02</div><h3>Einplanen</h3><p>Geräte in Herstellermaßen oder ganze Bereiche als Vorlage setzen. Kollisionen, Sicherheitsabstände und die Kapazität werden live geprüft.</p></article>
+      <article><div class="n">02</div><h3>Einplanen</h3><p>Geräte in Herstellermaßen oder ganze Bereiche als Vorlage setzen – oder per Klick einen Vorschlag erstellen, der das Maximum aus der Fläche holt. Kollisionen, Sicherheitsabstände und die Kapazität werden live geprüft.</p></article>
       <article><div class="n">03</div><h3>Beschaffen</h3><p>Aus dem Layout entsteht die Stückliste. Beratung und Hersteller-Netzwerk führen zu den passenden Fabrikanten und Gerätesuppliern.</p></article>
     </div>
   </section>
@@ -246,6 +248,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
         <div class="row" style="margin-top:0"><label class="fld">Breite (m)<input id="rw" type="number" step="0.1" min="3"></label><label class="fld">Tiefe (m)<input id="rd" type="number" step="0.1" min="3"></label></div>
         <div class="row"><button class="btn sm ghost" id="bCal" style="justify-content:center">Maßstab kalibrieren</button></div>
         <div class="row"><button class="btn sm" id="bEdit" style="justify-content:center">✎ Grundriss bearbeiten</button></div>
+        <div class="row"><button class="btn sm solid" id="bProp" style="justify-content:center">✦ Layout-Vorschlag erstellen</button></div>
         <p class="det" id="detInfo"></p>
       </div>
       <div class="sec">
@@ -265,6 +268,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
         <button class="tg on" id="tClr">Abstände</button>
         <button class="tg on" id="tPlan">Plan</button>
         <button class="tg" id="tFit">Einpassen</button>
+        <button class="tg" id="tProp">✦ Vorschlag</button>
         <button class="tg edit" id="tEdit">✎ Grundriss bearbeiten</button>
         <div class="edbar" id="edBar">
           <div class="seg"><button data-tool="sel" class="on">Auswählen</button><button data-tool="wall">Wand ziehen</button><button data-tool="door">Tür</button><button data-tool="win">Fenster</button></div>
@@ -277,6 +281,13 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
       <div class="card" id="calCard"><h5>Maßstab kalibrieren</h5><p id="calMsg">Klicke zwei Punkte im Plan, deren realer Abstand dir bekannt ist (z. B. eine Wandlänge).</p>
         <div class="row" style="margin-top:0"><label class="fld">Realer Abstand (m)<input id="calM" type="number" step="0.1" value="10"></label><button class="btn sm solid" id="calOk" style="margin-top:14px;justify-content:center">Übernehmen</button></div>
         <div class="row"><button class="btn sm ghost" id="calX" style="justify-content:center">Abbrechen</button></div></div>
+      <div class="card" id="propCard"><h5>Layout-Vorschlag</h5><p>TIGRIS füllt die Fläche mit Bereichsvorlagen in Herstellermaßen – mit Sicherheitsabständen, Gängen und freien Türen – und rechnet aus, wie viele Menschen gleichzeitig trainieren können.</p>
+        <label class="fld">Schwerpunkt<select id="propProf"><option value="mix">Ausgewogenes Studio</option><option value="kraft">Kraft & Bodybuilding</option><option value="cardio">Cardio & Cycling</option><option value="func">Functional, CrossFit & HYROX</option><option value="kampf">Kampfsport & MMA</option></select></label>
+        <label class="chk"><input type="checkbox" id="propSvc" checked> Empfang, Spinde & Getränke einplanen</label>
+        <p class="pres" id="propRes"></p>
+        <div class="row"><button class="btn sm solid" id="propGo" style="justify-content:center">Vorschlag erstellen</button><button class="btn sm ghost" id="propX" style="justify-content:center">Schließen</button></div>
+        <div class="row" id="propAct" style="display:none"><button class="btn sm" id="propOk" style="justify-content:center">Übernehmen</button><button class="btn sm ghost" id="propNo" style="justify-content:center">Verwerfen</button></div>
+        <p class="help" style="margin:10px 0 0">Ersetzt alle nicht gesperrten Elemente. Stützen und gesperrte Elemente bleiben stehen.</p></div>
       <div class="proc" id="proc"><div class="in"><h5>Plan wird verarbeitet</h5><ul><li id="p1">Bild einlesen & entzerren</li><li id="p2">Linien extrahieren</li><li id="p3">Außenmaße schätzen</li></ul><div class="bar"><i id="pbar"></i></div></div></div>
       <div class="empty" id="empty"><div><h3>Beginne mit deinem Plan</h3><p>Lade links einen Gebäude- oder Raumplan hoch – oder starte mit dem Demo-Grundriss.</p><button class="btn solid" id="bDemo2">Demo-Grundriss laden</button></div></div>
       <div class="hud" id="hud">x 0,0 · y 0,0 m</div>
@@ -337,9 +348,10 @@ const LIB=[
  ['stair','Treppensteiger','cardio',.86,1.47,2.03,.5,0,1,0,'StairMaster 8Gx · 147 × 86 × 203 cm'],
  ['rig','CrossFit-Rig (6 m)','func',6,1.85,2.9,1.2,0,8,0,'Richtwert modulares Rig, 5 Felder à 1,2 m'],
  ['trx','Suspension-Rig (TRX)','func',3,1,2.5,1,0,4],['cali','Calisthenics-Station','func',4,2,2.5,1,0,4],
- ['wallball','Wallball-Ziel','func',1,.5,3.2,1.2,0,1],['rope','Battle-Rope-Station','func',1,.5,.6,1,0,1],['plyo','Plyo-Boxen (Satz)','func',1.6,.6,.75,.8,0,2],
- ['hyrox','HYROX-Turf (2 Bahnen)','func',16.2,2,.02,0,1,16,0,'Centr × HYROX Competition Turf · 16,2 × 2 m'],
- ['sled','Turf-Bahn (Schlitten)','func',16.5,2,.02,0,1,16,0,'HYROX Perform Turf, 1 Bahn · 16,5 × 2 m'],
+ ['wallball','Wallball-Zielscheibe (Rig-Montage)','func',.29,.25,3.3,0,0,1,0,'Centr × HYROX Competition Rig Target · 29 × 24,5 × 62,8 cm · an Rig, Rack oder Wand montiert, Ziel 2,70 m (Damen) / 3,00 m (Herren)'],['rope','Battle-Rope-Station','func',1,.5,.6,1,0,1],['plyo','Plyo-Boxen (Satz)','func',1.6,.6,.75,.8,0,2],
+ ['hyrox','HYROX-Turf (2 Bahnen)','func',16.2,2,.02,0,1,16,0,'Centr × HYROX Perform Turf, schwarz mit Bahnlinien · 16,2 × 2 m'],
+ ['hxsled','Power-Schlitten Centr × HYROX','func',.6,1.02,1,0,0,0,0,'Centr × HYROX Competition Power Sled · 102 × 60 × 99,7 cm, 50 kg'],
+ ['sled','Turf-Bahn (Schlitten)','func',16.5,2,.02,0,1,16,0,'Centr × HYROX Perform Turf, 1 Bahn · 16,5 × 2 m'],
  ['cfzone','CrossFit-Boden','func',14,10,.02,0,1,6],['kbzone','Kettlebell-Zone','func',4,3,.02,0,1,4],['stretch','Stretching-Zone','func',4,3,.02,0,1,3],
  ['bag','Boxsack (hängend)','kampf',.4,.4,1.8,1,0,1,1,'Richtwert 120 cm Sack, Ø 35–40 cm'],['halfbag','Halbboxsack','kampf',.38,.38,1,.9,0,1,1,'Richtwert 60–80 cm Sack'],
  ['standbag','Standboxsack','kampf',.6,.6,1.7,.9,0,1,1,'Richtwert Standsack mit Fuß Ø 60 cm'],['dee','Doppelendball','kampf',.3,.3,2.5,.9,0,1,1],
@@ -359,17 +371,18 @@ const LIB=[
  ['water','Wasserspender','service',.4,.4,1.1,.2,0,0,0,'Richtwert Standgerät mit Gallone'],['vending','Getränkeautomat','service',.9,.85,1.85,.2,0,0,0,'Richtwert Glasfront-Automat'],
  ['fridge','Getränkekühlschrank','service',.6,.65,2,.2,0,0,0,'Richtwert Glastür-Kühlschrank'],['podium','Trainer-Podest','service',2,1.5,.3,.3,0,0],
  ['mirror','Spiegelwand','service',4,.1,2,.3],['storage','Lager','service',3,3,2.4,.3],['block','Platzblocker / Stütze','service',1,1,1,.3]
-].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7],p:a[8]||0,round:!!a[9],ref:a[10]||''}));
+].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7],p:a[8]||0,round:!!a[9],ref:a[10]||'',mount:a[0]==='wallball'}));
 /* Bereichsvorlagen: [Typ, dx, dy, Änderungen] relativ zur Bereichsmitte (Meter). Abstände nach Herstellerempfehlung/Erfahrungswerten. */
 const TPL={
  tpl_tread:{name:'Laufband-Reihe (6×)',w:9,d:4.2,ref:'6 Laufbänder, 1,5 m Achsabstand, 2 m Freiraum dahinter (EN ISO 20957-6)',items:[-3.75,-2.25,-.75,.75,2.25,3.75].map(x=>['tread',x,-.9])},
  tpl_cross:{name:'Crosstrainer-Bereich (6×)',w:8,d:3.2,ref:'6 Crosstrainer, 1,3 m Achsabstand',items:[-3.25,-1.95,-.65,.65,1.95,3.25].map(x=>['cross',x,0])},
  tpl_cycle:{name:'Indoor-Cycling-Raum (20 Bikes)',w:10,d:10,ref:'4 Reihen × 5 Bikes, 1,25 × 1,9 m Raster, Trainer-Bike vorn',
    items:[['course',0,0,{w:10,d:10,name:'Cycling-Raum'}],['bike',0,-4,{rot:180,name:'Trainer-Bike'}],...[-1.6,.3,2.2,4.1].flatMap(y=>[-2.5,-1.25,0,1.25,2.5].map(x=>['bike',x,y,{rot:180}]))]},
- tpl_hyrox:{name:'HYROX-Bereich',w:17,d:9,ref:'2 × Turf 16,2 × 2 m, je 2 SkiErg/RowErg, Wallball, Sandbag-Zone',
-   items:[['hyrox',0,-3.3],['sled',0,-.5,{w:16.2}],['ski',-6.5,3,{}],['ski',-5.2,3,{}],['rower',-2.4,3.4,{rot:90}],['rower',-2.4,2.1,{rot:90}],['wallball',2,3.9,{rot:180}],['wallball',4.4,3.9,{rot:180}],['kbzone',6.9,2.9,{w:3,d:3,name:'Sandbag / Lunges'}]]},
- tpl_cf:{name:'CrossFit-Bereich',w:14,d:10,ref:'Rig 6 m, 4 RowErg, 4 Air-Bikes, Wallballs, Plyo, Kettlebells auf Gummiboden',
-   items:[['cfzone',0,0],['rig',-2.5,-3.6],['wallball',3,-4.3],['wallball',5.6,-4.3],['rower',-6,1.5,{}],['rower',-4.6,1.5,{}],['airbike',-2.4,1.3],['airbike',-1.2,1.3],['airbike',0,1.3],['airbike',1.2,1.3],
+ tpl_hyrox:{name:'HYROX-Bereich',w:17,d:9,ref:'Centr × HYROX: Turf 16,2 × 2 m + Schlittenbahn, 3 Power-Schlitten, Rig mit 2 Zielscheiben, je 2 SkiErg/RowErg, Sandbag-Zone',
+   items:[['hyrox',0,-3.3],['sled',0,-.5,{w:16.2}],['hxsled',-6.9,-3.8,{rot:90}],['hxsled',-6.9,-2.8,{rot:90}],['hxsled',-6.9,-.5,{rot:90}],['ski',-6.5,3,{}],['ski',-5.2,3,{}],['rower',-2.4,3.4,{rot:90}],['rower',-2.4,2.1,{rot:90}],
+     ['rig',2.8,3.4,{w:3.6,p:4,hx:1,name:'HYROX Perform Rig'}],['wallball',1.9,2.6,{rot:180}],['wallball',3.7,2.6,{rot:180}],['kbzone',6.9,2.9,{w:3,d:3,name:'Sandbag / Lunges'}]]},
+ tpl_cf:{name:'CrossFit-Bereich',w:14,d:10,ref:'Rig 6 m mit 2 Zielscheiben, 4 RowErg, 4 Air-Bikes, Plyo, Kettlebells auf Gummiboden',
+   items:[['cfzone',0,0],['rig',-2.5,-3.6],['wallball',-4.3,-2.8],['wallball',-.7,-2.8],['rower',-6,1.5,{}],['rower',-4.6,1.5,{}],['airbike',-2.4,1.3],['airbike',-1.2,1.3],['airbike',0,1.3],['airbike',1.2,1.3],
      ['plyo',4.8,-.6],['kbrack',4.8,1.6],['dbrack',2,4.4],['platform',5.3,3.7,{w:2,d:2,name:'Plattform'}]]},
  tpl_fw:{name:'Freihantelbereich',w:10,d:7,ref:'2 Power Racks, Kurzhantelablage, 4 Bänke, Scheibenständer auf Gummiboden',
    items:[['fwzone',0,0,{w:10,d:7}],['rack',-3.2,-2.2],['rack',.2,-2.2],['plates',3.5,-2.6],['dbrack',0,2.9],['adjbench',-2.8,.9],['adjbench',-1.4,.9],['adjbench',0,.9],['bench',1.4,.9],['kbrack',3.8,-.2,{rot:90}]]},
@@ -384,6 +397,15 @@ const TPL={
 Object.entries(TPL).forEach(([id,t])=>LIB.unshift({id,name:t.name,cat:'bereich',w:t.w,d:t.d,h:0,clr:0,zone:false,p:0,ref:t.ref,tpl:t.items}));
 const T=id=>LIB.find(t=>t.id===id);
 const persons=it=>it.p??(T(it.type)||{}).p??0;
+const isMount=it=>!!(T(it.type)||{}).mount;
+// Montierbare Teile (Zielscheiben) rasten an Rig, Rack oder Calisthenics-Gerüst ein und kollidieren nicht mit ihrem Träger
+const HOSTS=['rig','rack','halfrack','smith','cali','trx'];
+function snapMount(it){if(!it||!isMount(it))return false;let best=null;
+  S.items.forEach(h=>{if(!HOSTS.includes(h.type))return;const[lx,ly]=toLocal(h,it.x,it.y);if(Math.abs(lx)>h.w/2+.4||Math.abs(ly)>h.d/2+.9)return;
+    const side=ly<0?-1:1,tx=Math.max(-h.w/2+it.w/2,Math.min(h.w/2-it.w/2,lx)),ty=side*(h.d/2-it.d/2),dd=Math.hypot(tx-lx,ty-ly);
+    if(!best||dd<best.dd)best={h,tx,ty,side,dd}});
+  if(!best)return false;const{h,tx,ty,side}=best,a=rad(h.rot);
+  it.x=+(h.x+tx*Math.cos(a)-ty*Math.sin(a)).toFixed(2);it.y=+(h.y+tx*Math.sin(a)+ty*Math.cos(a)).toFixed(2);it.rot=((side>0?h.rot:h.rot+180)%360+360)%360;return true}
 const trk=(t,d)=>{try{window.Cloud&&Cloud.track(t,d)}catch(e){}};
 
 const S={room:{w:26,d:15},plan:null,items:[],sel:null,mode:'2d',view:{ox:0,oy:0,z:30},cam:{yaw:.55,pitch:.72,dist:34},snap:true,clr:true,showPlan:true,calib:null,undo:[],cat:'all',q:'',name:'Neues Studio'};
@@ -396,7 +418,7 @@ function demoItems(){
   // Cardio an der Fensterfront (Blick nach draußen)
   [1,2.5,4,5.5,7].forEach(x=>a('tread',x,1.45,{rot:180}));[8.6,9.9,11.2].forEach(x=>a('cross',x,1.45,{rot:180}));[12.6,13.85,15.1].forEach(x=>a('bike',x,1.2,{rot:180}));a('ski',16.8,1);
   // CrossFit-Ecke mit Rig
-  a('cfzone',22,2.8,{w:7.4,d:4.6});a('rig',21.8,1.5);a('airbike',19.6,4.45);a('airbike',20.9,4.45);a('wallball',24.6,4.3,{rot:180});
+  a('cfzone',22,2.8,{w:7.4,d:4.6});a('rig',21.8,1.5);a('airbike',19.6,4.45);a('airbike',20.9,4.45);a('wallball',20,2.3);a('wallball',23.6,2.3);
   // HYROX-Bahnen quer durch die Halle
   a('hyrox',16.9,6.8);
   // Freihantelbereich
@@ -636,7 +658,7 @@ function drawParts2D(c,parts,w,d){
     c.beginPath();if(cy)c.ellipse(0,0,Math.abs(pw)/2,Math.abs(pd)/2,0,0,Math.PI*2);else c.rect(-pw/2,-pd/2,pw,pd);
     const k=.78+.22*Math.min(1,z1);c.fillStyle=`rgba(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0},${al})`;c.fill();
     if(Math.min(pw,pd)>2){c.lineWidth=.6;c.strokeStyle='rgba(8,10,16,.55)';c.stroke()}c.restore()})}
-function zoneMarks2D(c,it,w,d){if(it.type!=='hyrox'&&it.type!=='sled')return;c.save();c.strokeStyle='rgba(236,232,222,.55)';c.lineWidth=1;c.setLineDash([]);
+function zoneMarks2D(c,it,w,d){if(it.type!=='hyrox'&&it.type!=='sled')return;c.save();const e=Math.min(w*.05,.3*w/it.w);c.fillStyle='rgba(255,222,0,.8)';c.fillRect(-w/2,-d/2,e,d);c.fillRect(w/2-e,-d/2,e,d);c.strokeStyle='rgba(236,232,222,.7)';c.lineWidth=1;c.setLineDash([]);
   const lanes=it.type==='hyrox'?2:1;for(let i=1;i<lanes;i++){const y=-d/2+d*i/lanes;c.beginPath();c.moveTo(-w/2,y);c.lineTo(w/2,y);c.stroke()}
   const ez=Math.min(w*.11,1.7/it.w*w);[-w/2+ez,w/2-ez].forEach(x=>{c.beginPath();c.moveTo(x,-d/2);c.lineTo(x,d/2);c.stroke()});c.restore()}
 function partGeo(it,p){const[m,x0,x1,y0,y1,z0,z1,cy,r]=p,a=rad(it.rot),ca=Math.cos(a),sa=Math.sin(a),lx=((x0+x1)/2-.5)*it.w,ly=((y0+y1)/2-.5)*it.d,
@@ -649,10 +671,10 @@ function analyze(){
   const sol=S.items.filter(i=>!i.zone),WP=(S.room.walls||[]).flatMap(w=>solidSpans(S.room,w,['door']).map(([s,e])=>pts(wRect(w,s,e))));
   sol.forEach((a,i)=>{const pa=pts(a);
     if(outOfRoom(a,pa))st.oob.add(a.id);
-    if(!a.locked&&WP.some(wp=>sat(pa,wp)))st.coll.add(a.id);
-    for(let j=i+1;j<sol.length;j++){const b=sol[j];if(sat(pa,pts(b))){st.coll.add(a.id);st.coll.add(b.id)}}
+    const ma=isMount(a);if(!a.locked&&!ma&&WP.some(wp=>sat(pa,wp)))st.coll.add(a.id);
+    for(let j=i+1;j<sol.length;j++){const b=sol[j];if(ma||isMount(b))continue;if(sat(pa,pts(b))){st.coll.add(a.id);st.coll.add(b.id)}}
   });
-  sol.forEach(a=>{if(!a.clr||a.locked)return;const pc=pts(a,a.clr);sol.forEach(b=>{if(a===b||st.coll.has(a.id)&&st.coll.has(b.id))return;if(sat(pc,pts(b)))st.warn.add(a.id)})});
+  sol.forEach(a=>{if(!a.clr||a.locked)return;const pc=pts(a,a.clr);sol.forEach(b=>{if(a===b||isMount(b)||st.coll.has(a.id)&&st.coll.has(b.id))return;if(sat(pc,pts(b)))st.warn.add(a.id)})});
   STAT=st;return st;
 }
 const snapv=v=>S.snap?Math.round(v*10)/10:v;
@@ -695,7 +717,7 @@ function draw2D(){
     c.textBaseline='alphabetic';
   }else{c.strokeStyle=COL.cream;c.lineWidth=2;c.strokeRect(rx,ry,rw,rh)}
   const st=STAT,list=[...S.items].sort((a,b)=>(b.zone-a.zone));
-  c.globalAlpha=S.edit?.3:1;
+  c.globalAlpha=S.edit?.75:1;
   // Abstandszonen
   if(S.clr)list.forEach(it=>{if(it.zone||!it.clr||it.locked)return;const p=pts(it,it.clr);c.beginPath();p.forEach((v,i)=>{const[sx,sy]=w2s(v.x,v.y);i?c.lineTo(sx,sy):c.moveTo(sx,sy)});c.closePath();
     c.fillStyle=st.warn.has(it.id)?'rgba(224,98,90,.12)':'rgba(237,227,204,.05)';c.fill();c.setLineDash([4,4]);c.strokeStyle=st.warn.has(it.id)?'rgba(224,98,90,.8)':'rgba(237,227,204,.28)';c.lineWidth=1;c.stroke();c.setLineDash([])});
@@ -712,7 +734,9 @@ function draw2D(){
       if(it.type==='block'){c.save();c.beginPath();c.rect(-w/2,-d/2,w,d);c.clip();c.strokeStyle='rgba(237,227,204,.55)';c.lineWidth=1;for(let i=-w-d;i<w+d;i+=7){c.beginPath();c.moveTo(i,d/2);c.lineTo(i+d,-d/2);c.stroke()}c.restore()}
       c.lineWidth=bad?2.5:1.2;c.strokeStyle=bad?COL.red:COL.ink;shp();c.stroke();
       if(bad){c.fillStyle='rgba(224,98,90,.35)';shp();c.fill()}}
+    if(isMount(it)){const r=Math.max(6,w*.6);c.strokeStyle='#FFDE00';c.lineWidth=2;c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();c.beginPath();c.arc(0,0,r*.45,0,Math.PI*2);c.stroke()}
     c.restore();
+    if(isMount(it)&&z>=28&&!S.items.some(o=>o!==it&&isMount(o)&&o.id<it.id&&Math.hypot(o.x-it.x,o.y-it.y)*z<80)){c.save();c.font='600 10px Helvetica,Arial';c.textAlign='center';c.lineJoin='round';c.lineWidth=3;c.strokeStyle='rgba(8,12,24,.85)';c.fillStyle='#FFDE00';const ly=cy-Math.max(6,it.w*z*.6)-5;c.strokeText('Zielscheibe',cx,ly);c.fillText('Zielscheibe',cx,ly);c.restore()}
     // Beschriftung
     if(Math.min(it.w,it.d)*z>26||Math.max(it.w,it.d)*z>70){c.save();c.translate(cx,cy);c.textAlign='center';c.textBaseline='middle';
       const mdl=!it.zone&&MODELS[it.type],dark=!mdl&&!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
@@ -803,6 +827,8 @@ function render3D(c,W,H,cam,room,items,o={}){
     if(it.zone){const q=ps.map(p=>proj(C,[p[0],p[1],.02]));if(!q.every(Boolean))return;c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},${o.pretty?.85:.6})`:hexA(col,.2);c.fill();
       if(zm&&(it.type==='hyrox'||it.type==='sled')){c.save();c.clip();c.strokeStyle='rgba(236,232,222,.5)';c.lineWidth=1;const L=(f,g)=>{const a=proj(C,f),b=proj(C,g);if(a&&b){c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke()}};
         const loc=(fx,fy)=>{const a=rad(it.rot),lx=(fx-.5)*it.w,ly=(fy-.5)*it.d;return[it.x+lx*Math.cos(a)-ly*Math.sin(a),RD-(it.y+lx*Math.sin(a)+ly*Math.cos(a)),.021]};
+        const e=Math.min(.05,.3/it.w),Q=(...v)=>{const q=v.map(p=>proj(C,p));if(!q.every(Boolean))return;c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='rgba(255,222,0,.85)';c.fill()};
+        Q(loc(0,0),loc(e,0),loc(e,1),loc(0,1));Q(loc(1-e,0),loc(1,0),loc(1,1),loc(1-e,1));c.strokeStyle='rgba(236,232,222,.7)';
         if(it.type==='hyrox')L(loc(0,.5),loc(1,.5));const ez=Math.min(.11,1.7/it.w);L(loc(ez,0),loc(ez,1));L(loc(1-ez,0),loc(1-ez,1));c.restore()}
       if(o.pretty)return;c.setLineDash([6,4]);c.strokeStyle=hexA(col,.9);c.lineWidth=sel?2.5:1.3;c.stroke();c.setLineDash([]);
       if(o.labels){const m=proj(C,[cx,cy,.02]);if(m){c.fillStyle=hexA(col,1);c.font='600 11px Helvetica';c.textAlign='center';c.fillText(it.name,m[0],m[1])}}return}
@@ -830,7 +856,7 @@ function drawMain(){
 
 /* ============ Grundriss-Editor ============ */
 const ED={t:.2,door:1,win:1.5};
-const ED_HINT={sel:'Wand, Tür, Fenster oder Raumecke anklicken und ziehen · Doppelklick auf die Raumkante fügt eine Ecke ein · Entf löscht',
+const ED_HINT={sel:'Wand, Tür, Fenster, Raumecke oder Gerät anklicken und ziehen · Doppelklick auf die Raumkante fügt eine Ecke ein · Entf löscht',
   wall:'Klicken und ziehen, um eine Wand zu zeichnen · rastet an Wandenden und Ecken ein · Shift = freier Winkel',
   door:'Auf eine Wand klicken, um eine Tür einzusetzen',win:'Auf eine Wand klicken, um ein Fenster einzusetzen'};
 function rectPath(c,r){const p=pts(r).map(v=>w2s(v.x,v.y));c.beginPath();p.forEach((v,i)=>i?c.lineTo(v[0],v[1]):c.moveTo(v[0],v[1]));c.closePath()}
@@ -872,7 +898,7 @@ function placeOp(type,wx,wy){const pv=opPreview(type,wx,wy);if(!pv){toast(type==
   if(pv.bad){toast('Hier ist kein Platz – Wand zu kurz oder Öffnung überlappt');return}
   pushUndo();const o=type==='door'?{id:eid++,wall:pv.w.id,type,pos:pv.pos,w:pv.width,h:2.1,flip:false,hand:false}:{id:eid++,wall:pv.w.id,type,pos:pv.pos,w:pv.width,h:1.2,sill:.9};
   S.room.ops.push(o);trk(type==='door'?'door_add':'window_add',{w:o.w});edSelect({k:'op',id:o.id});commit()}
-function edSelect(s){S.esel=s;renderInspector();req()}
+function edSelect(s){S.esel=s;if(s)S.sel=null;renderInspector();req()}
 function normalizeRoom(){const R=S.room,P=edPts();if(!P.length)return;let mx=Math.min(0,...P.map(p=>p[0])),my=Math.min(0,...P.map(p=>p[1]));
   if(mx<0||my<0){const dx=-mx,dy=-my;P.forEach(p=>{p[0]+=dx;p[1]+=dy});S.items.forEach(i=>{i.x+=dx;i.y+=dy});if(S.planXf){S.planXf.x+=dx;S.planXf.y+=dy}S.view.ox-=dx*S.view.z;S.view.oy-=dy*S.view.z}
   R.w=+Math.max(1,...P.map(p=>p[0])).toFixed(2);R.d=+Math.max(1,...P.map(p=>p[1])).toFixed(2);syncRoom()}
@@ -906,7 +932,7 @@ function edMove(wx,wy,e){const R=S.room,p=[wx,wy];
   if(D)return false;
   if(S.tool==='door'||S.tool==='win'){S.edPrev=opPreview(S.tool,wx,wy);req()}
   else if(S.tool==='wall'){S.edPrev={k:'pt',p:snapPt(p)};req()}
-  else{const hov=(S.esel&&S.esel.k==='wall')||(R.poly||[]).some(q=>Math.hypot(q[0]-wx,q[1]-wy)<9/S.view.z)||hitOp(wx,wy)||nearestWall(wx,wy,4/S.view.z);cv.style.cursor=hov?'move':'default'}
+  else{const hov=(S.esel&&S.esel.k==='wall')||(R.poly||[]).some(q=>Math.hypot(q[0]-wx,q[1]-wy)<9/S.view.z)||hitOp(wx,wy)||nearestWall(wx,wy,4/S.view.z)||S.items.some(i=>!i.zone&&!i.locked&&inItem(i,wx,wy));cv.style.cursor=hov?'move':'default'}
   return false}
 function edUp(){if(!D||!D.t.startsWith('ed'))return false;
   if(D.t==='edwall'){const a=D.a,b=S.edPrev.b;S.edPrev=null;if(Math.hypot(b[0]-a[0],b[1]-a[1])>=.2){pushUndo();const w={id:eid++,a,b,t:ED.t};S.room.walls.push(w);trk('wall_add',{len:+Math.hypot(b[0]-a[0],b[1]-a[1]).toFixed(2)});S.esel={k:'wall',id:w.id};normalizeRoom();commit()}else req()}
@@ -918,9 +944,9 @@ function setEdit(on){
   if(on){if($('#empty').style.display!=='none'&&!S.items.length&&!S.plan)blank();const R=S.room;if(!R.poly)R.poly=[[0,0],[R.w,0],[R.w,R.d],[0,R.d]];migrateRoom(R);S.sel=null;closeCal()}
   S.edit=on;trk('edit_mode',{on});S.esel=null;S.edPrev=null;D=null;if(on)setMode('2d');
   $('#tEdit').classList.toggle('on',on);const b=$('#bEdit');b.classList.toggle('solid',on);b.textContent=on?'Bearbeiten beenden':'✎ Grundriss bearbeiten';$('#tEdit').textContent=on?'✓ Bearbeiten beenden':'✎ Grundriss bearbeiten';
-  $('#edBar').classList.toggle('on',on&&S.mode==='2d');$('#legend').style.display=on?'none':'';setTool(on?(S.tool||'sel'):'sel');if(!on)cv.style.cursor='';commit();if(on)toast('Bearbeitungsmodus an – Wände ziehen, Türen und Fenster einsetzen')}
+  $('#edBar').classList.toggle('on',on&&S.mode==='2d');$('#legend').style.display=on?'none':'';setTool(on?(S.tool||'sel'):'sel');if(!on)cv.style.cursor='';commit();if(on)toast('Bearbeitungsmodus an – Wände ziehen, Türen und Fenster einsetzen; Geräte bleiben verschiebbar')}
 function renderEdInspector(){const el=$('#insp'),R=S.room,s=S.esel,head='<h4>Grundriss bearbeiten</h4>';
-  if(!s){el.innerHTML=head+`<p class="help"><b>Wand ziehen</b>: klicken und ziehen, rastet an Wandenden ein (<kbd>Shift</kbd> = freier Winkel).<br><b>Tür / Fenster</b>: auf eine Wand klicken. Breite oben im Plan einstellen.<br><b>Auswählen</b>: Wände, Öffnungen und Raumecken anklicken und ziehen; an den Wandenden ziehen ändert die Länge. Doppelklick auf die Raumkante fügt eine Ecke ein.<br><kbd>Entf</kbd> löscht, <kbd>⌘/Strg</kbd>+<kbd>Z</kbd> macht rückgängig.</p>`;return}
+  if(!s){el.innerHTML=head+`<p class="help"><b>Wand ziehen</b>: klicken und ziehen, rastet an Wandenden ein (<kbd>Shift</kbd> = freier Winkel).<br><b>Tür / Fenster</b>: auf eine Wand klicken. Breite oben im Plan einstellen.<br><b>Auswählen</b>: Wände, Öffnungen, Raumecken und Geräte anklicken und ziehen; an den Wandenden ziehen ändert die Länge. Doppelklick auf die Raumkante fügt eine Ecke ein.<br><kbd>Entf</kbd> löscht, <kbd>⌘/Strg</kbd>+<kbd>Z</kbd> macht rückgängig.</p>`;return}
   const fld=(id,l,v,st)=>`<label class="fld">${l}<input id="${id}" type="number" step="${st}" value="${v}"></label>`,del=t=>`<button class="btn sm ghost" id="eDel" style="width:100%;justify-content:center;margin-top:12px">${t} löschen</button>`;
   const ch=(f,w)=>e=>{const v=+e.target.value;if(!isFinite(v))return;pushUndo();f(v);if(w)clampOps(w);normalizeRoom();commit()};
   if(s.k==='wall'){const w=R.walls.find(x=>x.id===s.id);if(!w){S.esel=null;return renderEdInspector()}
@@ -940,6 +966,80 @@ $('#tEdit').onclick=()=>setEdit(!S.edit);$('#bEdit').onclick=()=>setEdit(!S.edit
 $$('#edBar [data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 $('#edT').onchange=e=>{ED.t=Math.max(.05,+e.target.value||.2)};$('#edDoor').onchange=e=>{ED.door=Math.max(.5,+e.target.value||1)};$('#edWin').onchange=e=>{ED.win=Math.max(.3,+e.target.value||1.5)};
 
+
+/* ============ Layout-Vorschlag: das Maximum aus der Fläche ============ */
+const PROP_MOD={
+ m_recep:{name:'Empfang',items:[['reception',0,0]]},
+ m_db:{name:'Kurzhantel-Insel',items:[['dbrack',0,-.6],['adjbench',-.7,1.1],['adjbench',.7,1.1]]},
+ m_tread2:{name:'Laufbänder (2×)',items:[['tread',-.75,0],['tread',.75,0]]},
+ m_bikes2:{name:'Bikes (2×)',items:[['bike',-.65,0],['bike',.65,0]]},
+ m_bags:{name:'Standsäcke (2×)',items:[['standbag',-.8,0],['standbag',.8,0]]},
+ m_stretch:{name:'Stretching-Zone',items:[['stretch',0,0]]},
+ m_stretch_s:{name:'Stretching-Zone',items:[['stretch',0,0,{w:3,d:2.4}]]}};
+const PROP_PROF={
+ mix:{main:['tpl_fw','tpl_strength','tpl_tread','tpl_cross','tpl_cf','tpl_cycle','tpl_hyrox','tpl_combat'],fill:['tpl_strength','tpl_tread','m_db','m_tread2','m_bikes2','m_stretch','m_stretch_s']},
+ kraft:{main:['tpl_fw','tpl_strength','tpl_fw','tpl_strength','tpl_tread'],fill:['tpl_strength','tpl_fw','m_db','m_tread2','m_stretch','m_stretch_s']},
+ cardio:{main:['tpl_tread','tpl_cycle','tpl_cross','tpl_tread','tpl_cross','tpl_fw'],fill:['tpl_tread','m_tread2','m_bikes2','m_db','m_stretch','m_stretch_s']},
+ func:{main:['tpl_hyrox','tpl_cf','tpl_fw','tpl_tread'],fill:['tpl_cf','m_db','m_bikes2','m_tread2','m_stretch','m_stretch_s']},
+ kampf:{main:['tpl_combat','tpl_combat','tpl_fw','tpl_tread'],fill:['tpl_combat','m_bags','m_db','m_tread2','m_stretch','m_stretch_s']}};
+const PROP_MAX={m_stretch:2,m_stretch_s:2,tpl_cycle:1,tpl_hyrox:1,m_recep:1,tpl_locker:2,tpl_drinks:1};
+const BACK={tread:2,tread_tg:2,tread_lf:2,skillrun:2,curve:2}; // Freiraum hinter Laufbändern (EN ISO 20957-6)
+const CARDIO_MOD=new Set(['tpl_tread','tpl_cross','tpl_cycle','m_tread2','m_bikes2']);
+function propModule(id,r90){const t=TPL[id]||PROP_MOD[id];let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  const its=t.items.map(([ty,dx,dy,o])=>{o=o||{};const b=T(ty),i={ty,o,dx:r90?-dy:dx,dy:r90?dx:dy,w:o.w??b.w,d:o.d??b.d,rot:((o.rot||0)+(r90?90:0))%360,clr:b.zone?0:(o.clr??b.clr??0)};
+    const bk=BACK[ty]||0,a=rad(i.rot),oy=-bk/2,c=i.clr;
+    pts({x:i.dx-oy*Math.sin(a),y:i.dy+oy*Math.cos(a),w:i.w+2*c,d:i.d+2*c+bk,rot:i.rot}).forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y)});return i});
+  return{id,name:t.name,its,x0,y0,w:x1-x0,d:y1-y0}}
+const roomArea=()=>S.room.poly?Math.max(0,polyArea(S.room.poly)-(S.room.walls||[]).reduce((s,q)=>s+wLen(q)*q.t,0)):S.room.w*S.room.d;
+function propose(prof,svc){
+  const R=S.room,g=.25,W=Math.ceil(R.w/g)+2,H=Math.ceil(R.d/g)+2,B=new Uint8Array(W*H),O=new Uint8Array(W*H);
+  const cell=(i,j)=>{const x=(i-1)*g,y=(j-1)*g;return[{x,y},{x:x+g,y},{x:x+g,y:y+g},{x,y:y+g}]};
+  // Raster: außerhalb des Raums, Wände, Stützen/gesperrte Elemente und Türbereiche sind belegt
+  for(let j=0;j<H;j++)for(let i=0;i<W;i++){if(i===0||j===0||i===W-1||j===H-1){B[j*W+i]=1;continue}
+    const mx=(i-.5)*g,my=(j-.5)*g;if(cell(i,j).some(p=>{const x=p.x+(mx-p.x)*.04,y=p.y+(my-p.y)*.04;return R.poly?!inPoly(R.poly,x,y):(x<0||y<0||x>R.w||y>R.d)}))B[j*W+i]=1}
+  const mark=(A,r,pad)=>{const P=pts(r,pad),xs=P.map(p=>p.x),ys=P.map(p=>p.y);
+    for(let j=Math.max(1,Math.floor(Math.min(...ys)/g)+1);j<=Math.min(H-2,Math.floor(Math.max(...ys)/g)+1);j++)for(let i=Math.max(1,Math.floor(Math.min(...xs)/g)+1);i<=Math.min(W-2,Math.floor(Math.max(...xs)/g)+1);i++)if(!A[j*W+i]&&sat(cell(i,j),P))A[j*W+i]=1};
+  (R.walls||[]).forEach(w=>mark(B,wRect(w),0));
+  const doors=(R.ops||[]).filter(o=>o.type==='door').map(o=>{const w=R.walls.find(q=>q.id===o.wall);if(!w)return null;const d=wDir(w);return{x:w.a[0]+d[0]*o.pos,y:w.a[1]+d[1]*o.pos,w:o.w+.6,d:w.t+3,rot:wAng(w)}}).filter(Boolean);
+  doors.forEach(r=>mark(B,r,0));
+  const wins=(R.ops||[]).filter(o=>o.type==='win').map(o=>{const w=R.walls.find(q=>q.id===o.wall);if(!w)return null;const d=wDir(w);return[w.a[0]+d[0]*o.pos,w.a[1]+d[1]*o.pos]}).filter(Boolean);
+  const keep=S.items.filter(i=>i.locked||i.type==='block');keep.forEach(i=>mark(B,i,i.zone?0:(i.clr||0)));
+  // Ohne erkannte Tür: Eingang mittig an der unteren Wand annehmen
+  const door=doors[0]||{x:R.w/2,y:R.d};
+  const pre=()=>{const P=new Int32Array((W+1)*(H+1));for(let j=0;j<H;j++){let r=0;for(let i=0;i<W;i++){r+=B[j*W+i]|O[j*W+i];P[(j+1)*(W+1)+i+1]=P[j*(W+1)+i+1]+r}}return P};
+  const sum=(P,i0,j0,i1,j1)=>{i0=Math.max(0,i0);j0=Math.max(0,j0);i1=Math.min(W,i1);j1=Math.min(H,j1);return i1<=i0||j1<=j0?0:P[j1*(W+1)+i1]-P[j0*(W+1)+i1]-P[j1*(W+1)+i0]+P[j0*(W+1)+i0]};
+  let P=pre();const out=[],used={},AISLE=3; // 3 Zellen = 0,75 m Gang zwischen Bereichen
+  function tryPlace(id,near){if(!(TPL[id]||PROP_MOD[id]))return false;if((used[id]||0)>=(PROP_MAX[id]??8))return false;let best=null;
+    [false,true].forEach(r90=>{const m=propModule(id,r90),cw=Math.ceil(m.w/g-1e-6),ch=Math.ceil(m.d/g-1e-6);
+      for(let j=1;j+ch<=H-1;j++)for(let i=1;i+cw<=W-1;i++){if(sum(P,i,j,i+cw,j+ch))continue;
+        const ring=sum(P,i-1,j-1,i+cw+1,j+ch+1);let sc=ring;const cx=(i-1)*g+m.w/2,cy=(j-1)*g+m.d/2;
+        if(near)sc=1000-Math.hypot(cx-door.x,cy-door.y)*near;
+        else if(CARDIO_MOD.has(id)&&wins.some(([wx,wy])=>wx>(i-1)*g-1.5&&wx<(i-1+cw)*g+1.5&&wy>(j-1)*g-1.5&&wy<(j-1+ch)*g+1.5))sc+=40;
+        if(!best||sc>best.sc)best={sc,i,j,cw,ch,m}}});
+    if(!best)return false;const{i,j,cw,ch,m}=best,bx=(i-1)*g,by=(j-1)*g;
+    for(let y=Math.max(0,j-AISLE);y<Math.min(H,j+ch+AISLE);y++)for(let x=Math.max(0,i-AISLE);x<Math.min(W,i+cw+AISLE);x++)O[y*W+x]=1;P=pre();
+    m.its.forEach(t=>out.push(mk(t.ty,+(bx+t.dx-m.x0).toFixed(2),+(by+t.dy-m.y0).toFixed(2),Object.assign({},t.o,{rot:t.rot}))));used[id]=(used[id]||0)+1;return true}
+  const pr=PROP_PROF[prof]||PROP_PROF.mix;if(svc)tryPlace('m_recep',20);pr.main.forEach(id=>tryPlace(id));
+  if(svc){tryPlace('tpl_drinks',8);if(roomArea()>220)tryPlace('tpl_locker',3)}
+  for(let pass=0,any=true;any&&pass<40;pass++){any=false;pr.fill.forEach(id=>{if(tryPlace(id))any=true})}
+  return{items:[...keep,...out],used}}
+let PROPST=null;
+function propOpen(){if(!S.room.poly&&!S.items.length&&$('#empty').style.display!=='none'){toast('Zuerst einen Plan hochladen oder einen leeren Raum anlegen');return}
+  if(S.edit)setEdit(false);$('#propCard').classList.add('on');$('#propRes').innerHTML='';$('#propAct').style.display='none';trk('proposal_open')}
+function propClose(){$('#propCard').classList.remove('on');PROPST=null}
+function propRun(){const prof=$('#propProf').value,svc=$('#propSvc').checked;if(PROPST){undo()}
+  pushUndo();const r=propose(prof,svc);S.items=r.items;S.sel=null;S.esel=null;
+  // Absicherung: was trotz Raster kollidiert oder herausragt, wird entfernt
+  const st=analyze(),bad=S.items.filter(i=>!i.locked&&i.type!=='block'&&(st.coll.has(i.id)||st.oob.has(i.id)));if(bad.length)S.items=S.items.filter(i=>!bad.includes(i));
+  commit();const cp=capacity(analyze(),roomArea()),n=S.items.filter(i=>!i.zone&&i.cat!=='service').length;
+  const cnt={};Object.entries(r.used).forEach(([id,k])=>{const nm=(TPL[id]||PROP_MOD[id]).name;cnt[nm]=(cnt[nm]||0)+k});const names=Object.entries(cnt).map(([nm,k])=>`${k>1?k+'× ':''}${nm}`).join(', ');
+  PROPST={prof,total:cp.total};$('#propAct').style.display='';$('#propGo').textContent='Neu berechnen';
+  $('#propRes').innerHTML=n?`<b>${cp.total} Personen</b>gleichzeitig, ohne Überschneidung · ${n} Geräte · Trainingsfläche ${fmt(cp.train,0)} m²${cp.byArea?' (Flächenlimit greift)':''}<br><span style="color:var(--cream-d)">${names}</span>`:'Auf dieser Fläche passt keine Bereichsvorlage – Raum vergrößern oder Maßstab prüfen.';
+  trk('proposal',{prof,svc,persons:cp.total,devices:n,modules:r.used})}
+$('#tProp').onclick=propOpen;$('#bProp').onclick=propOpen;$('#propGo').onclick=propRun;$('#propX').onclick=()=>{propClose();$('#propGo').textContent='Vorschlag erstellen'};
+$('#propOk').onclick=()=>{toast(`Vorschlag übernommen – ${PROPST?PROPST.total:''} Personen gleichzeitig`);trk('proposal_accept',PROPST||{});propClose();$('#propGo').textContent='Vorschlag erstellen'};
+$('#propNo').onclick=()=>{if(PROPST)undo();trk('proposal_reject',PROPST||{});propClose();$('#propGo').textContent='Vorschlag erstellen'};
+
 /* ============ Interaktion ============ */
 let D=null,spaceDown=false;
 const ptr=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
@@ -952,8 +1052,8 @@ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);const[px
   if(S.calib&&S.mode==='2d'&&e.button===0){const w=s2w(px,py);if(S.calib.pts.length>=2)S.calib.pts=[];S.calib.pts.push(w);calUI();req();return}
   const pan=e.button===1||e.button===2||spaceDown;
   if(S.mode==='2d'){const[wx,wy]=s2w(px,py);
-    if(S.edit&&!pan&&e.button===0){if(edDown(wx,wy))return}
-    else if(!pan){const s=S.items.find(i=>i.id===S.sel);
+    if(S.edit&&!pan&&e.button===0&&edDown(wx,wy))return;
+    if(!pan){const s=S.items.find(i=>i.id===S.sel);
       if(s&&!s.locked){const hp=handlePos(s);if(Math.hypot(px-hp[0],py-hp[1])<9){pushUndo();D={t:'resize',it:s};return}}
       const h=hit2D(wx,wy);if(h){select(h.id);if(!h.locked){pushUndo();D={t:'move',it:h,ox:wx-h.x,oy:wy-h.y}}else D={t:'none'};return}
       select(null)}
@@ -971,7 +1071,7 @@ cv.addEventListener('pointermove',e=>{const[px,py]=ptr(e);
   else if(D.t==='orbit'){S.cam.yaw=D.yaw-(px-D.sx)*.008;S.cam.pitch=Math.max(.12,Math.min(1.5,D.pitch+(py-D.sy)*.006))}
   else if(D.t==='move3'){const g=groundPt(C3,px,py,D.z);if(g&&D.g){D.it.x=snapv(D.gx+g.x-D.g.x);D.it.y=snapv(D.gy+g.y-D.g.y);syncFields()}}
   req()});
-cv.addEventListener('pointerup',()=>{if(S.edit&&edUp())return;if(D&&(D.t==='move'||D.t==='resize'||D.t==='move3')){save();renderStats();renderInspector()}D=null});
+cv.addEventListener('pointerup',()=>{if(S.edit&&edUp())return;if(D&&(D.t==='move'||D.t==='move3')&&snapMount(D.it))toast('Zielscheibe am Rig montiert');if(D&&(D.t==='move'||D.t==='resize'||D.t==='move3')){save();renderStats();renderInspector()}D=null});
 cv.addEventListener('wheel',e=>{e.preventDefault();const[px,py]=ptr(e),k=Math.exp(-e.deltaY*.0015);
   if(S.mode==='2d'){const[wx,wy]=s2w(px,py);S.view.z=Math.max(3,Math.min(140,S.view.z*k));S.view.ox=px-wx*S.view.z;S.view.oy=py-wy*S.view.z}
   else S.cam.dist=Math.max(6,Math.min(140,S.cam.dist/k));req()},{passive:false});
@@ -979,7 +1079,7 @@ addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(!
   if(e.code==='Space'){spaceDown=true;e.preventDefault()}
   const it=S.items.find(i=>i.id===S.sel),mod=e.metaKey||e.ctrlKey;
   if(mod&&e.key==='z'){e.preventDefault();undo();return}
-  if(S.edit){if((e.key==='Delete'||e.key==='Backspace')&&S.esel){e.preventDefault();edDelete()}else if(e.key==='Escape'){S.edPrev=null;D=null;edSelect(null)}return}
+  if(S.edit&&(S.esel||!it)){if((e.key==='Delete'||e.key==='Backspace')&&S.esel){e.preventDefault();edDelete()}else if(e.key==='Escape'){S.edPrev=null;D=null;edSelect(null)}return}
   if(!it)return;
   if(e.key==='r'||e.key==='R'){pushUndo();it.rot=(it.rot+90)%360;commit()}
   else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();delItem(it)}
@@ -988,7 +1088,7 @@ addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(!
 addEventListener('keyup',e=>{if(e.code==='Space')spaceDown=false});
 
 /* ============ Aktionen ============ */
-function select(id){S.sel=id;renderInspector();req()}
+function select(id){S.sel=id;if(id!=null)S.esel=null;renderInspector();req()}
 function commit(){save();renderStats();renderInspector();req()}
 function delItem(it){trk('remove_item',{item:it.type,name:it.name});pushUndo();S.items=S.items.filter(i=>i!==it);S.sel=null;commit()}
 function dupItem(it){pushUndo();const n=Object.assign({},it,{id:uid++,x:it.x+1,y:it.y+1,locked:false});S.items.push(n);S.sel=n.id;commit()}
@@ -997,7 +1097,7 @@ function addType(id){const t=T(id);pushUndo();let x,y;if(S.mode==='2d'){[x,y]=s2
   x=Math.min(S.room.w-t.w/2,Math.max(t.w/2,x));y=Math.min(S.room.d-t.d/2,Math.max(t.d/2,y));
   if(t.tpl){x=snapv(x);y=snapv(y);const add=t.tpl.map(([ty,dx,dy,o])=>mk(ty,+(x+dx).toFixed(2),+(y+dy).toFixed(2),Object.assign({},o||{})));S.items.push(...add);
     trk('add_template',{tpl:id,name:t.name,n:add.length});add.forEach(i=>trk('add_item',{item:i.type,name:i.name,cat:i.cat,tpl:id}));S.sel=null;$('#empty').style.display='none';commit();toast(`${t.name} eingefügt – ${add.length} Elemente`);return}
-  const it=mk(id,snapv(x),snapv(y));S.items.push(it);trk('add_item',{item:id,name:t.name,cat:t.cat});S.sel=it.id;$('#empty').style.display='none';commit()}
+  const it=mk(id,snapv(x),snapv(y));S.items.push(it);trk('add_item',{item:id,name:t.name,cat:t.cat});S.sel=it.id;S.esel=null;snapMount(it);$('#empty').style.display='none';commit()}
 function setMode(m){S.mode=m;$('#m2').classList.toggle('on',m==='2d');$('#m3').classList.toggle('on',m==='3d');$('#tPlan').style.display=m==='2d'?'':'none';if(m==='3d')closeCal();$('#edBar').classList.toggle('on',!!S.edit&&m==='2d');$('#edHint').classList.toggle('on',!!S.edit&&m==='2d');req()}
 $('#m2').onclick=()=>{setMode('2d');trk('view_mode',{mode:'2d'})};$('#m3').onclick=()=>{setMode('3d');trk('view_mode',{mode:'3d'})};
 $('#tSnap').onclick=e=>{S.snap=!S.snap;e.target.classList.toggle('on',S.snap)};
@@ -1049,7 +1149,7 @@ async function importPlan(img){
     let sc=null;try{sc=await FP.scale(img,det,p=>PROC.bar(.4+.58*p))}catch(e){console.warn('OCR',e)}
     PROC.done(2);PROC.bar(1);await FP.tick();
     applyDetection(det,sc,img);
-    if(sc)toast(`Raum erkannt: ${fmt(S.room.w,2)} × ${fmt(S.room.d,2)} m – Maßstab aus ${sc.n} Bemaßung${sc.n>1?'en':''}`);
+    if(sc){toast(`Raum erkannt: ${fmt(S.room.w,2)} × ${fmt(S.room.d,2)} m – Maßstab aus ${sc.n} Bemaßung${sc.n>1?'en':''}`);propOpen()}
     else{toast('Raumform erkannt, aber keine Bemaßung lesbar – bitte eine bekannte Strecke kalibrieren');startCal()}
   }catch(e){console.error(e);toast('Plan konnte nicht verarbeitet werden: '+e.message)}
   finally{PROC.end()}}
@@ -1069,7 +1169,7 @@ function closeCal(){S.calib=null;$('#calCard').classList.remove('on');req()}
 function calUI(){$('#calCard').classList.add('on');const n=S.calib.pts.length;$('#calMsg').textContent=n<2?`Punkt ${n+1} von 2 im Plan anklicken (z. B. Wandlänge).`:'Realen Abstand eingeben und übernehmen.'}
 $('#bCal').onclick=startCal;$('#calX').onclick=closeCal;
 $('#calOk').onclick=()=>{const P=S.calib&&S.calib.pts;if(!P||P.length<2){toast('Bitte zwei Punkte setzen');return}const cur=Math.hypot(P[0][0]-P[1][0],P[0][1]-P[1][1]),real=+$('#calM').value;if(!(real>0)||cur<.01)return;const k=real/cur;
-  trk('calibrate',{m:real});if(S.room.poly||S.planXf){scaleAll(k);if(S.det)S.det.src='cal';detInfo()}else{S.items.forEach(i=>{i.x*=k;i.y*=k});setRoom(+(S.room.w*k).toFixed(2),+(S.room.d*k).toFixed(2))}closeCal();commit();toast(`Maßstab gesetzt – Raum ${fmt(S.room.w)} × ${fmt(S.room.d)} m`)};
+  trk('calibrate',{m:real});if(S.room.poly||S.planXf){scaleAll(k);if(S.det)S.det.src='cal';detInfo()}else{S.items.forEach(i=>{i.x*=k;i.y*=k});setRoom(+(S.room.w*k).toFixed(2),+(S.room.d*k).toFixed(2))}closeCal();commit();toast(`Maßstab gesetzt – Raum ${fmt(S.room.w)} × ${fmt(S.room.d)} m`);if(!S.items.some(i=>!i.locked&&i.type!=='block'))propOpen()};
 
 /* ============ Panels ============ */
 function renderLib(){
@@ -1082,7 +1182,7 @@ function renderLib(){
 $('#q').oninput=e=>{S.q=e.target.value;renderLib()};
 $('#legend').innerHTML=Object.values(CATS).map(c=>`<span><i style="background:${c.c}"></i>${c.n}</span>`).join('');
 function renderInspector(){
-  if(S.edit){renderEdInspector();return}
+  if(S.edit&&(S.esel||!S.items.some(i=>i.id===S.sel))){renderEdInspector();return}
   const it=S.items.find(i=>i.id===S.sel),el=$('#insp');
   if(!it){el.innerHTML=`<h4>Eigenschaften</h4><p class="help">Wähle ein Element im Plan oder in der 3D-Ansicht, um Maße, Höhe und Drehung zu ändern. Geräte aus der Bibliothek links einfügen und per Maus verschieben.</p>`;return}
   const ref=(T(it.type)||{}).ref;
@@ -1108,7 +1208,7 @@ function capacity(st,area){
   // kleiner ist als ihr mittlerer Abstand – dann ist nur eins davon gleichzeitig nutzbar (gierige Auswahl, größte zuerst).
   const users=[];sol.forEach(it=>{if(it.cat==='service'){svc+=it.w*it.d;return}const p=persons(it);if(!p)return;
     if(st.coll.has(it.id)||st.oob.has(it.id))skip+=p;else users.push(it)});
-  const conf=(a,b)=>{const g=((a.clr||0)+(b.clr||0))/2;return g>0&&sat(pts(a,g-.001),pts(b))};
+  const conf=(a,b)=>{if(isMount(a)||isMount(b))return false;const g=((a.clr||0)+(b.clr||0))/2;return g>0&&sat(pts(a,g-.001),pts(b))};
   const picked=[];users.sort((a,b)=>persons(b)-persons(a)).forEach(it=>{if(picked.some(q=>conf(it,q)))skip+=persons(it);else{picked.push(it);dev+=persons(it)}});
   S.items.filter(i=>i.zone).forEach(z=>{const ppm=Math.max(.5,persons(z)||5),r=-rad(z.rot);let a=z.w*z.d;
     // Geräte (mit Abstand) innerhalb der Zone belegen deren Fläche
@@ -1166,9 +1266,9 @@ $('#home').onclick=openLanding;
 })();
 
 /* Start */
-try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
+try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 </script>
-<script src="account.js?v=3"></script>
+<script src="account.js?v=4"></script>
 </body>
 </html>
