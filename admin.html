@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>TIGRIS Auswertung</title>
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="account.css">
+<style>
+.wrap{padding:24px 32px 60px;max-width:1500px;margin:0 auto}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.kpi{border:1px solid var(--line2);padding:14px 16px;background:rgba(8,20,46,.6)}
+.kpi b{display:block;font-family:var(--serif);font-size:28px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.card{border:1px solid var(--line2);background:rgba(10,11,16,.55);padding:16px 18px;min-width:0}
+.card h2{font-size:19px;margin-bottom:4px}.card .hint{font-size:12px;color:var(--cream-d);margin-bottom:12px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.bar input[type=search]{background:var(--navy-dd);border:1px solid var(--line);padding:7px 10px;min-width:220px;border-radius:2px}
+.bar label{font-size:12px;color:var(--cream-d);display:flex;gap:6px;align-items:center}
+.tbl{width:100%;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;vertical-align:top}
+th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d);font-weight:600;position:sticky;top:0;background:var(--ink);cursor:pointer}
+tr.u:hover td{background:rgba(237,227,204,.06);cursor:pointer}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.ok{color:#9fd59a}.no{color:var(--cream-d)}
+.hb{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
+.hb .l{width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .t{flex:1;height:8px;background:var(--navy-dd);border:1px solid var(--line)}
+.hb .t i{display:block;height:100%;background:var(--cream)}
+.hb .n{width:46px;text-align:right;font-variant-numeric:tabular-nums;color:var(--cream-d)}
+.scroll{max-height:460px;overflow:auto}
+.tl{font-size:12.5px}.tl div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}.tl time{color:var(--cream-d);width:118px;flex:none;font-variant-numeric:tabular-nums}
+.tl code{color:var(--blue)}
+.gate{max-width:440px;margin:60px auto;padding:0 16px}
+.note{font-size:12px;color:var(--cream-d);margin-top:8px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:640px){.wrap{padding:16px}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+<script>window.TIGRIS_NO_TRACK=true</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="cloud.js"></script>
+</head>
+<body>
+<div class="top"><a class="mark" href="./"><svg viewBox="0 0 26 26" fill="none" stroke="#EDE3CC" stroke-width="2.2"><path d="M3 3l6 7M9 2l6 9M16 3l5 6M3 12l7 6M10 11l7 9M18 12l5 5M4 22l6 2M13 22l8 2"/></svg>TIGRIS</a>
+  <div style="display:flex;gap:8px;align-items:center"><span id="who" style="font-size:12px;color:var(--cream-d)"></span><button class="btn sm ghost" id="reload">Aktualisieren</button><button class="btn sm ghost" id="out">Abmelden</button></div></div>
+<div id="gate" class="gate"></div>
+<div id="dash" class="wrap" style="display:none">
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="card"><h2>Nutzer & Leads</h2><p class="hint">Kontakt nur bei „Kontakt OK“ (ausdrückliche Einwilligung). Zeile anklicken für die Aktivität.</p>
+      <div class="bar"><input type="search" id="qs" placeholder="Name, Firma, Ort, E-Mail …"><label><input type="checkbox" id="onlyOk"> nur mit Kontakt-Einwilligung</label><button class="btn sm" id="csv">Kontaktliste CSV</button></div>
+      <div class="tbl scroll"><table><thead><tr><th data-k="full_name">Name</th><th data-k="company">Firma</th><th data-k="role">Rolle</th><th data-k="city">Ort</th><th data-k="email">E-Mail</th><th data-k="phone">Telefon</th><th data-k="marketing_opt_in">Kontakt</th><th data-k="sessions">Besuche</th><th data-k="active_seconds">Aktive Zeit</th><th data-k="uploads">Uploads</th><th data-k="last_seen_at">Zuletzt</th></tr></thead><tbody id="users"></tbody></table></div></div>
+    <div class="card"><h2>Begehrteste Ausstattung</h2><p class="hint">Wie oft ein Gerät/Zone eingeplant wurde (Nutzer in Klammern).</p><div id="items"></div></div>
+    <div class="card"><h2 id="detH">Aktivität</h2><p class="hint" id="detS">Alle Nutzer, neueste zuerst.</p><div class="tl scroll" id="tl"></div></div>
+    <div class="card"><h2>Meistgeklickt</h2><p class="hint">Knöpfe und Links im Planer und auf der Startseite.</p><div id="clicks"></div>
+      <h2 style="margin-top:18px">Funktionen</h2><div id="feats"></div></div>
+    <div class="card" style="grid-column:1/-1"><h2>Hochgeladene Grundrisse</h2><p class="hint">Datei, erkannte Maße und wer sie hochgeladen hat.</p><div class="tbl scroll"><table><thead><tr><th>Datum</th><th>Nutzer</th><th>Datei</th><th>Größe</th><th>Erkannt</th><th></th></tr></thead><tbody id="ups"></tbody></table></div></div>
+  </div>
+</div>
+<script>
+(function(){
+const C=window.Cloud,q=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dt=s=>s?new Date(s).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
+const dur=s=>{s=+s||0;if(s<60)return s+' s';const m=Math.round(s/60);return m<60?m+' min':Math.floor(m/60)+' h '+(m%60)+' min'};
+const kb=n=>n>1e6?(n/1e6).toFixed(1)+' MB':Math.round((n||0)/1e3)+' kB';
+let D=null,sortK='last_seen_at',sortDir=-1,selUser=null;
+const NAMES={add_item:'Gerät eingeplant',remove_item:'Gerät entfernt',upload:'Plan hochgeladen',plan_detected:'Plan erkannt',view_mode:'Ansicht',export:'Export',demo_load:'Demo geladen',blank_room:'Leerer Raum',edit_mode:'Bearbeiten',wall_add:'Wand gezeichnet',door_add:'Tür eingesetzt',window_add:'Fenster eingesetzt',calibrate:'Maßstab kalibriert',open_planner:'Planer geöffnet',session_start:'Besuch gestartet',login:'Anmeldung',logout:'Abmeldung',signup:'Registrierung',profile_completed:'Profil ergänzt',consent_granted:'Einwilligung erteilt',marketing_opt_in:'Kontakt erlaubt',marketing_opt_out:'Kontakt widerrufen',click:'Klick',heartbeat:'Aktiv'};
+function gate(html){q('#gate').innerHTML=html;q('#gate').style.display='';q('#dash').style.display='none'}
+function login(){
+  gate(`<div class="dlg" style="max-width:none"><h3>Admin-Anmeldung</h3><p class="sub">Nur für freigeschaltete Admins.${C.mode==='local'?' (Testmodus: lokale Daten dieses Browsers)':''}</p>
+  <form id="f"><label class="fld">E-Mail<input name="email" type="email" required autocomplete="email"></label><label class="fld" style="margin-top:10px">Passwort<input name="password" type="password" required autocomplete="current-password"></label>
+  <div class="acts"><button class="btn solid">Anmelden</button></div><div class="msg"></div></form>
+  ${C.mode==='supabase'?'<div class="or">oder</div><button class="gbtn" id="g">Mit Google anmelden</button>':''}</div>`);
+  q('#f').onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));try{await C.signIn(d.email,d.password);start()}catch(er){q('.msg').className='msg err';q('.msg').textContent=er.message}};
+  const g=q('#g');if(g)g.onclick=()=>C.google();
+}
+async function start(){
+  if(!C.user){login();return}
+  q('#who').textContent=C.user.email;
+  if(!(await C.isAdmin())){gate(`<div class="dlg" style="max-width:none"><h3>Kein Zugriff</h3><p class="sub">Dieses Konto ist nicht als Admin freigeschaltet. Freischalten im Supabase-SQL-Editor:<br><code>insert into public.admins (user_id) select id from auth.users where email = '…';</code></p></div>`);return}
+  q('#gate').style.display='none';q('#dash').style.display='';await load();
+}
+async function load(){
+  try{D=await C.admin()}catch(e){gate(`<div class="dlg" style="max-width:none"><h3>Fehler</h3><p class="sub">${esc(e.message)}</p></div>`);return}
+  const byId={};D.users.forEach(u=>byId[u.id]=u);D.byId=byId;render();
+}
+function render(){
+  const U=D.users,E=D.events,wk=Date.now()-7*864e5;
+  const anon=new Set(E.filter(e=>!e.user_id).map(e=>e.anon_id)).size;
+  const act=U.filter(u=>u.last_seen_at&&new Date(u.last_seen_at)>wk).length,tot=U.reduce((s,u)=>s+(+u.active_seconds||0),0);
+  q('#kpis').innerHTML=[[U.length,'Konten'],[U.filter(u=>u.marketing_opt_in).length,'Kontakt erlaubt'],[act,'Aktiv (7 Tage)'],[anon,'Besucher ohne Konto'],[D.uploads.length,'Uploads'],[dur(tot),'Nutzungszeit gesamt']].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  renderUsers();
+  const mx=Math.max(1,...D.items.map(i=>+i.adds));
+  q('#items').innerHTML=D.items.length?D.items.slice(0,25).map(i=>`<div class="hb"><span class="l" title="${esc(i.item)}">${esc(i.name||i.item)}</span><span class="t"><i style="width:${i.adds/mx*100}%"></i></span><span class="n">${i.adds} (${i.users})</span></div>`).join(''):'<p class="note">Noch keine Daten.</p>';
+  const cnt=(arr,key)=>{const m={};arr.forEach(e=>{const k=key(e);if(k)m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])};
+  const bars=(rows,el)=>{const m=Math.max(1,...rows.map(r=>r[1]));q(el).innerHTML=rows.length?rows.slice(0,15).map(([k,n])=>`<div class="hb"><span class="l" title="${esc(k)}">${esc(k)}</span><span class="t"><i style="width:${n/m*100}%"></i></span><span class="n">${n}</span></div>`).join(''):'<p class="note">Noch keine Daten.</p>'};
+  bars(cnt(E.filter(e=>e.type==='click'),e=>e.data&&e.data.label),'#clicks');
+  bars(cnt(E.filter(e=>!['click','heartbeat','session_start'].includes(e.type)),e=>NAMES[e.type]||e.type),'#feats');
+  renderTL();
+  q('#ups').innerHTML=D.uploads.length?D.uploads.map(u=>{const p=D.byId[u.user_id]||{},r=u.result||{};return `<tr><td>${dt(u.created_at)}</td><td>${esc(p.full_name||p.email||u.user_id)}<br><span class="no">${esc(p.company||'')}</span></td><td>${esc(u.file_name)}</td><td class="num">${kb(u.size)}</td><td>${r.w?`${String(r.w).replace('.',',')} × ${String(r.d).replace('.',',')} m · ${r.walls||0} Wände · Maßstab: ${r.scale==='ocr'?'Bemaßung':'manuell'}`:'–'}</td><td>${u.path?`<button class="btn sm ghost" data-path="${esc(u.path)}">Ansehen</button>`:''}</td></tr>`}).join(''):'<tr><td colspan="6" class="no">Noch keine Uploads.</td></tr>';
+  document.querySelectorAll('[data-path]').forEach(b=>b.onclick=async()=>{const u=await C.uploadUrl(b.dataset.path);if(u)window.open(u,'_blank','noopener')});
+}
+function filtered(){const s=q('#qs').value.toLowerCase(),ok=q('#onlyOk').checked;return D.users.filter(u=>(!ok||u.marketing_opt_in)&&(!s||[u.full_name,u.company,u.city,u.country,u.email,u.role].join(' ').toLowerCase().includes(s)))}
+function renderUsers(){
+  const rows=filtered().sort((a,b)=>{const x=a[sortK],y=b[sortK];return (x==null)-(y==null)||(x>y?1:x<y?-1:0)*sortDir});
+  q('#users').innerHTML=rows.length?rows.map(u=>`<tr class="u" data-id="${esc(u.id)}"><td>${esc(u.full_name)}</td><td>${esc(u.company)}</td><td>${esc(u.role)}</td><td>${esc([u.city,u.country].filter(Boolean).join(', '))}</td><td>${esc(u.email)}</td><td>${esc(u.phone||'')}</td><td class="${u.marketing_opt_in?'ok':'no'}">${u.marketing_opt_in?'✓ OK':'–'}</td><td class="num">${u.sessions||0}</td><td class="num">${dur(u.active_seconds)}</td><td class="num">${u.uploads||0}</td><td>${dt(u.last_seen_at)}</td></tr>`).join(''):'<tr><td colspan="11" class="no">Keine Nutzer.</td></tr>';
+  document.querySelectorAll('tr.u').forEach(r=>r.onclick=()=>{selUser=selUser===r.dataset.id?null:r.dataset.id;renderTL()});
+}
+function renderTL(){
+  const u=selUser&&D.byId[selUser],E=(u?D.events.filter(e=>e.user_id===u.id):D.events).filter(e=>e.type!=='heartbeat').slice(0,400);
+  q('#detH').textContent=u?'Aktivität: '+(u.full_name||u.email):'Aktivität';
+  if(u){const it={};D.events.filter(e=>e.user_id===u.id&&e.type==='add_item').forEach(e=>{const k=e.data.name||e.data.item;it[k]=(it[k]||0)+1});const top=Object.entries(it).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,n])=>k+' ×'+n).join(', ');
+    q('#detS').textContent=`${u.company||''} · ${[u.city,u.country].filter(Boolean).join(', ')} · ${dur(u.active_seconds)} aktiv · Kontakt ${u.marketing_opt_in?'erlaubt':'nicht erlaubt'}${top?' · Geräte: '+top:''}`}
+  else q('#detS').textContent='Alle Nutzer, neueste zuerst. Nutzer in der Tabelle anklicken zum Filtern.';
+  q('#tl').innerHTML=E.length?E.map(e=>{const p=e.user_id&&D.byId[e.user_id];const d=e.data||{};const info=e.type==='click'?d.label:e.type==='add_item'?(d.name||d.item):e.type==='session_start'?[d.tz,d.lang,d.referrer&&'von '+d.referrer,d.utm&&d.utm.utm_campaign].filter(Boolean).join(' · '):e.type==='upload'?d.file:e.type==='plan_detected'?`${d.w} × ${d.d} m`:e.type==='export'?d.format:e.type==='view_mode'?d.mode:'';
+    return `<div><time>${dt(e.created_at)}</time><span>${u?'':`<b>${esc(p?(p.full_name||p.email):'Besucher')}</b> · `}${esc(NAMES[e.type]||e.type)}${info?` <code>${esc(info)}</code>`:''}</span></div>`}).join(''):'<p class="note">Noch keine Aktivität.</p>';
+}
+q('#qs').oninput=renderUsers;q('#onlyOk').onchange=renderUsers;
+document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;sortDir=sortK===k?-sortDir:-1;sortK=k;renderUsers()});
+q('#csv').onclick=()=>{const rows=D.users.filter(u=>u.marketing_opt_in);const cols=['full_name','company','role','city','country','email','phone','marketing_opt_in_at','sessions','active_seconds','uploads','last_seen_at'];
+  const csv='﻿'+[cols.join(';'),...rows.map(u=>cols.map(c=>'"'+String(u[c]==null?'':u[c]).replace(/"/g,'""')+'"').join(';'))].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='tigris-kontaktliste.csv';a.click()};
+q('#reload').onclick=load;q('#out').onclick=async()=>{await C.signOut();location.reload()};
+C.init().then(start);
+})();
+</script>
+</body>
+</html>
