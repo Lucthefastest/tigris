@@ -41,9 +41,19 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
 .hero h1 em{font-style:italic;color:#fff}
 .hero p{max-width:520px;color:var(--cream-d);font-size:16px;margin-bottom:34px}
 .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
-.hero .cv{position:relative;aspect-ratio:1/.82;border:1px solid var(--line);background:rgba(8,20,46,.55)}
+.hero{grid-template-columns:.9fr 1.25fr;gap:10px;padding-right:0;overflow:hidden}
+.hero .cv{position:relative;aspect-ratio:1.25/1;margin-right:-6%;-webkit-mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%)}
 .hero .cv canvas{width:100%;height:100%;display:block}
-.hero .cv .tag{position:absolute;left:14px;top:12px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
+.hero .cv .tag{position:absolute;left:12%;top:9%;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
+.hero .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.hero .chips span{border:1px solid var(--line2);border-radius:99px;padding:6px 12px;font-size:11px;letter-spacing:.08em;color:var(--cream-d);background:rgba(8,20,46,.4)}
+.hero .chips b{color:var(--cream);font-weight:600}
+.show{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.show figure{background:var(--navy-d);margin:0;display:flex;flex-direction:column}
+.show canvas{width:100%;aspect-ratio:1.3/1;display:block}
+.show figcaption{padding:14px 18px 18px;border-top:1px solid var(--line)}
+.show figcaption b{display:block;font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:4px}
+.show figcaption span{font-size:12px;color:var(--cream-d);line-height:1.45;display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink)}
 .stats div{padding:34px 30px;border-right:1px solid var(--line)}.stats div:last-child{border:0}
 .stats b{display:block;font-family:var(--serif);font-size:44px;font-weight:600}
@@ -62,6 +72,9 @@ section.block .lead{color:var(--cream-d);max-width:640px;margin-bottom:46px;font
 .bandcta{padding:90px 48px;text-align:center;background:var(--cream);color:var(--navy-dd)}
 .bandcta h2{font-size:clamp(32px,4vw,60px);margin-bottom:26px}
 .bandcta .btn{border-color:var(--navy-dd)}.bandcta .btn:hover{background:var(--navy-dd);color:var(--cream)}
+@media(max-width:640px){#landing header{padding:16px;gap:10px}#landing nav{gap:14px}#landing nav a[data-go]{display:none}
+  .hero{padding:10px 16px 40px;min-height:0}.stats,.steps,.disc{grid-template-columns:1fr}.stats div{padding:22px 16px;border-right:0;border-bottom:1px solid var(--line)}.stats b{font-size:32px}
+  section.block,.bandcta{padding:56px 16px}.show{grid-template-columns:1fr 1fr}.show figcaption{padding:10px 12px 14px}.show figcaption b{font-size:15px}footer.f{flex-direction:column;gap:6px;padding:20px 16px}}
 footer.f{padding:26px 48px;display:flex;justify-content:space-between;color:var(--cream-d);font-size:12px;border-top:1px solid var(--line);background:var(--ink)}
 
 /* ---------- App ---------- */
@@ -141,13 +154,14 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .help{font-size:11px;color:var(--cream-d);line-height:1.6}
 .help kbd{border:1px solid var(--line2);padding:0 5px;border-radius:2px;font-family:inherit;color:var(--cream)}
-@media(max-width:1000px){.hero{grid-template-columns:1fr}.steps,.disc,.stats{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
+@media(max-width:1000px){.hero{grid-template-columns:1fr;padding-right:22px}.hero .cv{margin-right:0}.steps,.disc,.stats,.show{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
-<link rel="stylesheet" href="account.css">
+<link rel="stylesheet" href="account.css?v=3">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="config.js"></script>
-<script src="cloud.js"></script>
+<script src="config.js?v=3"></script>
+<script src="cloud.js?v=3"></script>
+<script src="models.js?v=3"></script>
 </head>
 <body>
 
@@ -155,51 +169,57 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <div id="landing">
   <header>
     <div class="mark"><svg viewBox="0 0 26 26" fill="none" stroke="#EDE3CC" stroke-width="2.2"><path d="M3 3l6 7M9 2l6 9M16 3l5 6M3 12l7 6M10 11l7 9M18 12l5 5M4 22l6 2M13 22l8 2"/></svg>TIGRIS<small>GYM LAYOUT STUDIO</small></div>
-    <nav><a data-go="how">Ablauf</a><a data-go="disc">Disziplinen</a><a data-go="start">Konzept</a><button class="btn sm solid" data-open>Planer öffnen</button></nav>
+    <nav><a data-go="how">Ablauf</a><a data-go="show">Geräte</a><a data-go="disc">Disziplinen</a><a data-go="start">Konzept</a><button class="btn sm solid" data-open>Planer öffnen</button></nav>
   </header>
   <section class="hero">
     <div>
       <div class="eyebrow">Planung · Sourcing · Eröffnung</div>
       <h1>Plane dein Gym.<br><em>Gerät für Gerät.</em></h1>
-      <p>Lade Gebäude- oder Raumplan hoch, setze Geräte und Zonen maßstabsgetreu ein und geh in 3D durch dein Studio. Aus dem Layout entstehen Geräteliste, Budget und die passenden Hersteller – von Hantelbank bis HYROX, von Boulderwand bis Padelplatz.</p>
-      <div class="cta"><button class="btn solid" data-open>Planer starten →</button><button class="btn" data-demo>Demo-Grundriss laden</button></div>
+      <p>Grundriss hochladen, Wände und Türen erkennen lassen, Geräte in Originalmaßen von Technogym, Life Fitness und Hammer Strength platzieren – und in 3D durch dein Studio gehen. Mit Kapazitätsrechnung und Stückliste für den Einkauf.</p>
+      <div class="cta"><button class="btn solid" data-open>Kostenlos planen →</button><button class="btn" data-demo>Demo-Studio ansehen</button></div>
+      <div class="chips"><span><b>70+</b> Geräte &amp; Zonen</span><span><b>10</b> Bereichsvorlagen</span><span><b>47</b> Personen gleichzeitig im Demo-Studio</span></div>
     </div>
-    <div class="cv"><span class="tag">Live-Vorschau · 3D</span><canvas id="heroCv"></canvas></div>
+    <div class="cv"><span class="tag">Demo-Studio · 390 m² · Live-3D</span><canvas id="heroCv"></canvas></div>
   </section>
   <div class="stats">
     <div><b>2D + 3D</b><span>Grundriss & Raumansicht</span></div>
-    <div><b>25+</b><span>Gerätetypen & Zonen</span></div>
-    <div><b>1:1</b><span>Echte Maße in Metern</span></div>
+    <div><b>1:1</b><span>Herstellermaße in Metern</span></div>
+    <div><b>Kapazität</b><span>Personen gleichzeitig, ohne Überschneidung</span></div>
     <div><b>→ Sourcing</b><span>Stückliste zu Herstellern</span></div>
   </div>
   <section class="block" id="how">
     <h2>Vom Plan zur Eröffnung in drei Schritten</h2>
-    <p class="lead">Analog zum Padel-Konfigurator: wenige Eingaben, sofort sichtbares Ergebnis – aber für jede Art von Gym.</p>
+    <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
     <div class="steps">
       <article><div class="n">01</div><h3>Plan hochladen</h3><p>Gebäudeplan oder Raumplan als Bild. Die Software bereinigt ihn, erkennt Außenmaße und lässt dich den Maßstab mit einer Referenzstrecke kalibrieren.</p></article>
-      <article><div class="n">02</div><h3>Einplanen</h3><p>Geräte, Zonen und Platzblocker als Rechtecke mit echten Maßen platzieren. Kollisionen, Sicherheitsabstände und Auslastung werden live geprüft.</p></article>
+      <article><div class="n">02</div><h3>Einplanen</h3><p>Geräte in Herstellermaßen oder ganze Bereiche als Vorlage setzen. Kollisionen, Sicherheitsabstände und die Kapazität werden live geprüft.</p></article>
       <article><div class="n">03</div><h3>Beschaffen</h3><p>Aus dem Layout entsteht die Stückliste. Beratung und Hersteller-Netzwerk führen zu den passenden Fabrikanten und Gerätesuppliern.</p></article>
     </div>
+  </section>
+  <section class="block" id="show" style="padding-top:0">
+    <h2>Echte Geräte. Echte Maße.</h2>
+    <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
+    <div class="show" id="showGrid"></div>
   </section>
   <section class="block" id="disc" style="padding-top:0">
     <h2>Eine Planung, jede Disziplin</h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
       <div><b>Krafttraining</b><span>Racks, Pressen, Kabelzug, Freihantelzone</span></div>
-      <div><b>Cardio</b><span>Laufbänder, Bikes, Rudergeräte</span></div>
+      <div><b>Cardio</b><span>Laufbänder, Crosstrainer, Indoor-Cycling, Rudergeräte</span></div>
       <div><b>Functional & CrossFit</b><span>Rigs, Plyo-Boxen, Plattformen</span></div>
       <div><b>HYROX</b><span>Bahnen, Schlitten, Stationen</span></div>
-      <div><b>Klettern & Bouldern</b><span>Wände mit Fallzone und Höhe</span></div>
+      <div><b>Kampfsport & MMA</b><span>Boxsäcke, Halbboxsäcke, Ring, Octagon, Matten</span></div>
       <div><b>Padel & Courts</b><span>20 × 10 m Spielfelder, Boxring</span></div>
       <div><b>Kurse & Recovery</b><span>Kursflächen, Sauna, Umkleide</span></div>
-      <div><b>Service</b><span>Rezeption, Lager, Platzblocker</span></div>
+      <div><b>Service</b><span>Rezeption, Spinde, Getränke, Lager</span></div>
     </div>
   </section>
   <div class="bandcta" id="start">
     <h2>Erst planen. Dann gezielt einkaufen.</h2>
     <button class="btn" data-open>Planer öffnen →</button>
   </div>
-  <footer class="f"><span>TIGRIS · Arbeitstitel · Mockup, lokal im Browser</span><span>Ideen-Stand 15.11.2026</span></footer>
+  <footer class="f"><span>TIGRIS · Gym Layout Studio</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
 </div>
 
 <!-- ======================= PLANER ======================= -->
@@ -276,31 +296,92 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const fmt=(n,d=1)=>n.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
 const COL={navy:'#10295A',navyD:'#0B1D42',navyDD:'#08142E',cream:'#EDE3CC',creamD:'#BDB4A0',red:'#E0625A',ink:'#0A0B10'};
-const CATS={kraft:{n:'Kraft',c:'#EDE3CC'},cardio:{n:'Cardio',c:'#7E9BD1'},func:{n:'Functional / HYROX',c:'#B9B3A3'},kampf:{n:'Kampfsport / MMA',c:'#C98B62'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},platz:{n:'Platzhalter',c:'#8C93A8'},service:{n:'Service / Räume',c:'#4A5166'}};
-// id, Name, Kategorie, Breite, Tiefe, Höhe, Abstand, Zone?, Personen (bei Zonen: m² pro Person), rund?
+const CATS={bereich:{n:'Bereichsvorlagen',c:'#E3C68E'},kraft:{n:'Kraft',c:'#EDE3CC'},cardio:{n:'Cardio',c:'#7E9BD1'},func:{n:'Functional / HYROX',c:'#B9B3A3'},kampf:{n:'Kampfsport / MMA',c:'#C98B62'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},platz:{n:'Platzhalter',c:'#8C93A8'},service:{n:'Service / Räume',c:'#4A5166'}};
+// id, Name, Kategorie, Breite (quer), Tiefe (Länge), Höhe, Abstand, Zone?, Personen (bei Zonen: m² pro Person), rund?, Referenz
+// Herstellermaße laut Datenblatt bzw. Händlerangabe; „Ø“ = Durchschnitt mehrerer Hersteller; „Richtwert“ = übliche Größe ohne Herstellerangabe
 const LIB=[
- ['smith','Multipresse','kraft',2.4,2.0,2.4,.8,0,1],['rack','Power Rack','kraft',1.4,1.6,2.4,1,0,1],['halfrack','Half Rack','kraft',1.4,1.4,2.3,1,0,1],['bench','Hantelbank','kraft',1.4,.7,1.1,.6,0,1],
- ['legpress','Beinpresse','kraft',2.3,1.5,1.3,.8,0,1],['hacksq','Hackenschmidt','kraft',2.1,1.4,1.6,.8,0,1],['legext','Beinstrecker / -beuger','kraft',1.5,1.2,1.3,.6,0,1],['chest','Brustpresse','kraft',1.6,1.5,1.6,.6,0,1],
- ['latpull','Latzug','kraft',1.6,1.4,2.3,.6,0,1],['row','Rudermaschine (Kraft)','kraft',1.8,1.0,1.5,.6,0,1],['cable','Kabelzug (doppelt)','kraft',1.8,1.0,2.2,.8,0,2],['multi','Multistation 4-fach','kraft',3.5,3.5,2.2,.8,0,4],
- ['hip','Hip-Thrust-Station','kraft',1.6,1.2,.8,.6,0,1],['ghd','Glute-Ham-Bank','kraft',1.8,.8,1.1,.6,0,1],['dbrack','Hantelablage','kraft',2.0,.7,.9,.6,0,2],['kbrack','Kettlebell-Regal','kraft',1.6,.5,.9,.6,0,0],
- ['plates','Scheibenständer','kraft',.8,.8,1.2,.3,0,0],['platform','Deadlift-Plattform','kraft',2.4,1.2,.1,.8,0,1],['fwzone','Freihantelzone','kraft',8,5,.02,0,1,6],
- ['tread','Laufband','cardio',.9,2.0,1.5,.6,0,1],['curve','Curve-Laufband','cardio',.9,2.0,1.6,.6,0,1],['cross','Crosstrainer','cardio',.7,1.8,1.7,.5,0,1],['bike','Indoor-Bike','cardio',.6,1.2,1.2,.5,0,1],
- ['airbike','Air-Bike','cardio',.7,1.3,1.3,.5,0,1],['rower','Rudergerät','cardio',.6,2.4,.9,.6,0,1],['ski','SkiErg','cardio',.6,1.2,2.2,.6,0,1],['stair','Treppensteiger','cardio',.9,1.5,1.9,.5,0,1],
- ['rig','CrossFit-Rig','func',6,2.5,2.8,1.2,0,8],['trx','Suspension-Rig (TRX)','func',3,1,2.5,1,0,4],['cali','Calisthenics-Station','func',4,2,2.5,1,0,4],['wallball','Wallball-Ziel','func',1,.5,3.2,1.2,0,1],
- ['rope','Battle-Rope-Station','func',1,.5,.6,1,0,1],['plyo','Plyo-Boxen','func',1.6,.6,.75,.8,0,2],['hyrox','HYROX-Bahn','func',15,3,.02,0,1,8],['sled','Schlittenbahn','func',12,1.5,.02,0,1,6],
- ['kbzone','Kettlebell-Zone','func',4,3,.02,0,1,4],['stretch','Stretching-Zone','func',4,3,.02,0,1,3],
- ['bag','Boxsack (hängend)','kampf',.45,.45,1.8,1,0,1,1],['halfbag','Halbboxsack','kampf',.4,.4,1,.9,0,1,1],['standbag','Standboxsack','kampf',.6,.6,1.7,.9,0,1,1],['dee','Doppelendball','kampf',.3,.3,2.5,.9,0,1,1],
+ ['rack','Power Rack','kraft',1.85,1.63,2.44,1,0,1,0,'Hammer Strength HD Elite iD Power Rack · 163 × 185 × 244 cm'],
+ ['halfrack','Half Rack','kraft',1.85,1.42,2.44,1,0,1,0,'Hammer Strength HD Elite Half Rack · 142 × 185 × 244 cm'],
+ ['smith','Multipresse (Smith)','kraft',2.2,1.5,2.3,.8,0,1,0,'Richtwert gängiger Multipressen'],
+ ['bench','Flachbank','kraft',.48,1.27,.41,.6,0,1,0,'Hammer Strength Flat Bench · 127 × 48 × 41 cm'],
+ ['adjbench','Schrägbank (verstellbar)','kraft',.57,1.33,.47,.6,0,1,0,'Hammer Strength Multi-Adjustable Bench · 133 × 57 × 47 cm'],
+ ['chest','Brustpresse','kraft',1.46,.92,1.69,.6,0,1,0,'Technogym Selection 700 Chest Press · 92 × 146 × 169 cm'],
+ ['legpress','Beinpresse','kraft',1.21,2.07,1.8,.8,0,1,0,'Technogym Selection 900 Leg Press · 207 × 121 × 180 cm'],
+ ['legext','Beinstrecker','kraft',1.06,1.3,1.5,.6,0,1,0,'Technogym Selection 700 Leg Extension · 130 × 106 × 150 cm'],
+ ['legcurl','Beinbeuger','kraft',1.22,1.3,1.5,.6,0,1,0,'Technogym Selection Leg Curl · 130 × 122 × 150 cm'],
+ ['latpull','Latzug','kraft',1.25,1.55,2.15,.6,0,1,0,'Richtwert selektorisierter Latzugmaschinen'],
+ ['row','Ruderzug (sitzend)','kraft',1.2,1.75,1.6,.6,0,1,0,'Richtwert selektorisierter Low-Row-Maschinen'],
+ ['hacksq','Hackenschmidt','kraft',1.4,2.1,1.6,.8,0,1,0,'Richtwert plate-loaded Hack Squat'],
+ ['cable','Kabelzug (Dual Pulley)','kraft',1.58,1.12,2.42,.8,0,2,0,'Life Fitness Signature Dual Adjustable Pulley · 112 × 158 × 242 cm'],
+ ['crossover','Kabel-Crossover','kraft',3.81,.72,2.39,.8,0,2,0,'Life Fitness Signature Adjustable Cable Crossover · 381 × 72 × 239 cm'],
+ ['multi','Multistation 4-fach','kraft',3.5,3.5,2.2,.8,0,4,0,'Richtwert 4-Stationen-Turm'],
+ ['hip','Hip-Thrust-Station','kraft',1.6,1.2,.8,.6,0,1,0,'Richtwert'],['ghd','Glute-Ham-Bank','kraft',.8,1.8,1.1,.6,0,1,0,'Richtwert'],
+ ['dbrack','Kurzhantelablage 3-stufig','kraft',2.29,.69,.99,.6,0,2,0,'Hammer Strength Three Tier Dumbbell Rack · 229 × 69 × 99 cm'],
+ ['kbrack','Kettlebell-Regal','kraft',1.6,.5,.9,.6,0,0,0,'Richtwert'],['plates','Scheibenständer','kraft',.75,.75,1.2,.3,0,0,0,'Richtwert'],
+ ['platform','Gewichtheber-Plattform','kraft',2.44,2.44,.05,.8,0,1,0,'Standard 8 × 8 ft · 244 × 244 cm'],
+ ['fwzone','Freihantelzone','kraft',8,5,.02,0,1,6],
+ ['tread','Laufband','cardio',.92,2.05,1.5,.5,0,1,0,'Ø Technogym Excite Run 1000, Life Fitness Integrity, Technogym Skillrun'],
+ ['tread_tg','Laufband Technogym Excite Run 1000','cardio',.96,2.19,1.55,.5,0,1,0,'Technogym Excite Run 1000 · 219 × 96 × 155 cm'],
+ ['tread_lf','Laufband Life Fitness Integrity','cardio',.92,2.09,1.42,.5,0,1,0,'Life Fitness Integrity Series · 209 × 92 × 142 cm'],
+ ['skillrun','Laufband Technogym Skillrun','cardio',.87,1.85,1.68,.5,0,1,0,'Technogym Skillrun · 185 × 87 × 168 cm'],
+ ['curve','Curve-Laufband (Skillmill)','cardio',.89,1.91,1.54,.5,0,1,0,'Technogym Skillmill · 191 × 89 × 154 cm'],
+ ['cross','Crosstrainer','cardio',.7,2.05,1.62,.5,0,1,0,'Ø Technogym Excite Synchro (204 × 70 × 160) und Artis Synchro (209 × 70 × 170)'],
+ ['bike','Indoor-Cycling-Bike','cardio',.56,1.23,1.15,.5,0,1,0,'Ø Technogym Group Cycle Connect und Life Fitness IC7'],
+ ['bike_tg','Bike Technogym Group Cycle','cardio',.59,1.14,1.14,.5,0,1,0,'Technogym Group Cycle Connect · 114 × 59 × 114 cm'],
+ ['bike_lf','Bike Life Fitness IC7','cardio',.52,1.32,1.2,.5,0,1,0,'Life Fitness IC7 · 132 × 52 × 102–120 cm'],
+ ['skillbike','Technogym Skillbike','cardio',.64,1.55,1.42,.5,0,1,0,'Technogym Skillbike · 155 × 64 × 142 cm'],
+ ['airbike','Air-Bike','cardio',.67,1.4,1.4,.5,0,1,0,'Assault AirBike Elite · 140 × 67 × 140 cm'],
+ ['rower','Rudergerät','cardio',.61,2.44,1.0,.6,0,1,0,'Concept2 RowErg · Platzbedarf 244 × 61 cm'],
+ ['rower_tg','Rudergerät Technogym Skillrow','cardio',.63,2.44,1.28,.6,0,1,0,'Technogym Skillrow · 244 × 63 × 128 cm'],
+ ['ski','SkiErg (Standfuß)','cardio',.6,1.27,2.16,.6,0,1,0,'Concept2 SkiErg mit Floor Stand · 60 × 127 × 216 cm'],
+ ['stair','Treppensteiger','cardio',.86,1.47,2.03,.5,0,1,0,'StairMaster 8Gx · 147 × 86 × 203 cm'],
+ ['rig','CrossFit-Rig (6 m)','func',6,1.85,2.9,1.2,0,8,0,'Richtwert modulares Rig, 5 Felder à 1,2 m'],
+ ['trx','Suspension-Rig (TRX)','func',3,1,2.5,1,0,4],['cali','Calisthenics-Station','func',4,2,2.5,1,0,4],
+ ['wallball','Wallball-Ziel','func',1,.5,3.2,1.2,0,1],['rope','Battle-Rope-Station','func',1,.5,.6,1,0,1],['plyo','Plyo-Boxen (Satz)','func',1.6,.6,.75,.8,0,2],
+ ['hyrox','HYROX-Turf (2 Bahnen)','func',16.2,2,.02,0,1,16,0,'Centr × HYROX Competition Turf · 16,2 × 2 m'],
+ ['sled','Turf-Bahn (Schlitten)','func',16.5,2,.02,0,1,16,0,'HYROX Perform Turf, 1 Bahn · 16,5 × 2 m'],
+ ['cfzone','CrossFit-Boden','func',14,10,.02,0,1,6],['kbzone','Kettlebell-Zone','func',4,3,.02,0,1,4],['stretch','Stretching-Zone','func',4,3,.02,0,1,3],
+ ['bag','Boxsack (hängend)','kampf',.4,.4,1.8,1,0,1,1,'Richtwert 120 cm Sack, Ø 35–40 cm'],['halfbag','Halbboxsack','kampf',.38,.38,1,.9,0,1,1,'Richtwert 60–80 cm Sack'],
+ ['standbag','Standboxsack','kampf',.6,.6,1.7,.9,0,1,1,'Richtwert Standsack mit Fuß Ø 60 cm'],['dee','Doppelendball','kampf',.3,.3,2.5,.9,0,1,1],
  ['speed','Speedball-Plattform','kampf',.7,.6,2.2,.6,0,1],['wallpad','Wandpolster / Uppercut','kampf',1.2,.4,1.5,1,0,1],['dummy','Grappling-Dummy','kampf',1.2,.5,.4,.8,0,1],
- ['bagrack','Boxsack-Reihe (6 Säcke)','kampf',6,1,2.6,1,0,6],['ring','Boxring','kampf',6,6,2.5,1,0,4],['cage','MMA-Käfig (Octagon)','kampf',7.3,7.3,2,1,0,4],
+ ['bagrack','Boxsack-Reihe (6 Säcke)','kampf',6,1,2.6,1,0,6],['ring','Boxring','kampf',6,6,2.5,1,0,4,0,'Trainingsring 6 × 6 m, Podest 30 cm'],
+ ['cage','MMA-Käfig (Octagon)','kampf',7.3,7.3,2,1,0,4,0,'Richtwert Octagon 24 ft'],
  ['mat','Mattenfläche (BJJ / Judo)','kampf',8,8,.05,0,1,5],['mmazone','MMA-Trainingsfläche','kampf',10,8,.05,0,1,6],['gear','Regal Handschuhe / Pratzen','kampf',2,.5,1.8,.5,0,0],
- ['boulder','Boulderwand','sport',6,3,4.5,.5,0,4],['padel','Padelplatz','sport',20,10,4,1,0,4],['squash','Squash-Court','sport',9.75,6.4,5,.3,0,2],['tt','Tischtennis','sport',2.74,1.53,.76,2,0,2],
+ ['boulder','Boulderwand','sport',6,3,4.5,.5,0,4],['padel','Padelplatz','sport',20,10,4,1,0,4,0,'Spielfeld 20 × 10 m'],['squash','Squash-Court','sport',6.4,9.75,5,.3,0,2,0,'Spielfeld 9,75 × 6,4 m'],
+ ['tt','Tischtennis','sport',1.53,2.74,.76,2,0,2,0,'Platte 274 × 152,5 cm'],
  ['course','Kursfläche','sport',8,6,.02,0,1,4],['kids','Kinderbereich','sport',5,4,.02,0,1,4],
  ['ph_s','Platzhalter Gerät S','platz',1,1,1.2,.5,0,1],['ph_m','Platzhalter Gerät M','platz',2,1.5,1.8,.8,0,1],['ph_l','Platzhalter Gerät L','platz',3,2,2.2,1,0,2],
  ['ph_st','Platzhalter Station (4 Pers.)','platz',4,3,2.2,1,0,4],['ph_zone','Platzhalter Trainingsfläche','platz',6,4,.02,0,1,5],
- ['reception','Rezeption','service',3,1,1.1,.8],['locker','Umkleide','service',5,4,2.4,.5],['shower','Duschen','service',4,3,2.4,.3],['wc','WC','service',3,2.5,2.4,.3],
+ ['reception','Rezeption','service',3,1,1.1,.8],['locker','Umkleide (Raum)','service',5,4,2.4,.5],
+ ['locker6','Spindreihe (6 Spinde)','service',1.8,.5,1.8,0,0,0,0,'Richtwert 30 × 50 × 180 cm je Spind'],['locker12','Spindblock (12 Fächer)','service',1.8,.5,1.8,0,0,0,0,'Richtwert 6 × 2 Fächer, 30 × 50 × 90 cm'],
+ ['lbench','Umkleidebank','service',2,.4,.45,0,0,0],['shower','Duschen','service',4,3,2.4,.3],['wc','WC','service',3,2.5,2.4,.3],
  ['sauna','Sauna','service',3,2.5,2.2,.6],['physio','Physio-Raum','service',4,3,2.4,.3],['office','Büro','service',3,3,2.4,.3],['bar','Getränketheke','service',3,1,1.1,.8],
- ['water','Trinkbrunnen','service',.5,.4,1,.5],['mirror','Spiegelwand','service',4,.1,2,.3],['storage','Lager','service',3,3,2.4,.3],['block','Platzblocker / Stütze','service',1,1,1,.3]
-].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7],p:a[8]||0,round:!!a[9]}));
+ ['water','Wasserspender','service',.4,.4,1.1,.2,0,0,0,'Richtwert Standgerät mit Gallone'],['vending','Getränkeautomat','service',.9,.85,1.85,.2,0,0,0,'Richtwert Glasfront-Automat'],
+ ['fridge','Getränkekühlschrank','service',.6,.65,2,.2,0,0,0,'Richtwert Glastür-Kühlschrank'],['podium','Trainer-Podest','service',2,1.5,.3,.3,0,0],
+ ['mirror','Spiegelwand','service',4,.1,2,.3],['storage','Lager','service',3,3,2.4,.3],['block','Platzblocker / Stütze','service',1,1,1,.3]
+].map(a=>({id:a[0],name:a[1],cat:a[2],w:a[3],d:a[4],h:a[5],clr:a[6],zone:!!a[7],p:a[8]||0,round:!!a[9],ref:a[10]||''}));
+/* Bereichsvorlagen: [Typ, dx, dy, Änderungen] relativ zur Bereichsmitte (Meter). Abstände nach Herstellerempfehlung/Erfahrungswerten. */
+const TPL={
+ tpl_tread:{name:'Laufband-Reihe (6×)',w:9,d:4.2,ref:'6 Laufbänder, 1,5 m Achsabstand, 2 m Freiraum dahinter (EN ISO 20957-6)',items:[-3.75,-2.25,-.75,.75,2.25,3.75].map(x=>['tread',x,-.9])},
+ tpl_cross:{name:'Crosstrainer-Bereich (6×)',w:8,d:3.2,ref:'6 Crosstrainer, 1,3 m Achsabstand',items:[-3.25,-1.95,-.65,.65,1.95,3.25].map(x=>['cross',x,0])},
+ tpl_cycle:{name:'Indoor-Cycling-Raum (20 Bikes)',w:10,d:10,ref:'4 Reihen × 5 Bikes, 1,25 × 1,9 m Raster, Trainer-Bike vorn',
+   items:[['course',0,0,{w:10,d:10,name:'Cycling-Raum'}],['bike',0,-4,{rot:180,name:'Trainer-Bike'}],...[-1.6,.3,2.2,4.1].flatMap(y=>[-2.5,-1.25,0,1.25,2.5].map(x=>['bike',x,y,{rot:180}]))]},
+ tpl_hyrox:{name:'HYROX-Bereich',w:17,d:9,ref:'2 × Turf 16,2 × 2 m, je 2 SkiErg/RowErg, Wallball, Sandbag-Zone',
+   items:[['hyrox',0,-3.3],['sled',0,-.5,{w:16.2}],['ski',-6.5,3,{}],['ski',-5.2,3,{}],['rower',-2.4,3.4,{rot:90}],['rower',-2.4,2.1,{rot:90}],['wallball',2,3.9,{rot:180}],['wallball',4.4,3.9,{rot:180}],['kbzone',6.9,2.9,{w:3,d:3,name:'Sandbag / Lunges'}]]},
+ tpl_cf:{name:'CrossFit-Bereich',w:14,d:10,ref:'Rig 6 m, 4 RowErg, 4 Air-Bikes, Wallballs, Plyo, Kettlebells auf Gummiboden',
+   items:[['cfzone',0,0],['rig',-2.5,-3.6],['wallball',3,-4.3],['wallball',5.6,-4.3],['rower',-6,1.5,{}],['rower',-4.6,1.5,{}],['airbike',-2.4,1.3],['airbike',-1.2,1.3],['airbike',0,1.3],['airbike',1.2,1.3],
+     ['plyo',4.8,-.6],['kbrack',4.8,1.6],['dbrack',2,4.4],['platform',5.3,3.7,{w:2,d:2,name:'Plattform'}]]},
+ tpl_fw:{name:'Freihantelbereich',w:10,d:7,ref:'2 Power Racks, Kurzhantelablage, 4 Bänke, Scheibenständer auf Gummiboden',
+   items:[['fwzone',0,0,{w:10,d:7}],['rack',-3.2,-2.2],['rack',.2,-2.2],['plates',3.5,-2.6],['dbrack',0,2.9],['adjbench',-2.8,.9],['adjbench',-1.4,.9],['adjbench',0,.9],['bench',1.4,.9],['kbrack',3.8,-.2,{rot:90}]]},
+ tpl_strength:{name:'Gerätezirkel Kraft',w:10,d:5,ref:'Brustpresse, Latzug, Ruderzug, Beinpresse, Beinstrecker, Beinbeuger, Kabelzug',
+   items:[['chest',-3.9,-1.4],['latpull',-1.4,-1.3],['row',1.1,-1.2],['cable',3.8,-1.6],['legpress',-3.9,1.2,{rot:90}],['legext',-.8,1.4],['legcurl',1.6,1.4]]},
+ tpl_combat:{name:'Kampfsport-Bereich',w:12,d:9,ref:'Matte 8 × 8 m, Boxsack-Reihe, Standsäcke, Regal',
+   items:[['mat',-1.8,0],['bagrack',4.6,-1.5,{rot:90}],['standbag',3.6,3.4],['standbag',5.4,3.4],['gear',-1.8,4.4]]},
+ tpl_locker:{name:'Umkleide-Block',w:6,d:4,ref:'4 Spindreihen (24 Spinde), 2 Bänke',
+   items:[['locker6',-2,-1.7],['locker6',0,-1.7],['locker6',2,-1.7],['locker12',-2,1.7,{rot:180}],['locker12',0,1.7,{rot:180}],['lbench',-1,0],['lbench',1.2,0]]},
+ tpl_drinks:{name:'Getränke-Station',w:3,d:1.2,ref:'Wasserspender, Getränkekühlschrank, Automat',items:[['water',-1.1,0],['fridge',-.3,0],['vending',.75,0]]}
+};
+Object.entries(TPL).forEach(([id,t])=>LIB.unshift({id,name:t.name,cat:'bereich',w:t.w,d:t.d,h:0,clr:0,zone:false,p:0,ref:t.ref,tpl:t.items}));
 const T=id=>LIB.find(t=>t.id===id);
 const persons=it=>it.p??(T(it.type)||{}).p??0;
 const trk=(t,d)=>{try{window.Cloud&&Cloud.track(t,d)}catch(e){}};
@@ -308,14 +389,28 @@ const trk=(t,d)=>{try{window.Cloud&&Cloud.track(t,d)}catch(e){}};
 const S={room:{w:26,d:15},plan:null,items:[],sel:null,mode:'2d',view:{ox:0,oy:0,z:30},cam:{yaw:.55,pitch:.72,dist:34},snap:true,clr:true,showPlan:true,calib:null,undo:[],cat:'all',q:'',name:'Neues Studio'};
 let uid=1;
 const mk=(type,x,y,o={})=>{const t=T(type);return Object.assign({id:uid++,type,name:t.name,cat:t.cat,x,y,w:t.w,d:t.d,h:t.h,rot:0,clr:t.clr,zone:t.zone,p:t.p,round:t.round,locked:false},o)};
+const modelOf=it=>{const m=MODELS[it.type];return m?(typeof m==='function'?m(it):m):null};
 
 function demoItems(){
-  const L=[];const a=(t,x,y,o)=>L.push(mk(t,x,y,o));
-  a('locker',3.5,12,{w:6.5,d:5.5});a('reception',12,13.6);
-  a('fwzone',21,11.2,{w:8,d:5.4});
-  a('rack',19,12.8);a('rack',22.5,12.8);a('bench',19,10.4);a('bench',22.5,10.4);a('dbrack',24.4,10.6,{rot:90});
-  [4.1,5.65,7.2,8.75].forEach(x=>a('tread',x,2.3));[10.4,11.55,12.7].forEach(x=>a('bike',x,1.9));a('cross',14,2.2);
-  a('rig',21,3);a('hyrox',13,7.2);a('boulder',2,6.2,{rot:90});a('sauna',24,7);
+  const L=[];const a=(t,x,y,o)=>L.push(mk(t,x,y,o||{}));
+  // Cardio an der Fensterfront (Blick nach draußen)
+  [1,2.5,4,5.5,7].forEach(x=>a('tread',x,1.45,{rot:180}));[8.6,9.9,11.2].forEach(x=>a('cross',x,1.45,{rot:180}));[12.6,13.85,15.1].forEach(x=>a('bike',x,1.2,{rot:180}));a('ski',16.8,1);
+  // CrossFit-Ecke mit Rig
+  a('cfzone',22,2.8,{w:7.4,d:4.6});a('rig',21.8,1.5);a('airbike',19.6,4.45);a('airbike',20.9,4.45);a('wallball',24.6,4.3,{rot:180});
+  // HYROX-Bahnen quer durch die Halle
+  a('hyrox',16.9,6.8);
+  // Freihantelbereich
+  a('fwzone',4.3,6,{w:8,d:5.4});a('rack',1.6,4.5);a('rack',4.6,4.5);a('plates',6.9,3.8);a('dbrack',7.8,6,{rot:90});
+  [1.6,3.1,4.6].forEach(x=>a('bench',x,7.6));a('adjbench',6.1,7.6);
+  // Gerätezirkel
+  a('chest',14.2,9.1);a('latpull',19,9.4);a('cable',21.6,9.2);a('legext',24.6,9.3);a('legpress',20,12.2);a('legcurl',22.4,12.2);a('row',24.8,12.3);
+  a('stretch',15,11.6,{w:3.4,d:2.6});
+  // Kampfsport-Ecke
+  a('mat',9.05,12.6,{w:3.4,d:4.4,name:'Matte'});a('bag',8.2,12);a('bag',9.6,12);a('standbag',8.2,13.8);a('standbag',9.8,13.8);
+  // Empfang & Getränke
+  a('reception',14.8,14.2);a('water',17.6,14.6);a('fridge',18.4,14.6);a('vending',19.45,14.5);
+  // Umkleide
+  [10.2,12.1,14].forEach(y=>a('locker6',.4,y,{rot:270}));a('locker12',3.4,9.35);a('locker12',5.3,9.35);a('lbench',2,12,{rot:90});a('shower',5.4,13.6,{w:3,d:2.6});
   [[9,5],[17,5],[9,10],[17,10]].forEach(p=>a('block',p[0],p[1],{w:.4,d:.4,h:3,name:'Stütze',locked:true,clr:0}));
   return L;
 }
@@ -533,6 +628,22 @@ function outOfRoom(a,pa){const R=S.room;
   if(!R.poly)return pa.some(p=>p.x<-.001||p.y<-.001||p.x>R.w+.001||p.y>R.d+.001);
   return pa.some(p=>{const dx=a.x-p.x,dy=a.y-p.y,l=Math.hypot(dx,dy)||1;return !inPoly(R.poly,p.x+dx/l*.01,p.y+dy/l*.01)})}
 let STAT={};
+/* Modell-Bauteile: Farbe, 2D-Draufsicht, 3D-Geometrie */
+function matRGB(m,it){return m==='acc'?hexRGB(CATS[it.cat].c):(MAT[m]||[120,120,130])}
+function drawParts2D(c,parts,w,d){
+  [...parts].sort((a,b)=>a[6]-b[6]).forEach(p=>{const[m,x0,x1,y0,y1,z0,z1,cy,r]=p,rgb=MAT[m]||[120,120,130],al=MAT_ALPHA[m]||1;
+    const px=(x0-.5)*w,py=(y0-.5)*d,pw=(x1-x0)*w,pd=(y1-y0)*d;c.save();c.translate(px+pw/2,py+pd/2);if(r)c.rotate(rad(r));
+    c.beginPath();if(cy)c.ellipse(0,0,Math.abs(pw)/2,Math.abs(pd)/2,0,0,Math.PI*2);else c.rect(-pw/2,-pd/2,pw,pd);
+    const k=.78+.22*Math.min(1,z1);c.fillStyle=`rgba(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0},${al})`;c.fill();
+    if(Math.min(pw,pd)>2){c.lineWidth=.6;c.strokeStyle='rgba(8,10,16,.55)';c.stroke()}c.restore()})}
+function zoneMarks2D(c,it,w,d){if(it.type!=='hyrox'&&it.type!=='sled')return;c.save();c.strokeStyle='rgba(236,232,222,.55)';c.lineWidth=1;c.setLineDash([]);
+  const lanes=it.type==='hyrox'?2:1;for(let i=1;i<lanes;i++){const y=-d/2+d*i/lanes;c.beginPath();c.moveTo(-w/2,y);c.lineTo(w/2,y);c.stroke()}
+  const ez=Math.min(w*.11,1.7/it.w*w);[-w/2+ez,w/2-ez].forEach(x=>{c.beginPath();c.moveTo(x,-d/2);c.lineTo(x,d/2);c.stroke()});c.restore()}
+function partGeo(it,p){const[m,x0,x1,y0,y1,z0,z1,cy,r]=p,a=rad(it.rot),ca=Math.cos(a),sa=Math.sin(a),lx=((x0+x1)/2-.5)*it.w,ly=((y0+y1)/2-.5)*it.d,
+    cx=it.x+lx*ca-ly*sa,cyy=it.y+lx*sa+ly*ca,pw=Math.abs(x1-x0)*it.w,pd=Math.abs(y1-y0)*it.d,rot=it.rot+(r||0);let ring;
+  if(cy){const ar=rad(rot),n=14;ring=[];for(let i=0;i<n;i++){const t=i/n*Math.PI*2,ux=Math.cos(t)*pw/2,uy=Math.sin(t)*pd/2;ring.push({x:cx+ux*Math.cos(ar)-uy*Math.sin(ar),y:cyy+ux*Math.sin(ar)+uy*Math.cos(ar)})}}
+  else ring=pts({x:cx,y:cyy,w:pw,d:pd,rot});
+  return{m,ring,z0:z0*it.h,z1:z1*it.h,cx,cy:cyy}}
 function analyze(){
   const st={coll:new Set(),oob:new Set(),warn:new Set()};
   const sol=S.items.filter(i=>!i.zone),WP=(S.room.walls||[]).flatMap(w=>solidSpans(S.room,w,['door']).map(([s,e])=>pts(wRect(w,s,e))));
@@ -592,7 +703,9 @@ function draw2D(){
     const[cx,cy]=w2s(it.x,it.y),col=CATS[it.cat].c,bad=st.coll.has(it.id)||st.oob.has(it.id);
     c.save();c.translate(cx,cy);c.rotate(rad(it.rot));
     const w=it.w*z,d=it.d*z;
-    if(it.zone){c.fillStyle=hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
+    const parts=it.zone?null:modelOf(it);
+    if(it.zone){const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},.45)`:hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);if(zm)zoneMarks2D(c,it,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
+    else if(parts){c.fillStyle=hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);drawParts2D(c,parts,w,d);c.lineWidth=bad?2.5:1;c.strokeStyle=bad?COL.red:hexA(col,.9);c.strokeRect(-w/2,-d/2,w,d);if(bad){c.fillStyle='rgba(224,98,90,.3)';c.fillRect(-w/2,-d/2,w,d)}}
     else{const shp=()=>{c.beginPath();if(it.round)c.ellipse(0,0,w/2,d/2,0,0,Math.PI*2);else c.rect(-w/2,-d/2,w,d)};
       c.fillStyle=it.type==='block'&&!it.locked?'rgba(237,227,204,.18)':hexA(col,.9);shp();c.fill();
       // Schraffur für Blocker / Stütze
@@ -602,9 +715,10 @@ function draw2D(){
     c.restore();
     // Beschriftung
     if(Math.min(it.w,it.d)*z>26||Math.max(it.w,it.d)*z>70){c.save();c.translate(cx,cy);c.textAlign='center';c.textBaseline='middle';
-      const dark=!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
+      const mdl=!it.zone&&MODELS[it.type],dark=!mdl&&!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
+      if(mdl){c.strokeStyle='rgba(8,12,24,.85)';c.lineWidth=3;c.lineJoin='round'}
       const fs=Math.max(9,Math.min(13,z*.42));c.font=`600 ${fs}px Helvetica,Arial`;
-      const big=Math.max(it.w,it.d)*z>fs*it.name.length*.55;if(big){c.fillText(it.name,0,it.zone?-it.d*z/2+14:0);if(!it.zone&&Math.min(it.w,it.d)*z>fs*3.2){c.font=`${fs-2}px Helvetica,Arial`;c.globalAlpha=.7;c.fillText(`${fmt(it.w)} × ${fmt(it.d)}`,0,fs+1);c.globalAlpha=1}}c.restore()}
+      const big=Math.max(it.w,it.d)*z>fs*it.name.length*.55;if(big){const ly=it.zone?-it.d*z/2+14:(mdl?it.d*z/2+fs*.9:0);if(mdl){c.strokeText(it.name,0,ly)}c.fillText(it.name,0,ly);if(mdl){c.restore();return}if(!it.zone&&Math.min(it.w,it.d)*z>fs*3.2){c.font=`${fs-2}px Helvetica,Arial`;c.globalAlpha=.7;c.fillText(`${fmt(it.w)} × ${fmt(it.d)}`,0,fs+1);c.globalAlpha=1}}c.restore()}
     if(it.locked&&it.type!=='block'){/* noop */}
   });
   c.globalAlpha=1;
@@ -633,20 +747,34 @@ function camera(W,H,cam,room){
 function proj(C,p){const v=v3.sub(p,C.P),zc=v3.dot(v,C.f);if(zc<.2)return null;return [C.W/2+v3.dot(v,C.r)/zc*C.F,C.H/2-v3.dot(v,C.u)/zc*C.F,zc]}
 function rayAt(C,sx,sy){const dx=(sx-C.W/2)/C.F,dy=-(sy-C.H/2)/C.F;return v3.norm([C.f[0]+C.r[0]*dx+C.u[0]*dy,C.f[1]+C.r[1]*dx+C.u[1]*dy,C.f[2]+C.r[2]*dx+C.u[2]*dy])}
 function groundPt(C,sx,sy,z=0){const r=rayAt(C,sx,sy);if(Math.abs(r[2])<1e-6)return null;const t=(z-C.P[2])/r[2];if(t<=0)return null;return {x:C.P[0]+r[0]*t,y:S.room.d-(C.P[1]+r[1]*t),t}}
+function drawParts3D(c,C,it,parts,RD,L,o,bad,sel,icx,icy){
+  const geo=parts.map(p=>partGeo(it,p)).map(g=>Object.assign(g,{dist:Math.hypot(g.cx-C.P[0],RD-g.cy-C.P[1],(g.z0+g.z1)/2-C.P[2])})).sort((a,b)=>b.dist-a.dist);
+  geo.forEach(g=>{const ps=g.ring.map(p=>[p.x,RD-p.y]),n=ps.length,mx=ps.reduce((s,p)=>s+p[0],0)/n,my=ps.reduce((s,p)=>s+p[1],0)/n,rgb=matRGB(g.m,it),al=MAT_ALPHA[g.m]||1;
+    const F=[];for(let i=0;i<n;i++){const a=ps[i],b=ps[(i+1)%n];let nr=[b[1]-a[1],-(b[0]-a[0]),0];const m=[(a[0]+b[0])/2-mx,(a[1]+b[1])/2-my];if(nr[0]*m[0]+nr[1]*m[1]<0)nr=[-nr[0],-nr[1],0];F.push({v:[[a[0],a[1],g.z0],[b[0],b[1],g.z0],[b[0],b[1],g.z1],[a[0],a[1],g.z1]],n:v3.norm(nr)})}
+    F.push({v:ps.map(p=>[p[0],p[1],g.z1]),n:[0,0,1],top:1});
+    F.forEach(f=>{const fc=f.v.reduce((s,p)=>[s[0]+p[0]/f.v.length,s[1]+p[1]/f.v.length,s[2]+p[2]/f.v.length],[0,0,0]);if(v3.dot(f.n,v3.sub(C.P,fc))<=0)return;
+      const q=f.v.map(p=>proj(C,p));if(!q.every(Boolean))return;const k=f.top?1.04:.48+.42*Math.max(0,v3.dot(f.n,L));
+      c.beginPath();q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
+      c.fillStyle=`rgba(${Math.min(255,rgb[0]*k)|0},${Math.min(255,rgb[1]*k)|0},${Math.min(255,rgb[2]*k)|0},${al})`;c.fill();
+      if(n===4&&al===1){c.lineWidth=.5;c.strokeStyle='rgba(6,8,14,.45)';c.stroke()}})});
+  if(bad||sel){const box=pts(it).map(p=>[p.x,RD-p.y]);c.beginPath();[0,it.h].forEach(z=>{const q=box.map(p=>proj(C,[p[0],p[1],z]));if(q.every(Boolean)){q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath()}});
+    box.forEach(p=>{const a=proj(C,[p[0],p[1],0]),b=proj(C,[p[0],p[1],it.h]);if(a&&b){c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1])}});c.setLineDash([5,4]);c.lineWidth=1.6;c.strokeStyle=bad?COL.red:'#fff';c.stroke();c.setLineDash([])}
+  if(o.labels){const m=proj(C,[icx,icy,it.h+.25]),a=proj(C,[icx-it.w/2,icy,0]),b=proj(C,[icx+it.w/2,icy,0]);if(m&&a&&b&&Math.max(Math.hypot(a[0]-b[0],a[1]-b[1]),0)>38){c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.lineWidth=3;c.lineJoin='round';c.strokeStyle='rgba(8,12,24,.85)';c.strokeText(it.name,m[0],m[1]);c.fillStyle=COL.cream;c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}}
+}
 function render3D(c,W,H,cam,room,items,o={}){
-  c.setTransform(o.dpr||1,0,0,o.dpr||1,0,0);const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0B1D42');g.addColorStop(1,'#08142E');c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.setTransform(o.dpr||1,0,0,o.dpr||1,0,0);if(o.pretty)c.clearRect(0,0,W,H);else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0B1D42');g.addColorStop(1,'#08142E');c.fillStyle=g;c.fillRect(0,0,W,H)}
   const C=camera(W,H,cam,room),RD=room.d,line=(a,b)=>{const p=proj(C,a),q=proj(C,b);if(p&&q){c.moveTo(p[0],p[1]);c.lineTo(q[0],q[1])}};
   // Boden
   const poly=room.poly,fl=(poly?poly.map(p=>[p[0],RD-p[1],0]):[[0,0,0],[room.w,0,0],[room.w,RD,0],[0,RD,0]]).map(p=>proj(C,p)),flOk=fl.every(Boolean);
   const flPath=()=>{c.beginPath();fl.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath()};
-  if(flOk){flPath();c.fillStyle=COL.navy;c.fill()}
+  if(flOk){flPath();c.fillStyle=o.bare?'rgba(16,41,90,.55)':COL.navy;c.fill()}
   c.save();if(poly&&flOk){flPath();c.clip()}
   c.beginPath();c.strokeStyle='rgba(237,227,204,.1)';c.lineWidth=1;for(let x=0;x<=room.w;x++)line([x,0,0],[x,RD,0]);for(let y=0;y<=RD;y++)line([0,y,0],[room.w,y,0]);c.stroke();
   c.restore();
   if(poly&&flOk){flPath();c.strokeStyle='rgba(237,227,204,.45)';c.lineWidth=1.2;c.stroke()}
   // Wände (nur hintere gefüllt)
   const WH=3,corn=[[0,0],[room.w,0],[room.w,RD],[0,RD]];
-  for(let i=0;i<(poly?0:4);i++){const a=corn[i],b=corn[(i+1)%4],mid=[(a[0]+b[0])/2-room.w/2,(a[1]+b[1])/2-RD/2];const nrm=[mid[0],mid[1]];
+  for(let i=0;i<(poly||o.bare?0:4);i++){const a=corn[i],b=corn[(i+1)%4],mid=[(a[0]+b[0])/2-room.w/2,(a[1]+b[1])/2-RD/2];const nrm=[mid[0],mid[1]];
     const toCam=[C.P[0]-room.w/2,C.P[1]-RD/2];const back=(nrm[0]*toCam[0]+nrm[1]*toCam[1])<0;
     const q=[[a[0],a[1],0],[b[0],b[1],0],[b[0],b[1],WH],[a[0],a[1],WH]].map(p=>proj(C,p));if(!q.every(Boolean))continue;
     c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
@@ -661,7 +789,9 @@ function render3D(c,W,H,cam,room,items,o={}){
   const near=it=>{const ps=pts(it).map(p=>[p.x,RD-p.y]),xs=ps.map(p=>p[0]),ys=ps.map(p=>p[1]),nx=Math.max(Math.min(...xs),Math.min(Math.max(...xs),C.P[0])),ny=Math.max(Math.min(...ys),Math.min(Math.max(...ys),C.P[1]));return Math.hypot(nx-C.P[0],ny-C.P[1])};
   const order=[...items,...wl].map(it=>({it,dist:wl.length?near(it):Math.hypot(it.x-C.P[0],RD-it.y-C.P[1])})).sort((a,b)=>(b.it.zone-a.it.zone)||(b.dist-a.dist));
   const L=v3.norm([-.5,-.7,.5]);
-  order.forEach(({it})=>{
+  // Zonen zuerst, dann weiche Schatten unter Geräten, dann Geräte und Wände
+  const zs=order.filter(e=>e.it.zone),rest=order.filter(e=>!e.it.zone);
+  const drawOne=({it})=>{
     if(it.wall){const ps=pts(it).map(p=>[p.x,RD-p.y]),cx=(ps[0][0]+ps[2][0])/2,cy=(ps[0][1]+ps[2][1])/2,z0=it.z0,z1=it.z1,F=[{v:ps.map(p=>[p[0],p[1],z1]),n:[0,0,1]}];
       if(z0>0)F.push({v:ps.map(p=>[p[0],p[1],z0]),n:[0,0,-1]});
       for(let i=0;i<4;i++){if(it.seam[i])continue;const a=ps[i],b=ps[(i+1)%4];let n=[b[1]-a[1],-(b[0]-a[0]),0];const m=[(a[0]+b[0])/2-cx,(a[1]+b[1])/2-cy];if(n[0]*m[0]+n[1]*m[1]<0)n=[-n[0],-n[1],0];F.push({v:[[a[0],a[1],z0],[b[0],b[1],z0],[b[0],b[1],z1],[a[0],a[1],z1]],n:v3.norm(n)})}
@@ -670,8 +800,13 @@ function render3D(c,W,H,cam,room,items,o={}){
         c.fillStyle=it.glass?'rgba(126,155,209,.3)':top?'rgba(237,227,204,.95)':`rgba(${237*k|0},${227*k|0},${204*k|0},.62)`;c.fill();if(it.glass){c.strokeStyle='rgba(180,200,235,.6)';c.lineWidth=1;c.stroke()}});return}
     const ps=pts(it).map(p=>[p.x,RD-p.y]),h=it.h,col=CATS[it.cat].c,rgb=hexRGB(col),bad=o.status&&(o.status.coll.has(it.id)||o.status.oob.has(it.id)),sel=o.sel===it.id;
     const cx=(ps[0][0]+ps[2][0])/2,cy=(ps[0][1]+ps[2][1])/2;
-    if(it.zone){const q=ps.map(p=>proj(C,[p[0],p[1],.02]));if(!q.every(Boolean))return;c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle=hexA(col,.2);c.fill();c.setLineDash([6,4]);c.strokeStyle=hexA(col,.9);c.lineWidth=sel?2.5:1.3;c.stroke();c.setLineDash([]);
+    if(it.zone){const q=ps.map(p=>proj(C,[p[0],p[1],.02]));if(!q.every(Boolean))return;c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},${o.pretty?.85:.6})`:hexA(col,.2);c.fill();
+      if(zm&&(it.type==='hyrox'||it.type==='sled')){c.save();c.clip();c.strokeStyle='rgba(236,232,222,.5)';c.lineWidth=1;const L=(f,g)=>{const a=proj(C,f),b=proj(C,g);if(a&&b){c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke()}};
+        const loc=(fx,fy)=>{const a=rad(it.rot),lx=(fx-.5)*it.w,ly=(fy-.5)*it.d;return[it.x+lx*Math.cos(a)-ly*Math.sin(a),RD-(it.y+lx*Math.sin(a)+ly*Math.cos(a)),.021]};
+        if(it.type==='hyrox')L(loc(0,.5),loc(1,.5));const ez=Math.min(.11,1.7/it.w);L(loc(ez,0),loc(ez,1));L(loc(1-ez,0),loc(1-ez,1));c.restore()}
+      if(o.pretty)return;c.setLineDash([6,4]);c.strokeStyle=hexA(col,.9);c.lineWidth=sel?2.5:1.3;c.stroke();c.setLineDash([]);
       if(o.labels){const m=proj(C,[cx,cy,.02]);if(m){c.fillStyle=hexA(col,1);c.font='600 11px Helvetica';c.textAlign='center';c.fillText(it.name,m[0],m[1])}}return}
+    const parts=modelOf(it);if(parts){drawParts3D(c,C,it,parts,RD,L,o,bad,sel,cx,cy);return}
     const faces=[{v:ps.map(p=>[p[0],p[1],h]),n:[0,0,1]}];
     for(let i=0;i<4;i++){const a=ps[i],b=ps[(i+1)%4];let n=[b[1]-a[1],-(b[0]-a[0]),0];const m=[(a[0]+b[0])/2-cx,(a[1]+b[1])/2-cy];if(n[0]*m[0]+n[1]*m[1]<0)n=[-n[0],-n[1],0];faces.push({v:[[a[0],a[1],0],[b[0],b[1],0],[b[0],b[1],h],[a[0],a[1],h]],n:v3.norm(n)})}
     faces.forEach(f=>{const fc=f.v.reduce((s,p)=>[s[0]+p[0]/f.v.length,s[1]+p[1]/f.v.length,s[2]+p[2]/f.v.length],[0,0,0]);if(v3.dot(f.n,v3.sub(C.P,fc))<=0)return;
@@ -679,7 +814,11 @@ function render3D(c,W,H,cam,room,items,o={}){
       c.beginPath();q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
       c.fillStyle=`rgb(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0})`;c.fill();c.lineWidth=sel?2.4:1;c.strokeStyle=bad?COL.red:(sel?'#fff':'rgba(10,11,16,.75)');c.stroke();
       if(top&&o.labels&&Math.hypot(q[0][0]-q[2][0],q[0][1]-q[2][1])>46){const m=proj(C,[cx,cy,h]);const dark=['kraft','cardio','func','kampf','platz'].includes(it.cat);c.fillStyle=dark?COL.ink:COL.cream;c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}});
-  });
+  };
+  zs.forEach(drawOne);
+  rest.forEach(({it})=>{if(it.wall||it.zone||it.h<.1)return;const q=pts(it,.06).map(p=>proj(C,[p.x+.12,RD-p.y-.12,0]));if(!q.every(Boolean))return;
+    c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fillStyle='rgba(2,6,18,.32)';c.fill()});
+  rest.forEach(drawOne);
   return C;
 }
 let C3=null;
@@ -856,6 +995,8 @@ function dupItem(it){pushUndo();const n=Object.assign({},it,{id:uid++,x:it.x+1,y
 function undo(){const s=S.undo.pop();if(!s){toast('Nichts zum Rückgängigmachen');return}const v=JSON.parse(s);if(Array.isArray(v))S.items=v;else{S.items=v.items;S.room=migrateRoom(v.room);syncRoom()}S.esel=null;S.edPrev=null;if(!S.items.find(i=>i.id===S.sel))S.sel=null;commit()}
 function addType(id){const t=T(id);pushUndo();let x,y;if(S.mode==='2d'){[x,y]=s2w(CW/2,CH/2)}else{x=S.room.w/2;y=S.room.d/2}
   x=Math.min(S.room.w-t.w/2,Math.max(t.w/2,x));y=Math.min(S.room.d-t.d/2,Math.max(t.d/2,y));
+  if(t.tpl){x=snapv(x);y=snapv(y);const add=t.tpl.map(([ty,dx,dy,o])=>mk(ty,+(x+dx).toFixed(2),+(y+dy).toFixed(2),Object.assign({},o||{})));S.items.push(...add);
+    trk('add_template',{tpl:id,name:t.name,n:add.length});add.forEach(i=>trk('add_item',{item:i.type,name:i.name,cat:i.cat,tpl:id}));S.sel=null;$('#empty').style.display='none';commit();toast(`${t.name} eingefügt – ${add.length} Elemente`);return}
   const it=mk(id,snapv(x),snapv(y));S.items.push(it);trk('add_item',{item:id,name:t.name,cat:t.cat});S.sel=it.id;$('#empty').style.display='none';commit()}
 function setMode(m){S.mode=m;$('#m2').classList.toggle('on',m==='2d');$('#m3').classList.toggle('on',m==='3d');$('#tPlan').style.display=m==='2d'?'':'none';if(m==='3d')closeCal();$('#edBar').classList.toggle('on',!!S.edit&&m==='2d');$('#edHint').classList.toggle('on',!!S.edit&&m==='2d');req()}
 $('#m2').onclick=()=>{setMode('2d');trk('view_mode',{mode:'2d'})};$('#m3').onclick=()=>{setMode('3d');trk('view_mode',{mode:'3d'})};
@@ -935,7 +1076,7 @@ function renderLib(){
   $('#cats').innerHTML=[['all','Alle'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="cat ${S.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
   $$('#cats .cat').forEach(b=>b.onclick=()=>{S.cat=b.dataset.c;renderLib()});
   const q=S.q.toLowerCase();
-  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat)&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span><span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
+  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat)&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}" title="${(t.ref||'').replace(/"/g,'&quot;')}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span><span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
   $$('#lib .li').forEach(b=>b.onclick=()=>addType(b.dataset.id));
 }
 $('#q').oninput=e=>{S.q=e.target.value;renderLib()};
@@ -944,7 +1085,8 @@ function renderInspector(){
   if(S.edit){renderEdInspector();return}
   const it=S.items.find(i=>i.id===S.sel),el=$('#insp');
   if(!it){el.innerHTML=`<h4>Eigenschaften</h4><p class="help">Wähle ein Element im Plan oder in der 3D-Ansicht, um Maße, Höhe und Drehung zu ändern. Geräte aus der Bibliothek links einfügen und per Maus verschieben.</p>`;return}
-  el.innerHTML=`<h4>Eigenschaften</h4>
+  const ref=(T(it.type)||{}).ref;
+  el.innerHTML=`<h4>Eigenschaften</h4>${ref?`<p class="help" style="margin:-4px 0 10px">Maße: ${ref}</p>`:''}
   <label class="fld">Bezeichnung<input id="fName" value="${it.name.replace(/"/g,'&quot;')}"></label>
   <div class="row"><label class="fld">Breite m<input id="fW" type="number" step=".1" min=".1" value="${it.w}"></label><label class="fld">Tiefe m<input id="fD" type="number" step=".1" min=".1" value="${it.d}"></label></div>
   <div class="row"><label class="fld">Höhe m<input id="fH" type="number" step=".1" min=".01" value="${it.h}"></label><label class="fld">Drehung °<input id="fR" type="number" step="15" value="${it.rot}"></label></div>
@@ -971,7 +1113,7 @@ function capacity(st,area){
   S.items.filter(i=>i.zone).forEach(z=>{const ppm=Math.max(.5,persons(z)||5),r=-rad(z.rot);let a=z.w*z.d;
     // Geräte (mit Abstand) innerhalb der Zone belegen deren Fläche
     sol.forEach(it=>{const dx=it.x-z.x,dy=it.y-z.y,lx=dx*Math.cos(r)-dy*Math.sin(r),ly=dx*Math.sin(r)+dy*Math.cos(r);
-      if(Math.abs(lx)<=z.w/2&&Math.abs(ly)<=z.d/2)a-=(it.w+2*(it.clr||0))*(it.d+2*(it.clr||0))});
+      if(Math.abs(lx)<=z.w/2&&Math.abs(ly)<=z.d/2)a-=(it.w+2*(it.clr||0))*(it.d+2*(it.clr||0))+(persons(it)?1:0)});
     zone+=Math.floor(Math.max(0,a)/ppm)});
   const train=Math.max(0,area-svc),lim=Math.floor(train/m2),sum=dev+zone;
   return{dev,zone,skip,train,lim,m2,sum,total:Math.min(sum,lim),byArea:lim<sum};
@@ -986,7 +1128,7 @@ function renderStats(){
   <div class="cap"><b>${cp.total}</b><span>Personen können gleichzeitig trainieren</span></div>
   <div class="kv"><span>Geräteplätze</span><b>${cp.dev}</b><span>Plätze auf Trainingsflächen</span><b>${cp.zone}</b><span>Trainingsfläche</span><b>${fmt(cp.train)} m²</b><span>Flächenlimit</span><b class="${cp.byArea?'warn':''}">${cp.lim}</b>${cp.skip?`<span>Nicht gezählt (Überschneidung)</span><b class="warn">${cp.skip}</b>`:''}</div>
   <label class="fld" style="margin-top:8px">Mindestfläche m² pro Person<input id="capM2" type="number" step=".5" min="1" value="${cp.m2}"></label>
-  <p class="help" style="margin-top:6px">Formel: min(Geräteplätze + Σ freie Zonenfläche ÷ m² pro Person der Zone, Trainingsfläche ÷ ${fmt(cp.m2)} m²). Geräte mit Kollision, außerhalb des Raums oder mit überschnittenem Abstand zählen nicht. ${cp.byArea?'Hier begrenzt die Fläche.':'Hier begrenzen die Geräte.'} Richtwert, ersetzt keine Prüfung nach Bau- und Arbeitsstättenrecht.</p>
+  <p class="help" style="margin-top:6px">Formel: min(Geräteplätze + Σ freie Zonenfläche (abzüglich Geräte samt Abstand und 1 m² Laufweg je Gerät) ÷ m² pro Person der Zone, Trainingsfläche ÷ ${fmt(cp.m2)} m²). Geräte mit Kollision, außerhalb des Raums oder mit überschnittenem Abstand zählen nicht. ${cp.byArea?'Hier begrenzt die Fläche.':'Hier begrenzen die Geräte.'} Richtwert, ersetzt keine Prüfung nach Bau- und Arbeitsstättenrecht.</p>
   <h4 style="margin-top:14px">Stückliste</h4><div class="bom">${Object.keys(counts).length?Object.entries(counts).map(([k,v])=>`<div><span>${k}</span><b>${v}×</b></div>`).join(''):'<span style="color:var(--cream-d)">Noch keine Geräte eingeplant.</span>'}</div>`;
   $('#capM2').onchange=e=>{S.capM2=Math.max(1,+e.target.value||4);save();renderStats()};
 }
@@ -1008,14 +1150,25 @@ $$('[data-go]').forEach(a=>a.onclick=()=>document.getElementById(a.dataset.go).s
 $('#home').onclick=openLanding;
 
 /* Hero 3D */
-(function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0;
-  function frame(){const r=cvH.getBoundingClientRect();if(r.width>0){const dpr=devicePixelRatio||1;if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
-    t+=.0035;render3D(c,r.width,r.height,{yaw:.5+Math.sin(t)*.7,pitch:.78,dist:36},room,items,{dpr,labels:false})}requestAnimationFrame(frame)}frame()})();
+(function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0,last=0;
+  function frame(ts){const r=cvH.getBoundingClientRect();if(r.width>0&&$('#landing').style.display!=='none'&&ts-last>30){last=ts;const dpr=Math.min(2,devicePixelRatio||1);if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
+    t+=.0028;render3D(c,r.width,r.height,{yaw:.45+Math.sin(t)*.55,pitch:.66+Math.sin(t*.7)*.05,dist:25.5},room,items,{dpr,labels:false,pretty:true})}requestAnimationFrame(frame)}requestAnimationFrame(frame)})();
+/* Geräte-Showroom auf der Startseite */
+(function showroom(){const grid=$('#showGrid');if(!grid)return;
+  const list=['tread_tg','rack','bike_lf','chest','cross','legpress','bag','dbrack'];
+  grid.innerHTML=list.map(id=>{const t=T(id),cm=v=>Math.round(v*100);return `<figure><canvas data-m="${id}"></canvas><figcaption><b>${t.name}</b><span>${t.ref||(cm(t.d)+' × '+cm(t.w)+' × '+cm(t.h)+' cm')}</span></figcaption></figure>`}).join('');
+  const cvs=$$('#showGrid canvas');let ang=0,hover=null;
+  function paint(cv,yaw){const id=cv.dataset.m,t=T(id),r=cv.getBoundingClientRect();if(!r.width)return;const dpr=Math.min(2,devicePixelRatio||1);if(cv.width!==Math.round(r.width*dpr)){cv.width=r.width*dpr;cv.height=r.height*dpr}
+    const m=Math.max(t.w,t.d),room={w:t.w+1.6,d:t.d+1.6},it=mk(id,room.w/2,room.d/2);render3D(cv.getContext('2d'),r.width,r.height,{yaw,pitch:.52,dist:Math.max(3.2,m*1.25+t.h*.75)},room,[it],{dpr,labels:false,pretty:true,bare:true})}
+  cvs.forEach(cv=>{cv.onmouseenter=()=>hover=cv;cv.onmouseleave=()=>{hover=null;paint(cv,.65)}});
+  const all=()=>cvs.forEach(cv=>paint(cv,.65));addEventListener('resize',all);setTimeout(all,60);
+  (function spin(){if(hover){ang+=.02;paint(hover,.65+ang)}requestAnimationFrame(spin)})();
+})();
 
 /* Start */
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 </script>
-<script src="account.js"></script>
+<script src="account.js?v=3"></script>
 </body>
 </html>
