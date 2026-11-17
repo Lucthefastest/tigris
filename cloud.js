@@ -81,7 +81,10 @@
       for (const r of [u, it, ev, up]) if (r.error) throw r.error;
       return { users: u.data, items: it.data, events: ev.data, uploads: up.data };
     },
-    async uploadUrl(path) { const { data } = await sb.storage.from('plans').createSignedUrl(path, 600); return data && data.signedUrl }
+    async uploadUrl(path) { const { data } = await sb.storage.from('plans').createSignedUrl(path, 600); return data && data.signedUrl },
+    async submitQuote(row) { const { error } = await sb.from('quote_requests').insert(row); if (error) throw error },
+    async adminQuotes() { const { data, error } = await sb.from('quote_requests').select('*').order('created_at', { ascending: false }).limit(1000); if (error) throw error; return data || [] },
+    async updateQuote(id, patch) { const { error } = await sb.from('quote_requests').update(patch).eq('id', id); if (error) throw error }
   };
 
   /* ---------- Adapter: lokaler Testmodus ---------- */
@@ -117,7 +120,10 @@
       const items = Object.values(m).map(x => ({ item: x.item, name: x.name, adds: x.adds, users: x.u.size })).sort((a, b) => b.adds - a.adds);
       return { users, items, events: ev.slice().reverse().slice(0, 3000), uploads: ups.slice().reverse() };
     },
-    async uploadUrl() { return null }
+    async uploadUrl() { return null },
+    async submitQuote(row) { const q = LS.get('tigris.local.quotes', []); q.push(Object.assign({ created_at: new Date().toISOString(), status: 'neu', admin_note: null }, row)); LS.set('tigris.local.quotes', q) },
+    async adminQuotes() { return LS.get('tigris.local.quotes', []).slice().reverse() },
+    async updateQuote(id, patch) { const q = LS.get('tigris.local.quotes', []), x = q.find(v => v.id === id); if (x) { Object.assign(x, patch); LS.set('tigris.local.quotes', q) } }
   };
   const A = LIVE && sb ? remote : local;
   C.mode = A === remote ? 'supabase' : 'local';
@@ -152,6 +158,10 @@
   C.isAdmin = () => A.isAdmin();
   C.admin = () => A.admin();
   C.uploadUrl = p => A.uploadUrl(p);
+  // Anfragen gehen auch ohne Konto; mit Konto wird die Anfrage dem Konto zugeordnet
+  C.submitQuote = row => A.submitQuote(Object.assign({ user_id: C.user ? C.user.id : null, anon_id: anonId }, row));
+  C.adminQuotes = () => A.adminQuotes();
+  C.updateQuote = (id, patch) => A.updateQuote(id, patch);
   C.needsProfile = () => !!C.user && (!C.profile || !C.profile.terms_accepted_at || !C.profile.full_name || !C.profile.company || !C.profile.city);
 
   /* ---------- Tracking ---------- */

@@ -34,6 +34,10 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .scroll{max-height:460px;overflow:auto}
 .tl{font-size:12.5px}.tl div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}.tl time{color:var(--cream-d);width:118px;flex:none;font-variant-numeric:tabular-nums}
 .tl code{color:var(--blue)}
+.sel{background:var(--navy-dd);border:1px solid var(--line);padding:5px 8px;color:var(--cream);font:inherit;font-size:12px}
+tr.qd td{white-space:normal;background:rgba(8,20,46,.6)}.qdet{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:6px 0}.qdet h5{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d);margin-bottom:6px}
+.qdet textarea{width:100%;background:var(--navy-dd);border:1px solid var(--line);color:var(--cream);font:inherit;font-size:12.5px;padding:6px 8px}
+.st-neu{color:#E3C68E;font-weight:700}.st-gewonnen{color:#9fd59a}.st-verloren,.st-spam{color:var(--cream-d)}
 .gate{max-width:440px;margin:60px auto;padding:0 16px}
 .note{font-size:12px;color:var(--cream-d);margin-top:8px}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
@@ -51,6 +55,9 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 <div id="dash" class="wrap" style="display:none">
   <div class="kpis" id="kpis"></div>
   <div class="grid">
+    <div class="card" style="grid-column:1/-1"><h2>Anfragen & Angebote</h2><p class="hint">Aus dem Anfrageformular (auch ohne Konto). Die Person hat der Kontaktaufnahme zu dieser Anfrage zugestimmt. Zeile anklicken für Positionen, Plan und Nachricht.</p>
+      <div class="bar"><input type="search" id="qq" placeholder="Name, Firma, Ort, E-Mail …"><label>Status <select id="qst" class="sel"><option value="">alle</option></select></label><button class="btn sm" id="qcsv">Anfragen CSV</button></div>
+      <div class="tbl scroll"><table><thead><tr><th>Datum</th><th>Status</th><th>Name / Firma</th><th>Kontakt</th><th>Art</th><th>Ort</th><th>Fläche</th><th>Budget</th><th>Zeitplan</th><th>Positionen</th><th>Leistungen</th></tr></thead><tbody id="quotes"></tbody></table></div></div>
     <div class="card"><h2>Nutzer & Leads</h2><p class="hint">Kontakt nur bei „Kontakt OK“ (ausdrückliche Einwilligung). Zeile anklicken für die Aktivität.</p>
       <div class="bar"><input type="search" id="qs" placeholder="Name, Firma, Ort, E-Mail …"><label><input type="checkbox" id="onlyOk"> nur mit Kontakt-Einwilligung</label><button class="btn sm" id="csv">Kontaktliste CSV</button></div>
       <div class="tbl scroll"><table><thead><tr><th data-k="full_name">Name</th><th data-k="company">Firma</th><th data-k="role">Rolle</th><th data-k="city">Ort</th><th data-k="email">E-Mail</th><th data-k="phone">Telefon</th><th data-k="marketing_opt_in">Kontakt</th><th data-k="sessions">Besuche</th><th data-k="active_seconds">Aktive Zeit</th><th data-k="uploads">Uploads</th><th data-k="last_seen_at">Zuletzt</th></tr></thead><tbody id="users"></tbody></table></div></div>
@@ -69,7 +76,7 @@ const dt=s=>s?new Date(s).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',
 const dur=s=>{s=+s||0;if(s<60)return s+' s';const m=Math.round(s/60);return m<60?m+' min':Math.floor(m/60)+' h '+(m%60)+' min'};
 const kb=n=>n>1e6?(n/1e6).toFixed(1)+' MB':Math.round((n||0)/1e3)+' kB';
 let D=null,sortK='last_seen_at',sortDir=-1,selUser=null;
-const NAMES={add_item:'Gerät eingeplant',remove_item:'Gerät entfernt',upload:'Plan hochgeladen',plan_detected:'Plan erkannt',view_mode:'Ansicht',export:'Export',demo_load:'Demo geladen',blank_room:'Leerer Raum',edit_mode:'Bearbeiten',wall_add:'Wand gezeichnet',door_add:'Tür eingesetzt',window_add:'Fenster eingesetzt',calibrate:'Maßstab kalibriert',open_planner:'Planer geöffnet',session_start:'Besuch gestartet',login:'Anmeldung',logout:'Abmeldung',signup:'Registrierung',profile_completed:'Profil ergänzt',consent_granted:'Einwilligung erteilt',marketing_opt_in:'Kontakt erlaubt',marketing_opt_out:'Kontakt widerrufen',click:'Klick',heartbeat:'Aktiv'};
+const NAMES={quote_open:'Anfrage geöffnet',quote_add:'Zur Anfrage hinzugefügt',quote_submit:'Anfrage gesendet',quote_plan_bom:'Stückliste in Anfrage',proposal:'Layout-Vorschlag',add_item:'Gerät eingeplant',remove_item:'Gerät entfernt',upload:'Plan hochgeladen',plan_detected:'Plan erkannt',view_mode:'Ansicht',export:'Export',demo_load:'Demo geladen',blank_room:'Leerer Raum',edit_mode:'Bearbeiten',wall_add:'Wand gezeichnet',door_add:'Tür eingesetzt',window_add:'Fenster eingesetzt',calibrate:'Maßstab kalibriert',open_planner:'Planer geöffnet',session_start:'Besuch gestartet',login:'Anmeldung',logout:'Abmeldung',signup:'Registrierung',profile_completed:'Profil ergänzt',consent_granted:'Einwilligung erteilt',marketing_opt_in:'Kontakt erlaubt',marketing_opt_out:'Kontakt widerrufen',click:'Klick',heartbeat:'Aktiv'};
 function gate(html){q('#gate').innerHTML=html;q('#gate').style.display='';q('#dash').style.display='none'}
 function login(){
   gate(`<div class="dlg" style="max-width:none"><h3>Admin-Anmeldung</h3><p class="sub">Nur für freigeschaltete Admins.${C.mode==='local'?' (Testmodus: lokale Daten dieses Browsers)':''}</p>
@@ -86,15 +93,15 @@ async function start(){
   q('#gate').style.display='none';q('#dash').style.display='';await load();
 }
 async function load(){
-  try{D=await C.admin()}catch(e){gate(`<div class="dlg" style="max-width:none"><h3>Fehler</h3><p class="sub">${esc(e.message)}</p></div>`);return}
+  try{D=await C.admin();D.quotes=await C.adminQuotes().catch(e=>{console.warn(e);return []})}catch(e){gate(`<div class="dlg" style="max-width:none"><h3>Fehler</h3><p class="sub">${esc(e.message)}</p></div>`);return}
   const byId={};D.users.forEach(u=>byId[u.id]=u);D.byId=byId;render();
 }
 function render(){
   const U=D.users,E=D.events,wk=Date.now()-7*864e5;
   const anon=new Set(E.filter(e=>!e.user_id).map(e=>e.anon_id)).size;
   const act=U.filter(u=>u.last_seen_at&&new Date(u.last_seen_at)>wk).length,tot=U.reduce((s,u)=>s+(+u.active_seconds||0),0);
-  q('#kpis').innerHTML=[[U.length,'Konten'],[U.filter(u=>u.marketing_opt_in).length,'Kontakt erlaubt'],[act,'Aktiv (7 Tage)'],[anon,'Besucher ohne Konto'],[D.uploads.length,'Uploads'],[dur(tot),'Nutzungszeit gesamt']].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
-  renderUsers();
+  q('#kpis').innerHTML=[[U.length,'Konten'],[U.filter(u=>u.marketing_opt_in).length,'Kontakt erlaubt'],[act,'Aktiv (7 Tage)'],[anon,'Besucher ohne Konto'],[D.quotes.filter(x=>x.status==='neu').length+' / '+D.quotes.length,'Neue / alle Anfragen'],[D.uploads.length,'Uploads'],[dur(tot),'Nutzungszeit gesamt']].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+  renderUsers();renderQuotes();
   const mx=Math.max(1,...D.items.map(i=>+i.adds));
   q('#items').innerHTML=D.items.length?D.items.slice(0,25).map(i=>`<div class="hb"><span class="l" title="${esc(i.item)}">${esc(i.name||i.item)}</span><span class="t"><i style="width:${i.adds/mx*100}%"></i></span><span class="n">${i.adds} (${i.users})</span></div>`).join(''):'<p class="note">Noch keine Daten.</p>';
   const cnt=(arr,key)=>{const m={};arr.forEach(e=>{const k=key(e);if(k)m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])};
@@ -105,6 +112,26 @@ function render(){
   q('#ups').innerHTML=D.uploads.length?D.uploads.map(u=>{const p=D.byId[u.user_id]||{},r=u.result||{};return `<tr><td>${dt(u.created_at)}</td><td>${esc(p.full_name||p.email||u.user_id)}<br><span class="no">${esc(p.company||'')}</span></td><td>${esc(u.file_name)}</td><td class="num">${kb(u.size)}</td><td>${r.w?`${String(r.w).replace('.',',')} × ${String(r.d).replace('.',',')} m · ${r.walls||0} Wände · Maßstab: ${r.scale==='ocr'?'Bemaßung':'manuell'}`:'–'}</td><td>${u.path?`<button class="btn sm ghost" data-path="${esc(u.path)}">Ansehen</button>`:''}</td></tr>`}).join(''):'<tr><td colspan="6" class="no">Noch keine Uploads.</td></tr>';
   document.querySelectorAll('[data-path]').forEach(b=>b.onclick=async()=>{const u=await C.uploadUrl(b.dataset.path);if(u)window.open(u,'_blank','noopener')});
 }
+const QST={neu:'Neu',in_bearbeitung:'In Bearbeitung',angebot_gesendet:'Angebot gesendet',gewonnen:'Gewonnen',verloren:'Verloren',spam:'Spam'};
+q('#qst').innerHTML+=Object.entries(QST).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+let openQ=null;
+function qFiltered(){const s=q('#qq').value.toLowerCase(),st=q('#qst').value;return D.quotes.filter(x=>(!st||x.status===st)&&(!s||[x.name,x.company,x.email,x.location,x.segment].join(' ').toLowerCase().includes(s)))}
+function renderQuotes(){
+  const R=qFiltered();
+  q('#quotes').innerHTML=R.length?R.map(x=>{const it=x.items||[],pl=x.plan;return `<tr class="u qr" data-q="${esc(x.id)}"><td>${dt(x.created_at)}</td><td class="st-${esc(x.status)}">${esc(QST[x.status]||x.status)}</td><td>${esc(x.name)}<br><span class="no">${esc(x.company||'')}</span></td><td>${esc(x.email)}<br><span class="no">${esc(x.phone||'')}${x.callback?' · Rückruf':''}</span></td><td>${esc(x.segment||'–')}</td><td>${esc(x.location||'–')}</td><td class="num">${x.area_m2?esc(x.area_m2)+' m²':'–'}</td><td>${esc(x.budget||'–')}</td><td>${esc(x.timeline||'–')}</td><td class="num">${it.reduce((s,i)=>s+(+i.qty||0),0)} (${it.length})</td><td>${esc((x.services||[]).join(', ')||'–')}</td></tr>`+
+    (openQ===x.id?`<tr class="qd"><td colspan="11"><div class="qdet"><div><h5>Positionen</h5>${it.length?it.map(i=>`${esc(i.qty)} ${esc(i.unit||'')} · ${esc(i.name)}`).join('<br>'):'<span class="no">keine</span>'}</div>
+      <div><h5>Plan</h5>${pl?`${esc(pl.name||'')}<br>Raum ${esc(pl.w)} × ${esc(pl.d)} m · ${esc(pl.area)} m²<br>${esc(pl.items)} Geräte · Kapazität ${esc(pl.persons??'–')} Personen${(pl.zones||[]).length?'<br>Bereiche: '+pl.zones.map(z=>esc(z.name)).join(', '):''}`:'<span class="no">nicht mitgesendet</span>'}<h5 style="margin-top:12px">Nachricht</h5>${esc(x.message||'–')}</div>
+      <div><h5>Bearbeitung</h5><label class="fld">Status <select class="sel" data-qs="${esc(x.id)}">${Object.entries(QST).map(([k,v])=>`<option value="${k}"${k===x.status?' selected':''}>${v}</option>`).join('')}</select></label>
+      <h5 style="margin-top:10px">Interne Notiz</h5><textarea rows="4" data-qn="${esc(x.id)}">${esc(x.admin_note||'')}</textarea><p class="note">Einwilligung: ${dt(x.consent_at)}${x.user_id?' · mit Konto':' · ohne Konto'}</p></div></div></td></tr>`:'')}).join(''):'<tr><td colspan="11" class="no">Noch keine Anfragen.</td></tr>';
+  document.querySelectorAll('tr.qr').forEach(r=>r.onclick=()=>{openQ=openQ===r.dataset.q?null:r.dataset.q;renderQuotes()});
+  document.querySelectorAll('[data-qs]').forEach(e=>{e.onclick=ev=>ev.stopPropagation();e.onchange=async()=>{const x=D.quotes.find(v=>v.id===e.dataset.qs);try{await C.updateQuote(x.id,{status:e.value});x.status=e.value;render()}catch(er){alert(er.message)}}});
+  document.querySelectorAll('[data-qn]').forEach(e=>e.onchange=async()=>{const x=D.quotes.find(v=>v.id===e.dataset.qn);try{await C.updateQuote(x.id,{admin_note:e.value||null});x.admin_note=e.value}catch(er){alert(er.message)}});
+}
+q('#qq').oninput=renderQuotes;q('#qst').onchange=renderQuotes;
+q('#qcsv').onclick=()=>{const cols=['created_at','status','name','company','email','phone','callback','segment','location','area_m2','budget','timeline','services','items','message','admin_note'];
+  const val=(x,c)=>c==='services'?(x.services||[]).join(', '):c==='items'?(x.items||[]).map(i=>i.qty+'× '+i.name).join(', '):x[c];
+  const csv='\ufeff'+[cols.join(';'),...qFiltered().map(x=>cols.map(c=>'"'+String(val(x,c)??'').replace(/"/g,'""')+'"').join(';'))].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='tigris-anfragen.csv';a.click()};
 function filtered(){const s=q('#qs').value.toLowerCase(),ok=q('#onlyOk').checked;return D.users.filter(u=>(!ok||u.marketing_opt_in)&&(!s||[u.full_name,u.company,u.city,u.country,u.email,u.role].join(' ').toLowerCase().includes(s)))}
 function renderUsers(){
   const rows=filtered().sort((a,b)=>{const x=a[sortK],y=b[sortK];return (x==null)-(y==null)||(x>y?1:x<y?-1:0)*sortDir});

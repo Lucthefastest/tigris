@@ -159,11 +159,12 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 @media(max-width:1000px){.hero{grid-template-columns:1fr;padding-right:22px}.hero .cv{margin-right:0}.steps,.disc,.stats,.show{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
-<link rel="stylesheet" href="account.css?v=4">
+<link rel="stylesheet" href="account.css?v=7">
+<link rel="stylesheet" href="shop.css?v=7">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="config.js?v=4"></script>
-<script src="cloud.js?v=4"></script>
-<script src="models.js?v=4"></script>
+<script src="config.js?v=7"></script>
+<script src="cloud.js?v=7"></script>
+<script src="models.js?v=7"></script>
 </head>
 <body>
 
@@ -171,7 +172,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <div id="landing">
   <header>
     <div class="mark"><svg viewBox="0 0 26 26" fill="none" stroke="#EDE3CC" stroke-width="2.2"><path d="M3 3l6 7M9 2l6 9M16 3l5 6M3 12l7 6M10 11l7 9M18 12l5 5M4 22l6 2M13 22l8 2"/></svg>TIGRIS<small>GYM LAYOUT STUDIO</small></div>
-    <nav><a data-go="how">Ablauf</a><a data-go="show">Geräte</a><a data-go="disc">Disziplinen</a><a data-go="start">Konzept</a><button class="btn sm solid" data-open>Planer öffnen</button></nav>
+    <nav><a data-go="leist">Leistungen</a><a data-go="how">Ablauf</a><a data-go="katalog">Katalog</a><a data-go="disc">Disziplinen</a><button class="btn sm" data-quote="nav">Angebot anfordern</button><button class="btn sm solid" data-open>Planer öffnen</button></nav>
   </header>
   <section class="hero">
     <div>
@@ -189,7 +190,18 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <div><b>Kapazität</b><span>Personen gleichzeitig, ohne Überschneidung</span></div>
     <div><b>→ Sourcing</b><span>Stückliste zu Herstellern</span></div>
   </div>
-  <section class="block" id="how">
+  <section class="block" id="leist">
+    <h2>Alles für dein Studio – aus einer Hand</h2>
+    <p class="lead">Von der ersten Skizze bis zum ersten Training: Ausstattung, Planung, Finanzierung und Montage, abgestimmt auf Fläche, Konzept und Budget.</p>
+    <div class="pill4">
+      <article><span class="n">01 · Ausstattung</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX und Kampfsport – herstellerunabhängig ausgewählt und passend zur Fläche, die du geplant hast.</p><button class="btn sm" data-go="katalog">Zum Katalog</button></article>
+      <article><span class="n">02 · Planung</span><h3>Planung & Beratung</h3><p>Layout, Kapazität und 3D-Ansicht im Planer. Auf Wunsch prüfen Experten Zonen, Laufwege und Konzept mit dir.</p><button class="btn sm" data-quote="leist" data-service="Beratung & Studiokonzept">Beratung anfragen</button></article>
+      <article><span class="n">03 · Finanzierung</span><h3>Leasing & Mietkauf</h3><p>Ausstattung über Finanzierungspartner verteilt bezahlen. Laufzeit und Konditionen klären wir individuell mit dir.</p><button class="btn sm" data-quote="leist" data-service="Finanzierung / Leasing">Finanzierung anfragen</button></article>
+      <article><span class="n">04 · Umsetzung</span><h3>Lieferung & Montage</h3><p>Lieferung, Bodenverlegung, Aufbau, Kalibrierung und Einweisung – damit am Eröffnungstag alles läuft.</p><button class="btn sm" data-quote="leist" data-service="Montage & Kalibrierung">Angebot anfordern</button></article>
+    </div>
+    <div class="segs"><button data-quote="seg" data-segment="Fitnessstudio">Fitnessstudios</button><button data-quote="seg" data-segment="Boutique- / Personal-Training-Studio">Boutique & Personal Training</button><button data-quote="seg" data-segment="CrossFit- / HYROX-Box">CrossFit & HYROX</button><button data-quote="seg" data-segment="Kampfsportschule">Kampfsport</button><button data-quote="seg" data-segment="Hotel & Resort">Hotels & Resorts</button><button data-quote="seg" data-segment="Firmenfitness">Firmenfitness</button><button data-quote="seg" data-segment="Verein / Schule / Hochschule">Vereine & Schulen</button><button data-quote="seg" data-segment="Polizei, Feuerwehr, Bundeswehr">Polizei, Feuerwehr, Bundeswehr</button><button data-quote="seg" data-segment="Physio & Reha">Physio & Reha</button></div>
+  </section>
+  <section class="block" id="how" style="padding-top:0">
     <h2>Vom Plan zur Eröffnung in drei Schritten</h2>
     <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
     <div class="steps">
@@ -202,6 +214,22 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <h2>Echte Geräte. Echte Maße.</h2>
     <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
     <div class="show" id="showGrid"></div>
+  </section>
+  <section class="block" id="katalog" style="padding-top:0">
+    <h2>Geräte-Katalog</h2>
+    <p class="lead">Die Auswahl wächst. Bis Hersteller, Bilder und Preise feststehen, sind die Produkte als Platzhalter angelegt – du kannst sie trotzdem anfragen oder direkt im Planer platzieren.</p>
+    <div class="kcats" id="katCats"></div>
+    <div class="kgrid" id="katGrid"></div>
+  </section>
+  <section class="block" id="install" style="padding-top:0">
+    <h2>Von der Lieferung bis zum ersten Training</h2>
+    <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
+    <div class="inst">
+      <div><b>Boden</b><span>Gummi-, Turf- und Mattenflächen passend zu den Bereichen im Plan verlegen.</span></div>
+      <div><b>Montage & Kalibrierung</b><span>Aufbau, Ausrichtung und Einstellung aller Geräte nach Herstellervorgabe.</span></div>
+      <div><b>Prüfung & Abnahme</b><span>Sicherheitsprüfung jedes Geräts vor der Eröffnung, mit Protokoll.</span></div>
+      <div><b>Einweisung & Wartung</b><span>Einweisung des Teams, Pflegehinweise und auf Wunsch ein Wartungsplan.</span></div>
+    </div>
   </section>
   <section class="block" id="disc" style="padding-top:0">
     <h2>Eine Planung, jede Disziplin</h2>
@@ -219,7 +247,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   </section>
   <div class="bandcta" id="start">
     <h2>Erst planen. Dann gezielt einkaufen.</h2>
-    <button class="btn" data-open>Planer öffnen →</button>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-open>Planer öffnen →</button><button class="btn" data-quote="band">Unverbindliches Angebot anfordern</button></div>
   </div>
   <footer class="f"><span>TIGRIS · Gym Layout Studio</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
 </div>
@@ -233,6 +261,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
       <button class="btn sm ghost" id="bUndo">↶ Rückgängig</button>
       <button class="btn sm ghost" id="bJson">JSON</button>
       <button class="btn sm ghost" id="bCsv">Stückliste CSV</button>
+      <button class="btn sm" data-quote="app">Angebot anfordern<span class="qbadge"></span></button>
       <button class="btn sm solid" id="bPng">PNG</button>
     </div>
   </div>
@@ -1246,7 +1275,7 @@ function openApp(){$('#landing').style.display='none';$('#app').classList.add('o
 function openLanding(){$('#app').classList.remove('on');$('#landing').style.display='';}
 $$('[data-open]').forEach(b=>b.onclick=()=>{openApp();if(!S.items.length&&!S.plan)renderStats()});
 $$('[data-demo]').forEach(b=>b.onclick=()=>{openApp();setTimeout(loadDemo,80)});
-$$('[data-go]').forEach(a=>a.onclick=()=>document.getElementById(a.dataset.go).scrollIntoView({behavior:'smooth'}));
+$$('[data-go]').forEach(a=>a.onclick=()=>{if($('#app').classList.contains('on'))openLanding();document.getElementById(a.dataset.go).scrollIntoView({behavior:'smooth'})});
 $('#home').onclick=openLanding;
 
 /* Hero 3D */
@@ -1269,6 +1298,7 @@ $('#home').onclick=openLanding;
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 </script>
-<script src="account.js?v=4"></script>
+<script src="shop.js?v=7"></script>
+<script src="account.js?v=7"></script>
 </body>
 </html>

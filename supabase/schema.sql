@@ -167,3 +167,42 @@ group by 1 order by 3 desc;
 
 -- ---------- Nach der ersten eigenen Registrierung: sich selbst zum Admin machen ----------
 -- insert into public.admins (user_id) select id from auth.users order by created_at limit 1;
+
+-- ---------- Anfragen / Angebote (auch ohne Konto möglich) ----------
+create table if not exists public.quote_requests (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  user_id uuid references auth.users(id) on delete set null,
+  anon_id text check (char_length(anon_id) <= 80),
+  status text not null default 'neu' check (status in ('neu','in_bearbeitung','angebot_gesendet','gewonnen','verloren','spam')),
+  name text not null check (char_length(name) between 2 and 120),
+  company text check (char_length(company) <= 160),
+  email text not null check (char_length(email) <= 200 and email ~* '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$'),
+  phone text check (char_length(phone) <= 60),
+  callback boolean not null default false,
+  segment text check (char_length(segment) <= 80),
+  location text check (char_length(location) <= 120),
+  area_m2 numeric check (area_m2 is null or (area_m2 >= 0 and area_m2 < 1000000)),
+  timeline text check (char_length(timeline) <= 40),
+  budget text check (char_length(budget) <= 40),
+  services text[] not null default '{}' check (cardinality(services) <= 20),
+  items jsonb not null default '[]' check (jsonb_typeof(items) = 'array' and pg_column_size(items) < 65536),
+  plan jsonb check (plan is null or pg_column_size(plan) < 65536),
+  message text check (char_length(message) <= 4000),
+  consent_at timestamptz not null,
+  admin_note text check (char_length(admin_note) <= 4000)
+);
+alter table public.quote_requests enable row level security;
+drop policy if exists "quotes insert" on public.quote_requests;
+create policy "quotes insert" on public.quote_requests for insert to anon, authenticated
+  with check ((user_id is null or user_id = auth.uid()) and status = 'neu' and admin_note is null);
+drop policy if exists "quotes read own or admin" on public.quote_requests;
+create policy "quotes read own or admin" on public.quote_requests for select to authenticated
+  using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "quotes admin update" on public.quote_requests;
+create policy "quotes admin update" on public.quote_requests for update to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "quotes admin delete" on public.quote_requests;
+create policy "quotes admin delete" on public.quote_requests for delete to authenticated using (public.is_admin());
+grant insert on public.quote_requests to anon, authenticated;
+grant select, update, delete on public.quote_requests to authenticated;
