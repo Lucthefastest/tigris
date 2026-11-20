@@ -4,13 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TIGRIS – Gym Layout Studio (Mockup)</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <style>
 :root{
-  --ink:#0A0B10; --navy:#10295A; --navy-d:#0B1D42; --navy-dd:#08142E;
-  --cream:#EDE3CC; --cream-d:#BDB4A0; --blue:#7E9BD1; --red:#E0625A;
-  --line:rgba(237,227,204,.16); --line2:rgba(237,227,204,.3);
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  --sans:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --ink:#0A1226; --navy:#1B2C55; --navy-d:#13224A; --navy-dd:#0E1A33;
+  --cream:#EFE7D6; --cream-d:#A9B5CD; --blue:#8FA3C9; --red:#E0625A;
+  --line:rgba(239,231,214,.16); --line2:rgba(239,231,214,.3);
+  --serif:"Fraunces","Iowan Old Style",Georgia,serif;
+  --sans:"Instrument Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:"DM Mono",ui-monospace,Menlo,monospace;
+  --cobalt:#2C4F9E; --koi:#4B66B8; --ice:#D7E1EE; --linen:#E3D8C3; --amber:#D99A3A;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -19,26 +23,26 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;o
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 input,select{font:inherit;color:var(--cream)}
-h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--cream);border-radius:2px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:12px;transition:.15s}
+h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid var(--cream);border-radius:2px;font-family:var(--mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-size:12px;transition:.15s}
 .btn:hover{background:var(--cream);color:var(--navy-dd)}
 .btn.solid{background:var(--cream);color:var(--navy-dd)}
 .btn.solid:hover{background:#fff}
 .btn.sm{padding:6px 10px;font-size:11px}
 .btn.ghost{border-color:var(--line2);color:var(--cream-d)}
 .btn.ghost:hover{border-color:var(--cream);color:var(--navy-dd)}
-.mark{display:inline-flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;letter-spacing:.18em;font-weight:700}
-.mark svg{width:26px;height:26px}
-.mark small{font-family:var(--sans);font-size:10px;letter-spacing:.2em;color:var(--cream-d);font-weight:500;margin-left:4px}
+.mark{display:inline-flex;align-items:baseline;gap:2px;font-family:var(--serif);font-size:27px;letter-spacing:-.02em;font-weight:400;line-height:1}
+.mark .dot{font-style:normal;color:var(--amber)}
+.mark small{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--cream-d);font-weight:400;margin-left:14px;text-transform:uppercase}
 
 /* ---------- Landing ---------- */
 #landing header{display:flex;justify-content:space-between;align-items:center;padding:22px 48px;position:relative;z-index:5}
-#landing nav{display:flex;gap:30px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
+#landing nav{display:flex;gap:30px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
 #landing nav a{cursor:pointer}#landing nav a:hover{color:var(--cream)}
-.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:20px 48px 70px;min-height:calc(100vh - 80px);background:radial-gradient(1200px 700px at 78% 40%,#17397a 0%,var(--navy) 38%,var(--navy-dd) 100%)}
-.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--cream-d);margin-bottom:22px}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:20px 48px 70px;min-height:calc(100vh - 80px);background:radial-gradient(1200px 700px at 78% 40%,#24447F 0%,var(--navy) 38%,var(--navy-dd) 100%)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-d);margin-bottom:22px}
 .hero h1{font-size:clamp(40px,5.6vw,84px);line-height:.98;margin-bottom:26px}
-.hero h1 em{font-style:italic;color:#fff}
+.hero h1{font-weight:300}.hero h1 em{font-style:italic;color:var(--ice)}
 .hero p{max-width:520px;color:var(--cream-d);font-size:16px;margin-bottom:34px}
 .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
 .hero{grid-template-columns:.9fr 1.25fr;gap:10px;padding-right:0;overflow:hidden}
@@ -46,7 +50,7 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
 .hero .cv canvas{width:100%;height:100%;display:block}
 .hero .cv .tag{position:absolute;left:12%;top:9%;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
-.hero .chips span{border:1px solid var(--line2);border-radius:99px;padding:6px 12px;font-size:11px;letter-spacing:.08em;color:var(--cream-d);background:rgba(8,20,46,.4)}
+.hero .chips span{border:1px solid var(--line2);border-radius:99px;padding:6px 12px;font-size:11px;letter-spacing:.08em;color:var(--cream-d);background:rgba(14,26,51,.4)}
 .hero .chips b{color:var(--cream);font-weight:600}
 .show{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .show figure{background:var(--navy-d);margin:0;display:flex;flex-direction:column}
@@ -56,14 +60,14 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
 .show figcaption span{font-size:12px;color:var(--cream-d);line-height:1.45;display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink)}
 .stats div{padding:34px 30px;border-right:1px solid var(--line)}.stats div:last-child{border:0}
-.stats b{display:block;font-family:var(--serif);font-size:44px;font-weight:600}
-.stats span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.stats b{display:block;font-family:var(--serif);font-size:44px;font-weight:300}
+.stats span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 section.block{padding:90px 48px}
 section.block h2{font-size:clamp(30px,3.6vw,52px);margin-bottom:14px;max-width:760px;line-height:1.05}
 section.block .lead{color:var(--cream-d);max-width:640px;margin-bottom:46px;font-size:16px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .steps article{background:var(--navy-d);padding:34px 30px}
-.steps .n{font-family:var(--serif);font-size:54px;color:var(--cream);opacity:.28;line-height:1}
+.steps .n{font-family:var(--serif);font-style:italic;font-weight:300;font-size:54px;color:var(--ice);opacity:.45;line-height:1}
 .steps h3{font-size:22px;margin:16px 0 8px}.steps p{color:var(--cream-d)}
 .disc{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .disc div{background:var(--ink);padding:26px 22px;min-height:130px;display:flex;flex-direction:column;justify-content:space-between}
@@ -75,7 +79,27 @@ section.block .lead{color:var(--cream-d);max-width:640px;margin-bottom:46px;font
 @media(max-width:640px){#landing header{padding:16px;gap:10px}#landing nav{gap:14px}#landing nav a[data-go]{display:none}
   .hero{padding:10px 16px 40px;min-height:0}.stats,.steps,.disc{grid-template-columns:1fr}.stats div{padding:22px 16px;border-right:0;border-bottom:1px solid var(--line)}.stats b{font-size:32px}
   section.block,.bandcta{padding:56px 16px}.show{grid-template-columns:1fr 1fr}.show figcaption{padding:10px 12px 14px}.show figcaption b{font-size:15px}footer.f{flex-direction:column;gap:6px;padding:20px 16px}}
-footer.f{padding:26px 48px;display:flex;justify-content:space-between;color:var(--cream-d);font-size:12px;border-top:1px solid var(--line);background:var(--ink)}
+footer.f{padding:30px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px 28px;color:var(--cream-d);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--line);background:var(--ink)}
+footer.f .mark{font-size:24px;text-transform:none;letter-spacing:-.02em;color:var(--cream)}
+footer.f .legal-links{display:flex;gap:20px;flex-wrap:wrap}footer.f a{color:var(--cream-d);text-decoration:none;cursor:pointer}footer.f a:hover{color:var(--cream)}
+/* ---------- Markenkonzept: Details ---------- */
+.kicker{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
+.kicker::before{content:"";width:40px;height:1px;background:currentColor}
+.spark{color:var(--amber)}
+.revier{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center;padding:100px 48px;background:var(--cream);color:var(--navy-dd)}
+.revier img{width:100%;max-width:520px;height:auto;display:block;justify-self:center}
+.revier .kicker{color:var(--cobalt)}
+.revier h2{font-size:clamp(36px,4.6vw,72px);line-height:.98;font-weight:300;margin-bottom:18px}
+.revier h2 em{color:var(--cobalt)}
+.revier .lead{font-family:var(--serif);font-style:italic;font-size:clamp(20px,1.8vw,26px);line-height:1.3;color:var(--navy);margin-bottom:34px;max-width:560px}
+.revier .duo{display:grid;grid-template-columns:1fr 1fr;gap:28px;border-top:1px solid var(--navy-dd);padding-top:22px}
+.revier .duo b{display:block;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
+.revier .duo p{font-size:15px;line-height:1.6;color:#2A3756}
+.revier .quote{margin-top:28px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#4A5470}
+.bandcta img{width:150px;height:auto;display:block;margin:0 auto 26px}
+.bandcta .sub{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--cobalt);margin:-14px 0 30px}
+@media(max-width:1000px){.revier{grid-template-columns:1fr;padding:64px 22px;gap:32px}.revier img{max-width:360px}}
+@media(max-width:640px){.revier .duo{grid-template-columns:1fr}footer.f{padding:22px 16px}}
 
 /* ---------- App ---------- */
 #app{display:none;height:100vh;grid-template-rows:56px 1fr;background:var(--navy-dd)}
@@ -92,7 +116,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .sec h4{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-d);font-weight:600;margin-bottom:12px}
 .sec h4 i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid var(--cream-d);border-radius:50%;font-size:10px;letter-spacing:0}
 .drop{display:block;border:1px dashed var(--line2);padding:20px 12px;text-align:center;color:var(--cream-d);font-size:12px;cursor:pointer;transition:.15s}
-.drop:hover,.drop.over{border-color:var(--cream);color:var(--cream);background:rgba(237,227,204,.05)}
+.drop:hover,.drop.over{border-color:var(--cream);color:var(--cream);background:rgba(239,231,214,.05)}
 .drop b{display:block;color:var(--cream);font-size:13px;margin-bottom:4px}
 .row{display:flex;gap:8px;align-items:center;margin-top:10px}
 .row>*{flex:1}
@@ -105,37 +129,37 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .cat{padding:4px 9px;border:1px solid var(--line2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d);border-radius:20px}
 .cat.on{background:var(--cream);color:var(--navy-dd);border-color:var(--cream)}
 .lib{display:flex;flex-direction:column;gap:4px}
-.li{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid transparent;background:rgba(8,20,46,.55);text-align:left;width:100%;border-radius:2px}
+.li{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid transparent;background:rgba(14,26,51,.55);text-align:left;width:100%;border-radius:2px}
 .li:hover{border-color:var(--cream)}
 .li .sw{width:14px;height:14px;border:1px solid var(--cream);flex:none}
 .li .nm{flex:1;font-size:13px}.li .dm{font-size:11px;color:var(--cream-d);font-variant-numeric:tabular-nums}
 .stage{position:relative;min-width:0;min-height:0;background:var(--navy-dd);overflow:hidden}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 .tools{position:absolute;left:14px;top:14px;display:flex;gap:6px;z-index:3;flex-wrap:wrap;max-width:calc(100% - 28px)}
-.seg{display:flex;border:1px solid var(--line2);background:rgba(10,11,16,.85);backdrop-filter:blur(6px)}
+.seg{display:flex;border:1px solid var(--line2);background:rgba(10,18,38,.85);backdrop-filter:blur(6px)}
 .seg button{padding:8px 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
 .seg button.on{background:var(--cream);color:var(--navy-dd);font-weight:700}
 .seg button:not(.on):hover{color:var(--cream)}
-.tg{padding:8px 12px;border:1px solid var(--line2);background:rgba(10,11,16,.85);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.tg{padding:8px 12px;border:1px solid var(--line2);background:rgba(10,18,38,.85);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .tg.on{border-color:var(--cream);color:var(--cream)}
 .tg:hover{color:var(--cream)}
-.hud{position:absolute;left:14px;bottom:12px;z-index:3;font-size:11px;color:var(--cream-d);letter-spacing:.08em;font-variant-numeric:tabular-nums;background:rgba(10,11,16,.7);padding:6px 10px;border:1px solid var(--line)}
-.legend{position:absolute;right:14px;bottom:12px;z-index:3;display:flex;gap:12px;background:rgba(10,11,16,.7);padding:6px 10px;border:1px solid var(--line);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d)}
+.hud{position:absolute;left:14px;bottom:12px;z-index:3;font-size:11px;color:var(--cream-d);letter-spacing:.08em;font-variant-numeric:tabular-nums;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line)}
+.legend{position:absolute;right:14px;bottom:12px;z-index:3;display:flex;gap:12px;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d)}
 .legend span{display:flex;align-items:center;gap:6px}.legend i{width:10px;height:10px;display:inline-block;border:1px solid var(--cream)}
 .card{position:absolute;z-index:4;background:var(--ink);border:1px solid var(--cream);padding:16px 18px;width:310px;left:50%;top:70px;transform:translateX(-50%);display:none}
 .card.on{display:block}
 #propCard{width:320px;left:auto;right:14px;transform:none;max-height:calc(100% - 90px);overflow:auto}#propCard select{width:100%;background:var(--navy-dd);color:var(--cream);border:1px solid var(--line);padding:8px 10px;font:inherit;font-size:13px;margin-top:4px}.chk{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--cream-d);margin:10px 0 4px;cursor:pointer}
 .pres{margin:10px 0 0!important;color:var(--cream)!important;font-size:13px!important;line-height:1.5}.pres:empty{display:none}.pres b{font-family:var(--serif);font-size:26px;color:var(--cream);display:block}
 .card h5{font-family:var(--serif);font-size:17px;margin-bottom:6px}.card p{color:var(--cream-d);font-size:12px;margin-bottom:10px}
-.proc{position:absolute;inset:0;z-index:6;background:rgba(8,20,46,.88);display:none;place-items:center}
+.proc{position:absolute;inset:0;z-index:6;background:rgba(14,26,51,.88);display:none;place-items:center}
 .proc.on{display:grid}
 .proc div.in{width:320px}
 .proc h5{font-family:var(--serif);font-size:20px;margin-bottom:14px}
 .proc li{list-style:none;padding:7px 0;border-bottom:1px solid var(--line);color:var(--cream-d);font-size:13px;display:flex;justify-content:space-between}
 .edbar{display:none;flex-basis:100%;gap:6px;align-items:center;flex-wrap:wrap}.edbar.on{display:flex}
-.mini{display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--line2);background:rgba(10,11,16,.85);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.mini{display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--line2);background:rgba(10,18,38,.85);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .mini input{width:54px;background:var(--navy-dd);border:1px solid var(--line);padding:4px 5px;font-size:12px;color:var(--cream);letter-spacing:0}
-.edhint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;background:rgba(10,11,16,.85);border:1px solid var(--line);padding:6px 12px;font-size:11px;color:var(--cream-d);display:none;max-width:55%;text-align:center}.edhint.on{display:block}
+.edhint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;background:rgba(10,18,38,.85);border:1px solid var(--line);padding:6px 12px;font-size:11px;color:var(--cream-d);display:none;max-width:55%;text-align:center}.edhint.on{display:block}
 .tg.edit.on{background:var(--cream);color:var(--navy-dd);font-weight:700}
 .det{font-size:11.5px;line-height:1.5;color:var(--cream-d);margin-top:10px}.det:empty{display:none}
 .proc li.ok{color:var(--cream)}.proc li.ok::after{content:"✓"}
@@ -171,7 +195,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <!-- ======================= LANDING / KONZEPT ======================= -->
 <div id="landing">
   <header>
-    <div class="mark"><svg viewBox="0 0 26 26" fill="none" stroke="#EDE3CC" stroke-width="2.2"><path d="M3 3l6 7M9 2l6 9M16 3l5 6M3 12l7 6M10 11l7 9M18 12l5 5M4 22l6 2M13 22l8 2"/></svg>TIGRIS<small>GYM LAYOUT STUDIO</small></div>
+    <div class="mark">Tigris<i class="dot">.</i><small>Gym Layout Studio</small></div>
     <nav><a data-go="leist">Leistungen</a><a data-go="how">Ablauf</a><a data-go="katalog">Katalog</a><a data-go="disc">Disziplinen</a><button class="btn sm" data-quote="nav">Angebot anfordern</button><button class="btn sm solid" data-open>Planer öffnen</button></nav>
   </header>
   <section class="hero">
@@ -190,7 +214,21 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <div><b>Kapazität</b><span>Personen gleichzeitig, ohne Überschneidung</span></div>
     <div><b>→ Sourcing</b><span>Stückliste zu Herstellern</span></div>
   </div>
+  <section class="revier" id="revier">
+    <img src="assets/tigris-mark-ink.webp" alt="Bildmarke: Tiger und Schneeleopard umkreisen sich im Kampf" width="907" height="1000" loading="lazy">
+    <div>
+      <div class="kicker">No. 00 · Haltung</div>
+      <h2>Zwei Raubkatzen.<br><em>Ein Revier.</em></h2>
+      <p class="lead">Kraft trifft Präzision. Wir bringen beides in dein Studio.</p>
+      <div class="duo">
+        <div><b>Der Tiger</b><p>Kraft und Tempo. Wir finden die passenden Hersteller, verhandeln und holen die Geräte sicher bis in dein Studio.</p></div>
+        <div><b>Der Schneeleopard</b><p>Ruhe und Präzision. Wir prüfen Fabriken und Geräte vor dem Versand und planen jede Fläche auf den Zentimeter.</p></div>
+      </div>
+      <p class="quote"><span class="spark">✦</span> Wir zählen Schrauben, damit du Mitglieder zählst.</p>
+    </div>
+  </section>
   <section class="block" id="leist">
+    <div class="kicker">No. 01 · Leistungen</div>
     <h2>Alles für dein Studio – aus einer Hand</h2>
     <p class="lead">Von der ersten Skizze bis zum ersten Training: Ausstattung, Planung, Finanzierung und Montage, abgestimmt auf Fläche, Konzept und Budget.</p>
     <div class="pill4">
@@ -202,6 +240,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <div class="segs"><button data-quote="seg" data-segment="Fitnessstudio">Fitnessstudios</button><button data-quote="seg" data-segment="Boutique- / Personal-Training-Studio">Boutique & Personal Training</button><button data-quote="seg" data-segment="CrossFit- / HYROX-Box">CrossFit & HYROX</button><button data-quote="seg" data-segment="Kampfsportschule">Kampfsport</button><button data-quote="seg" data-segment="Hotel & Resort">Hotels & Resorts</button><button data-quote="seg" data-segment="Firmenfitness">Firmenfitness</button><button data-quote="seg" data-segment="Verein / Schule / Hochschule">Vereine & Schulen</button><button data-quote="seg" data-segment="Polizei, Feuerwehr, Bundeswehr">Polizei, Feuerwehr, Bundeswehr</button><button data-quote="seg" data-segment="Physio & Reha">Physio & Reha</button></div>
   </section>
   <section class="block" id="how" style="padding-top:0">
+    <div class="kicker">No. 02 · Ablauf</div>
     <h2>Vom Plan zur Eröffnung in drei Schritten</h2>
     <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
     <div class="steps">
@@ -211,27 +250,31 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     </div>
   </section>
   <section class="block" id="show" style="padding-top:0">
+    <div class="kicker">No. 03 · Geräte</div>
     <h2>Echte Geräte. Echte Maße.</h2>
     <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
     <div class="show" id="showGrid"></div>
   </section>
   <section class="block" id="katalog" style="padding-top:0">
+    <div class="kicker">No. 04 · Katalog</div>
     <h2>Geräte-Katalog</h2>
     <p class="lead">Die Auswahl wächst. Bis Hersteller, Bilder und Preise feststehen, sind die Produkte als Platzhalter angelegt – du kannst sie trotzdem anfragen oder direkt im Planer platzieren.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
   <section class="block" id="install" style="padding-top:0">
+    <div class="kicker">No. 05 · Service</div>
     <h2>Von der Lieferung bis zum ersten Training</h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
       <div><b>Boden</b><span>Gummi-, Turf- und Mattenflächen passend zu den Bereichen im Plan verlegen.</span></div>
       <div><b>Montage & Kalibrierung</b><span>Aufbau, Ausrichtung und Einstellung aller Geräte nach Herstellervorgabe.</span></div>
-      <div><b>Prüfung & Abnahme</b><span>Sicherheitsprüfung jedes Geräts vor der Eröffnung, mit Protokoll.</span></div>
+      <div><b>Prüfung & Abnahme</b><span>Sicherheitsprüfung jedes Geräts vor der Eröffnung, mit Protokoll. Kein Gerät ohne Papiere.</span></div>
       <div><b>Einweisung & Wartung</b><span>Einweisung des Teams, Pflegehinweise und auf Wunsch ein Wartungsplan.</span></div>
     </div>
   </section>
   <section class="block" id="disc" style="padding-top:0">
+    <div class="kicker">No. 06 · Disziplinen</div>
     <h2>Eine Planung, jede Disziplin</h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
@@ -246,16 +289,18 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     </div>
   </section>
   <div class="bandcta" id="start">
+    <img src="assets/tigris-mark-ink.webp" alt="" aria-hidden="true" width="907" height="1000" loading="lazy">
     <h2>Erst planen. Dann gezielt einkaufen.</h2>
+    <p class="sub">Kraft trifft Präzision.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-open>Planer öffnen →</button><button class="btn" data-quote="band">Unverbindliches Angebot anfordern</button></div>
   </div>
-  <footer class="f"><span>TIGRIS · Gym Layout Studio</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
+  <footer class="f"><span class="mark">Tigris<i class="dot">.</i></span><span>Beratung · Sourcing · Planung</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
 </div>
 
 <!-- ======================= PLANER ======================= -->
 <div id="app">
   <div class="top">
-    <div class="mark" style="cursor:pointer" id="home"><svg viewBox="0 0 26 26" fill="none" stroke="#EDE3CC" stroke-width="2.2"><path d="M3 3l6 7M9 2l6 9M16 3l5 6M3 12l7 6M10 11l7 9M18 12l5 5M4 22l6 2M13 22l8 2"/></svg>TIGRIS</div>
+    <div class="mark" style="cursor:pointer" id="home">Tigris<i class="dot">.</i></div>
     <div class="mid proj">Projekt&nbsp;<input id="projName" value="Neues Studio"></div>
     <div class="mid">
       <button class="btn sm ghost" id="bUndo">↶ Rückgängig</button>
@@ -335,8 +380,8 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 /* ============ Grunddaten ============ */
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const fmt=(n,d=1)=>n.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
-const COL={navy:'#10295A',navyD:'#0B1D42',navyDD:'#08142E',cream:'#EDE3CC',creamD:'#BDB4A0',red:'#E0625A',ink:'#0A0B10'};
-const CATS={bereich:{n:'Bereichsvorlagen',c:'#E3C68E'},kraft:{n:'Kraft',c:'#EDE3CC'},cardio:{n:'Cardio',c:'#7E9BD1'},func:{n:'Functional / HYROX',c:'#B9B3A3'},kampf:{n:'Kampfsport / MMA',c:'#C98B62'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},platz:{n:'Platzhalter',c:'#8C93A8'},service:{n:'Service / Räume',c:'#4A5166'}};
+const COL={navy:'#1B2C55',navyD:'#13224A',navyDD:'#0E1A33',cream:'#EFE7D6',creamD:'#A9B5CD',red:'#E0625A',ink:'#0A1226'};
+const CATS={bereich:{n:'Bereichsvorlagen',c:'#E3C68E'},kraft:{n:'Kraft',c:'#EFE7D6'},cardio:{n:'Cardio',c:'#8FA3C9'},func:{n:'Functional / HYROX',c:'#B9B3A3'},kampf:{n:'Kampfsport / MMA',c:'#C98B62'},sport:{n:'Klettern / Courts',c:'#4C6FB3'},platz:{n:'Platzhalter',c:'#8C93A8'},service:{n:'Service / Räume',c:'#4A5166'}};
 // id, Name, Kategorie, Breite (quer), Tiefe (Länge), Höhe, Abstand, Zone?, Personen (bei Zonen: m² pro Person), rund?, Referenz
 // Herstellermaße laut Datenblatt bzw. Händlerangabe; „Ø“ = Durchschnitt mehrerer Hersteller; „Richtwert“ = übliche Größe ohne Herstellerangabe
 const LIB=[
@@ -729,8 +774,8 @@ function draw2D(){
   // Raster
   c.save();if(poly){polyPath();c.clip()}
   const step=z>=16?1:5;c.lineWidth=1;
-  for(let x=0;x<=S.room.w+.001;x+=step){c.strokeStyle=(Math.round(x)%5===0)?'rgba(237,227,204,.15)':'rgba(237,227,204,.06)';c.beginPath();c.moveTo(rx+x*z,ry);c.lineTo(rx+x*z,ry+rh);c.stroke()}
-  for(let y=0;y<=S.room.d+.001;y+=step){c.strokeStyle=(Math.round(y)%5===0)?'rgba(237,227,204,.15)':'rgba(237,227,204,.06)';c.beginPath();c.moveTo(rx,ry+y*z);c.lineTo(rx+rw,ry+y*z);c.stroke()}
+  for(let x=0;x<=S.room.w+.001;x+=step){c.strokeStyle=(Math.round(x)%5===0)?'rgba(239,231,214,.15)':'rgba(239,231,214,.06)';c.beginPath();c.moveTo(rx+x*z,ry);c.lineTo(rx+x*z,ry+rh);c.stroke()}
+  for(let y=0;y<=S.room.d+.001;y+=step){c.strokeStyle=(Math.round(y)%5===0)?'rgba(239,231,214,.15)':'rgba(239,231,214,.06)';c.beginPath();c.moveTo(rx,ry+y*z);c.lineTo(rx+rw,ry+y*z);c.stroke()}
   c.restore();
   if(S.plan&&S.showPlan){c.globalAlpha=poly?.5:.92;if(S.planXf){const X=S.planXf,[px,py]=w2s(X.x,X.y);c.drawImage(S.plan,px,py,X.w*z,X.h*z)}else c.drawImage(S.plan,rx,ry,rw,rh);c.globalAlpha=1}
   if(poly){
@@ -749,7 +794,7 @@ function draw2D(){
   c.globalAlpha=S.edit?.75:1;
   // Abstandszonen
   if(S.clr)list.forEach(it=>{if(it.zone||!it.clr||it.locked)return;const p=pts(it,it.clr);c.beginPath();p.forEach((v,i)=>{const[sx,sy]=w2s(v.x,v.y);i?c.lineTo(sx,sy):c.moveTo(sx,sy)});c.closePath();
-    c.fillStyle=st.warn.has(it.id)?'rgba(224,98,90,.12)':'rgba(237,227,204,.05)';c.fill();c.setLineDash([4,4]);c.strokeStyle=st.warn.has(it.id)?'rgba(224,98,90,.8)':'rgba(237,227,204,.28)';c.lineWidth=1;c.stroke();c.setLineDash([])});
+    c.fillStyle=st.warn.has(it.id)?'rgba(224,98,90,.12)':'rgba(239,231,214,.05)';c.fill();c.setLineDash([4,4]);c.strokeStyle=st.warn.has(it.id)?'rgba(224,98,90,.8)':'rgba(239,231,214,.28)';c.lineWidth=1;c.stroke();c.setLineDash([])});
   list.forEach(it=>{
     const[cx,cy]=w2s(it.x,it.y),col=CATS[it.cat].c,bad=st.coll.has(it.id)||st.oob.has(it.id);
     c.save();c.translate(cx,cy);c.rotate(rad(it.rot));
@@ -758,18 +803,18 @@ function draw2D(){
     if(it.zone){const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},.45)`:hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);if(zm)zoneMarks2D(c,it,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
     else if(parts){c.fillStyle=hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);drawParts2D(c,parts,w,d);c.lineWidth=bad?2.5:1;c.strokeStyle=bad?COL.red:hexA(col,.9);c.strokeRect(-w/2,-d/2,w,d);if(bad){c.fillStyle='rgba(224,98,90,.3)';c.fillRect(-w/2,-d/2,w,d)}}
     else{const shp=()=>{c.beginPath();if(it.round)c.ellipse(0,0,w/2,d/2,0,0,Math.PI*2);else c.rect(-w/2,-d/2,w,d)};
-      c.fillStyle=it.type==='block'&&!it.locked?'rgba(237,227,204,.18)':hexA(col,.9);shp();c.fill();
+      c.fillStyle=it.type==='block'&&!it.locked?'rgba(239,231,214,.18)':hexA(col,.9);shp();c.fill();
       // Schraffur für Blocker / Stütze
-      if(it.type==='block'){c.save();c.beginPath();c.rect(-w/2,-d/2,w,d);c.clip();c.strokeStyle='rgba(237,227,204,.55)';c.lineWidth=1;for(let i=-w-d;i<w+d;i+=7){c.beginPath();c.moveTo(i,d/2);c.lineTo(i+d,-d/2);c.stroke()}c.restore()}
+      if(it.type==='block'){c.save();c.beginPath();c.rect(-w/2,-d/2,w,d);c.clip();c.strokeStyle='rgba(239,231,214,.55)';c.lineWidth=1;for(let i=-w-d;i<w+d;i+=7){c.beginPath();c.moveTo(i,d/2);c.lineTo(i+d,-d/2);c.stroke()}c.restore()}
       c.lineWidth=bad?2.5:1.2;c.strokeStyle=bad?COL.red:COL.ink;shp();c.stroke();
       if(bad){c.fillStyle='rgba(224,98,90,.35)';shp();c.fill()}}
     if(isMount(it)){const r=Math.max(6,w*.6);c.strokeStyle='#FFDE00';c.lineWidth=2;c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();c.beginPath();c.arc(0,0,r*.45,0,Math.PI*2);c.stroke()}
     c.restore();
-    if(isMount(it)&&z>=28&&!S.items.some(o=>o!==it&&isMount(o)&&o.id<it.id&&Math.hypot(o.x-it.x,o.y-it.y)*z<80)){c.save();c.font='600 10px Helvetica,Arial';c.textAlign='center';c.lineJoin='round';c.lineWidth=3;c.strokeStyle='rgba(8,12,24,.85)';c.fillStyle='#FFDE00';const ly=cy-Math.max(6,it.w*z*.6)-5;c.strokeText('Zielscheibe',cx,ly);c.fillText('Zielscheibe',cx,ly);c.restore()}
+    if(isMount(it)&&z>=28&&!S.items.some(o=>o!==it&&isMount(o)&&o.id<it.id&&Math.hypot(o.x-it.x,o.y-it.y)*z<80)){c.save();c.font='600 10px Helvetica,Arial';c.textAlign='center';c.lineJoin='round';c.lineWidth=3;c.strokeStyle='rgba(10,18,38,.85)';c.fillStyle='#FFDE00';const ly=cy-Math.max(6,it.w*z*.6)-5;c.strokeText('Zielscheibe',cx,ly);c.fillText('Zielscheibe',cx,ly);c.restore()}
     // Beschriftung
     if(Math.min(it.w,it.d)*z>26||Math.max(it.w,it.d)*z>70){c.save();c.translate(cx,cy);c.textAlign='center';c.textBaseline='middle';
       const mdl=!it.zone&&MODELS[it.type],dark=!mdl&&!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
-      if(mdl){c.strokeStyle='rgba(8,12,24,.85)';c.lineWidth=3;c.lineJoin='round'}
+      if(mdl){c.strokeStyle='rgba(10,18,38,.85)';c.lineWidth=3;c.lineJoin='round'}
       const fs=Math.max(9,Math.min(13,z*.42));c.font=`600 ${fs}px Helvetica,Arial`;
       const big=Math.max(it.w,it.d)*z>fs*it.name.length*.55;if(big){const ly=it.zone?-it.d*z/2+14:(mdl?it.d*z/2+fs*.9:0);if(mdl){c.strokeText(it.name,0,ly)}c.fillText(it.name,0,ly);if(mdl){c.restore();return}if(!it.zone&&Math.min(it.w,it.d)*z>fs*3.2){c.font=`${fs-2}px Helvetica,Arial`;c.globalAlpha=.7;c.fillText(`${fmt(it.w)} × ${fmt(it.d)}`,0,fs+1);c.globalAlpha=1}}c.restore()}
     if(it.locked&&it.type!=='block'){/* noop */}
@@ -812,26 +857,26 @@ function drawParts3D(c,C,it,parts,RD,L,o,bad,sel,icx,icy){
       if(n===4&&al===1){c.lineWidth=.5;c.strokeStyle='rgba(6,8,14,.45)';c.stroke()}})});
   if(bad||sel){const box=pts(it).map(p=>[p.x,RD-p.y]);c.beginPath();[0,it.h].forEach(z=>{const q=box.map(p=>proj(C,[p[0],p[1],z]));if(q.every(Boolean)){q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath()}});
     box.forEach(p=>{const a=proj(C,[p[0],p[1],0]),b=proj(C,[p[0],p[1],it.h]);if(a&&b){c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1])}});c.setLineDash([5,4]);c.lineWidth=1.6;c.strokeStyle=bad?COL.red:'#fff';c.stroke();c.setLineDash([])}
-  if(o.labels){const m=proj(C,[icx,icy,it.h+.25]),a=proj(C,[icx-it.w/2,icy,0]),b=proj(C,[icx+it.w/2,icy,0]);if(m&&a&&b&&Math.max(Math.hypot(a[0]-b[0],a[1]-b[1]),0)>38){c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.lineWidth=3;c.lineJoin='round';c.strokeStyle='rgba(8,12,24,.85)';c.strokeText(it.name,m[0],m[1]);c.fillStyle=COL.cream;c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}}
+  if(o.labels){const m=proj(C,[icx,icy,it.h+.25]),a=proj(C,[icx-it.w/2,icy,0]),b=proj(C,[icx+it.w/2,icy,0]);if(m&&a&&b&&Math.max(Math.hypot(a[0]-b[0],a[1]-b[1]),0)>38){c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.lineWidth=3;c.lineJoin='round';c.strokeStyle='rgba(10,18,38,.85)';c.strokeText(it.name,m[0],m[1]);c.fillStyle=COL.cream;c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}}
 }
 function render3D(c,W,H,cam,room,items,o={}){
-  c.setTransform(o.dpr||1,0,0,o.dpr||1,0,0);if(o.pretty)c.clearRect(0,0,W,H);else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0B1D42');g.addColorStop(1,'#08142E');c.fillStyle=g;c.fillRect(0,0,W,H)}
+  c.setTransform(o.dpr||1,0,0,o.dpr||1,0,0);if(o.pretty)c.clearRect(0,0,W,H);else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#13224A');g.addColorStop(1,'#0E1A33');c.fillStyle=g;c.fillRect(0,0,W,H)}
   const C=camera(W,H,cam,room),RD=room.d,line=(a,b)=>{const p=proj(C,a),q=proj(C,b);if(p&&q){c.moveTo(p[0],p[1]);c.lineTo(q[0],q[1])}};
   // Boden
   const poly=room.poly,fl=(poly?poly.map(p=>[p[0],RD-p[1],0]):[[0,0,0],[room.w,0,0],[room.w,RD,0],[0,RD,0]]).map(p=>proj(C,p)),flOk=fl.every(Boolean);
   const flPath=()=>{c.beginPath();fl.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath()};
   if(flOk){flPath();c.fillStyle=o.bare?'rgba(16,41,90,.55)':COL.navy;c.fill()}
   c.save();if(poly&&flOk){flPath();c.clip()}
-  c.beginPath();c.strokeStyle='rgba(237,227,204,.1)';c.lineWidth=1;for(let x=0;x<=room.w;x++)line([x,0,0],[x,RD,0]);for(let y=0;y<=RD;y++)line([0,y,0],[room.w,y,0]);c.stroke();
+  c.beginPath();c.strokeStyle='rgba(239,231,214,.1)';c.lineWidth=1;for(let x=0;x<=room.w;x++)line([x,0,0],[x,RD,0]);for(let y=0;y<=RD;y++)line([0,y,0],[room.w,y,0]);c.stroke();
   c.restore();
-  if(poly&&flOk){flPath();c.strokeStyle='rgba(237,227,204,.45)';c.lineWidth=1.2;c.stroke()}
+  if(poly&&flOk){flPath();c.strokeStyle='rgba(239,231,214,.45)';c.lineWidth=1.2;c.stroke()}
   // Wände (nur hintere gefüllt)
   const WH=3,corn=[[0,0],[room.w,0],[room.w,RD],[0,RD]];
   for(let i=0;i<(poly||o.bare?0:4);i++){const a=corn[i],b=corn[(i+1)%4],mid=[(a[0]+b[0])/2-room.w/2,(a[1]+b[1])/2-RD/2];const nrm=[mid[0],mid[1]];
     const toCam=[C.P[0]-room.w/2,C.P[1]-RD/2];const back=(nrm[0]*toCam[0]+nrm[1]*toCam[1])<0;
     const q=[[a[0],a[1],0],[b[0],b[1],0],[b[0],b[1],WH],[a[0],a[1],WH]].map(p=>proj(C,p));if(!q.every(Boolean))continue;
     c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
-    if(back){c.fillStyle='rgba(237,227,204,.07)';c.fill()}c.strokeStyle='rgba(237,227,204,'+(back?.5:.25)+')';c.lineWidth=1.2;c.stroke()}
+    if(back){c.fillStyle='rgba(239,231,214,.07)';c.fill()}c.strokeStyle='rgba(239,231,214,'+(back?.5:.25)+')';c.lineWidth=1.2;c.stroke()}
   // Objekte
   // erkannte Wände als Quader, für die Tiefensortierung in Stücke ≤ 1,5 m geteilt
   const wl=[];(room.walls||[]).forEach(w=>{if(w.a==null)return;const H=w.h||WH,add=(s0,s1,z0,z1,glass)=>{if(z1-z0<.01||s1-s0<.005)return;const len=s1-s0,n=Math.max(1,Math.ceil(len/1.5)),seg=len/n;
@@ -850,7 +895,7 @@ function render3D(c,W,H,cam,room,items,o={}){
       for(let i=0;i<4;i++){if(it.seam[i])continue;const a=ps[i],b=ps[(i+1)%4];let n=[b[1]-a[1],-(b[0]-a[0]),0];const m=[(a[0]+b[0])/2-cx,(a[1]+b[1])/2-cy];if(n[0]*m[0]+n[1]*m[1]<0)n=[-n[0],-n[1],0];F.push({v:[[a[0],a[1],z0],[b[0],b[1],z0],[b[0],b[1],z1],[a[0],a[1],z1]],n:v3.norm(n)})}
       F.forEach(f=>{const fc=f.v.reduce((s,p)=>[s[0]+p[0]/4,s[1]+p[1]/4,s[2]+p[2]/4],[0,0,0]);if(v3.dot(f.n,v3.sub(C.P,fc))<=0)return;const q=f.v.map(p=>proj(C,p));if(!q.every(Boolean))return;
         const top=f.n[2]===1,k=top?1:.55+.35*Math.max(0,v3.dot(f.n,L));c.beginPath();q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
-        c.fillStyle=it.glass?'rgba(126,155,209,.3)':top?'rgba(237,227,204,.95)':`rgba(${237*k|0},${227*k|0},${204*k|0},.62)`;c.fill();if(it.glass){c.strokeStyle='rgba(180,200,235,.6)';c.lineWidth=1;c.stroke()}});return}
+        c.fillStyle=it.glass?'rgba(126,155,209,.3)':top?'rgba(239,231,214,.95)':`rgba(${237*k|0},${227*k|0},${204*k|0},.62)`;c.fill();if(it.glass){c.strokeStyle='rgba(180,200,235,.6)';c.lineWidth=1;c.stroke()}});return}
     const ps=pts(it).map(p=>[p.x,RD-p.y]),h=it.h,col=CATS[it.cat].c,rgb=hexRGB(col),bad=o.status&&(o.status.coll.has(it.id)||o.status.oob.has(it.id)),sel=o.sel===it.id;
     const cx=(ps[0][0]+ps[2][0])/2,cy=(ps[0][1]+ps[2][1])/2;
     if(it.zone){const q=ps.map(p=>proj(C,[p[0],p[1],.02]));if(!q.every(Boolean))return;c.beginPath();q.forEach((p,k)=>k?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},${o.pretty?.85:.6})`:hexA(col,.2);c.fill();
@@ -867,7 +912,7 @@ function render3D(c,W,H,cam,room,items,o={}){
     faces.forEach(f=>{const fc=f.v.reduce((s,p)=>[s[0]+p[0]/f.v.length,s[1]+p[1]/f.v.length,s[2]+p[2]/f.v.length],[0,0,0]);if(v3.dot(f.n,v3.sub(C.P,fc))<=0)return;
       const q=f.v.map(p=>proj(C,p));if(!q.every(Boolean))return;const top=f.n[2]===1,k=top?1:.5+.4*Math.max(0,v3.dot(f.n,L));
       c.beginPath();q.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();
-      c.fillStyle=`rgb(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0})`;c.fill();c.lineWidth=sel?2.4:1;c.strokeStyle=bad?COL.red:(sel?'#fff':'rgba(10,11,16,.75)');c.stroke();
+      c.fillStyle=`rgb(${rgb[0]*k|0},${rgb[1]*k|0},${rgb[2]*k|0})`;c.fill();c.lineWidth=sel?2.4:1;c.strokeStyle=bad?COL.red:(sel?'#fff':'rgba(10,18,38,.75)');c.stroke();
       if(top&&o.labels&&Math.hypot(q[0][0]-q[2][0],q[0][1]-q[2][1])>46){const m=proj(C,[cx,cy,h]);const dark=['kraft','cardio','func','kampf','platz'].includes(it.cat);c.fillStyle=dark?COL.ink:COL.cream;c.font='600 10px Helvetica';c.textAlign='center';c.textBaseline='middle';c.fillText(it.name,m[0],m[1]);c.textBaseline='alphabetic'}});
   };
   zs.forEach(drawOne);
@@ -890,7 +935,7 @@ const ED_HINT={sel:'Wand, Tür, Fenster, Raumecke oder Gerät anklicken und zieh
   door:'Auf eine Wand klicken, um eine Tür einzusetzen',win:'Auf eine Wand klicken, um ein Fenster einzusetzen'};
 function rectPath(c,r){const p=pts(r).map(v=>w2s(v.x,v.y));c.beginPath();p.forEach((v,i)=>i?c.lineTo(v[0],v[1]):c.moveTo(v[0],v[1]));c.closePath()}
 function drawWalls2D(c,z){const R=S.room;if(!R.walls)return;
-  c.fillStyle='rgba(237,227,204,.88)';R.walls.forEach(w=>{if(w.a==null)return;solidSpans(R,w,['door','win']).forEach(([s,e])=>{rectPath(c,wRect(w,s,e));c.fill()})});
+  c.fillStyle='rgba(239,231,214,.88)';R.walls.forEach(w=>{if(w.a==null)return;solidSpans(R,w,['door','win']).forEach(([s,e])=>{rectPath(c,wRect(w,s,e));c.fill()})});
   (R.ops||[]).forEach(o=>{const w=R.walls.find(x=>x.id===o.wall);if(!w)return;const d=wDir(w),n=[-d[1],d[0]],s0=o.pos-o.w/2,s1=o.pos+o.w/2,P=s=>[w.a[0]+d[0]*s,w.a[1]+d[1]*s];
     c.strokeStyle=COL.cream;c.lineWidth=1.2;
     if(o.type==='win'){rectPath(c,wRect(w,s0,s1));c.fillStyle='rgba(126,155,209,.4)';c.fill();c.stroke();const[ax,ay]=w2s(...P(s0)),[bx,by]=w2s(...P(s1));c.beginPath();c.moveTo(ax,ay);c.lineTo(bx,by);c.stroke()}
