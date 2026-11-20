@@ -15,6 +15,7 @@
   --sans:"Instrument Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
   --mono:"DM Mono",ui-monospace,Menlo,monospace;
   --cobalt:#2C4F9E; --koi:#4B66B8; --ice:#D7E1EE; --linen:#E3D8C3; --amber:#D99A3A;
+  --muted-p:#56607A; --muted-l:#4A5470; --pline:rgba(14,26,51,.16); --pline2:rgba(14,26,51,.32);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -27,7 +28,7 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid var(--cream);border-radius:2px;font-family:var(--mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-size:12px;transition:.15s}
 .btn:hover{background:var(--cream);color:var(--navy-dd)}
 .btn.solid{background:var(--cream);color:var(--navy-dd)}
-.btn.solid:hover{background:#fff}
+.btn.solid:hover{background:var(--linen)}
 .btn.sm{padding:6px 10px;font-size:11px}
 .btn.ghost{border-color:var(--line2);color:var(--cream-d)}
 .btn.ghost:hover{border-color:var(--cream);color:var(--navy-dd)}
@@ -39,7 +40,7 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 #landing header{display:flex;justify-content:space-between;align-items:center;padding:22px 48px;position:relative;z-index:5}
 #landing nav{display:flex;gap:30px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
 #landing nav a{cursor:pointer}#landing nav a:hover{color:var(--cream)}
-.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:20px 48px 70px;min-height:calc(100vh - 80px);background:radial-gradient(1200px 700px at 78% 40%,#24447F 0%,var(--navy) 38%,var(--navy-dd) 100%)}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:center;padding:20px 48px 70px;min-height:calc(100vh - 80px);background:radial-gradient(1200px 700px at 78% 40%,var(--navy) 0%,var(--navy-d) 40%,var(--navy-dd) 100%)}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-d);margin-bottom:22px}
 .hero h1{font-size:clamp(40px,5.6vw,84px);line-height:.98;margin-bottom:26px}
 .hero h1{font-weight:300}.hero h1 em{font-style:italic;color:var(--ice)}
@@ -48,22 +49,22 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .hero{grid-template-columns:.9fr 1.25fr;gap:10px;padding-right:0;overflow:hidden}
 .hero .cv{position:relative;aspect-ratio:1.25/1;margin-right:-6%;-webkit-mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%)}
 .hero .cv canvas{width:100%;height:100%;display:block}
-.hero .cv .tag{position:absolute;left:12%;top:9%;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
+.hero .cv .tag{position:absolute;left:12%;top:9%;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
-.hero .chips span{border:1px solid var(--line2);border-radius:99px;padding:6px 12px;font-size:11px;letter-spacing:.08em;color:var(--cream-d);background:rgba(14,26,51,.4)}
-.hero .chips b{color:var(--cream);font-weight:600}
+.hero .chips span{border:1px solid var(--line2);border-radius:2px;padding:7px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.hero .chips b{color:var(--cream);font-weight:500}
 .show{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .show figure{background:var(--navy-d);margin:0;display:flex;flex-direction:column}
 .show canvas{width:100%;aspect-ratio:1.3/1;display:block}
 .show figcaption{padding:14px 18px 18px;border-top:1px solid var(--line)}
-.show figcaption b{display:block;font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:4px}
+.show figcaption b{display:block;font-family:var(--serif);font-size:19px;font-weight:400;margin-bottom:4px}
 .show figcaption span{font-size:12px;color:var(--cream-d);line-height:1.45;display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink)}
 .stats div{padding:34px 30px;border-right:1px solid var(--line)}.stats div:last-child{border:0}
 .stats b{display:block;font-family:var(--serif);font-size:44px;font-weight:300}
 .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 section.block{padding:90px 48px}
-section.block h2{font-size:clamp(30px,3.6vw,52px);margin-bottom:14px;max-width:760px;line-height:1.05}
+section.block h2{font-size:clamp(32px,4vw,60px);margin-bottom:16px;max-width:820px;line-height:1.02;font-weight:300}section.block h2 em,.bandcta h2 em{font-style:italic;color:var(--ice)}
 section.block .lead{color:var(--cream-d);max-width:640px;margin-bottom:46px;font-size:16px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .steps article{background:var(--navy-d);padding:34px 30px}
@@ -71,10 +72,10 @@ section.block .lead{color:var(--cream-d);max-width:640px;margin-bottom:46px;font
 .steps h3{font-size:22px;margin:16px 0 8px}.steps p{color:var(--cream-d)}
 .disc{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 .disc div{background:var(--ink);padding:26px 22px;min-height:130px;display:flex;flex-direction:column;justify-content:space-between}
-.disc b{font-family:var(--serif);font-size:20px;font-weight:600}.disc span{font-size:12px;color:var(--cream-d)}
+.disc b{font-family:var(--serif);font-size:21px;font-weight:400}.disc span{font-size:12px;color:var(--cream-d)}
 .disc div:hover{background:var(--navy)}
 .bandcta{padding:90px 48px;text-align:center;background:var(--cream);color:var(--navy-dd)}
-.bandcta h2{font-size:clamp(32px,4vw,60px);margin-bottom:26px}
+.bandcta h2{font-size:clamp(34px,4.4vw,64px);margin-bottom:26px;font-weight:300;line-height:1}
 .bandcta .btn{border-color:var(--navy-dd)}.bandcta .btn:hover{background:var(--navy-dd);color:var(--cream)}
 @media(max-width:640px){#landing header{padding:16px;gap:10px}#landing nav{gap:14px}#landing nav a[data-go]{display:none}
   .hero{padding:10px 16px 40px;min-height:0}.stats,.steps,.disc{grid-template-columns:1fr}.stats div{padding:22px 16px;border-right:0;border-bottom:1px solid var(--line)}.stats b{font-size:32px}
@@ -94,10 +95,28 @@ footer.f .legal-links{display:flex;gap:20px;flex-wrap:wrap}footer.f a{color:var(
 .revier .lead{font-family:var(--serif);font-style:italic;font-size:clamp(20px,1.8vw,26px);line-height:1.3;color:var(--navy);margin-bottom:34px;max-width:560px}
 .revier .duo{display:grid;grid-template-columns:1fr 1fr;gap:28px;border-top:1px solid var(--navy-dd);padding-top:22px}
 .revier .duo b{display:block;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cobalt);margin-bottom:8px}
-.revier .duo p{font-size:15px;line-height:1.6;color:#2A3756}
-.revier .quote{margin-top:28px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#4A5470}
+.revier .duo p{font-size:15px;line-height:1.6;color:var(--navy)}
+.revier .quote{margin-top:28px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-p)}
 .bandcta img{width:150px;height:auto;display:block;margin:0 auto 26px}
 .bandcta .sub{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--cobalt);margin:-14px 0 30px}
+.bandcta h2 em{color:var(--cobalt)}
+/* Nummern als Mono-Label */
+.show,.disc{counter-reset:no}
+.show figure,.disc>div{counter-increment:no;position:relative}
+.show figcaption::before,.disc>div::before{content:"No. " counter(no,decimal-leading-zero);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--blue);margin-bottom:8px}
+.steps .n::after{content:"";display:block;width:28px;height:1px;background:var(--line2);margin-top:14px}
+.signoff{margin-top:30px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-d)}
+/* Helle Bänder in Porzellan */
+section.paper{background:var(--cream);color:var(--navy-dd)}
+section.paper .kicker{color:var(--cobalt)}
+section.paper h2 em{color:var(--cobalt)}
+section.paper .lead,section.paper .signoff{color:var(--muted-p)}
+section.paper .steps,section.paper .inst{background:var(--pline);border-color:var(--pline)}
+section.paper .steps article,section.paper .inst>div{background:var(--cream)}
+section.paper .steps .n{color:var(--cobalt);opacity:1}
+section.paper .steps .n::after{background:var(--pline2)}
+section.paper .steps p,section.paper .inst span{color:var(--muted-p)}
+section.paper .inst b{color:var(--navy-dd)}
 @media(max-width:1000px){.revier{grid-template-columns:1fr;padding:64px 22px;gap:32px}.revier img{max-width:360px}}
 @media(max-width:640px){.revier .duo{grid-template-columns:1fr}footer.f{padding:22px 16px}}
 
@@ -106,27 +125,27 @@ footer.f .legal-links{display:flex;gap:20px;flex-wrap:wrap}footer.f a{color:var(
 #app.on{display:grid}
 .top{display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);background:var(--ink)}
 .top .mid{display:flex;gap:6px;align-items:center}
-.top .proj{font-size:12px;color:var(--cream-d);letter-spacing:.06em}
-.top .proj input{background:transparent;border:0;border-bottom:1px dashed var(--line2);width:200px;padding:2px 0;color:var(--cream)}
+.top .proj{font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--cream-d);letter-spacing:.14em}
+.top .proj input{font-family:var(--sans);font-size:13px;text-transform:none;letter-spacing:0;background:transparent;border:0;border-bottom:1px dashed var(--line2);width:200px;padding:2px 0;color:var(--cream)}
 main.work{display:grid;grid-template-columns:292px 1fr 300px;min-height:0}
 aside{overflow:auto;background:var(--navy-d);min-height:0}
 aside.l{border-right:1px solid var(--line)}aside.r{border-left:1px solid var(--line)}
 aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var(--line2)}
 .sec{padding:16px 16px 18px;border-bottom:1px solid var(--line)}
-.sec h4{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-d);font-weight:600;margin-bottom:12px}
-.sec h4 i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid var(--cream-d);border-radius:50%;font-size:10px;letter-spacing:0}
+.sec h4{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:12px}
+.sec h4 i{font-style:normal;display:inline-block;color:var(--cream-d);letter-spacing:.1em}.sec h4 i::before{content:"No. 0"}
 .drop{display:block;border:1px dashed var(--line2);padding:20px 12px;text-align:center;color:var(--cream-d);font-size:12px;cursor:pointer;transition:.15s}
 .drop:hover,.drop.over{border-color:var(--cream);color:var(--cream);background:rgba(239,231,214,.05)}
 .drop b{display:block;color:var(--cream);font-size:13px;margin-bottom:4px}
 .row{display:flex;gap:8px;align-items:center;margin-top:10px}
 .row>*{flex:1}
-.fld{display:flex;flex-direction:column;gap:3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
-.fld input{background:var(--navy-dd);border:1px solid var(--line);padding:7px 8px;font-size:13px;letter-spacing:0;text-transform:none;border-radius:2px;width:100%}
+.fld{display:flex;flex-direction:column;gap:3px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.fld input{background:var(--navy-dd);border:1px solid var(--line);padding:7px 8px;font-family:var(--sans);font-size:13px;letter-spacing:0;text-transform:none;border-radius:2px;width:100%}
 .fld input:focus{outline:none;border-color:var(--cream)}
 .search{width:100%;background:var(--navy-dd);border:1px solid var(--line);padding:8px 10px;border-radius:2px;margin-bottom:10px}
 .search:focus{outline:none;border-color:var(--cream)}
 .cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.cat{padding:4px 9px;border:1px solid var(--line2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d);border-radius:20px}
+.cat{padding:4px 9px;border:1px solid var(--line2);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d);border-radius:2px}
 .cat.on{background:var(--cream);color:var(--navy-dd);border-color:var(--cream)}
 .lib{display:flex;flex-direction:column;gap:4px}
 .li{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid transparent;background:rgba(14,26,51,.55);text-align:left;width:100%;border-radius:2px}
@@ -137,20 +156,20 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 .tools{position:absolute;left:14px;top:14px;display:flex;gap:6px;z-index:3;flex-wrap:wrap;max-width:calc(100% - 28px)}
 .seg{display:flex;border:1px solid var(--line2);background:rgba(10,18,38,.85);backdrop-filter:blur(6px)}
-.seg button{padding:8px 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
-.seg button.on{background:var(--cream);color:var(--navy-dd);font-weight:700}
+.seg button{padding:8px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
+.seg button.on{background:var(--cream);color:var(--navy-dd);font-weight:500}
 .seg button:not(.on):hover{color:var(--cream)}
-.tg{padding:8px 12px;border:1px solid var(--line2);background:rgba(10,18,38,.85);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
+.tg{padding:8px 12px;border:1px solid var(--line2);background:rgba(10,18,38,.85);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .tg.on{border-color:var(--cream);color:var(--cream)}
 .tg:hover{color:var(--cream)}
-.hud{position:absolute;left:14px;bottom:12px;z-index:3;font-size:11px;color:var(--cream-d);letter-spacing:.08em;font-variant-numeric:tabular-nums;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line)}
-.legend{position:absolute;right:14px;bottom:12px;z-index:3;display:flex;gap:12px;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d)}
+.hud{position:absolute;left:14px;bottom:12px;z-index:3;font-family:var(--mono);font-size:11px;color:var(--cream-d);letter-spacing:.08em;font-variant-numeric:tabular-nums;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line)}
+.legend{position:absolute;right:14px;bottom:12px;z-index:3;display:flex;gap:12px;background:rgba(10,18,38,.7);padding:6px 10px;border:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-d)}
 .legend span{display:flex;align-items:center;gap:6px}.legend i{width:10px;height:10px;display:inline-block;border:1px solid var(--cream)}
 .card{position:absolute;z-index:4;background:var(--ink);border:1px solid var(--cream);padding:16px 18px;width:310px;left:50%;top:70px;transform:translateX(-50%);display:none}
 .card.on{display:block}
 #propCard{width:320px;left:auto;right:14px;transform:none;max-height:calc(100% - 90px);overflow:auto}#propCard select{width:100%;background:var(--navy-dd);color:var(--cream);border:1px solid var(--line);padding:8px 10px;font:inherit;font-size:13px;margin-top:4px}.chk{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--cream-d);margin:10px 0 4px;cursor:pointer}
 .pres{margin:10px 0 0!important;color:var(--cream)!important;font-size:13px!important;line-height:1.5}.pres:empty{display:none}.pres b{font-family:var(--serif);font-size:26px;color:var(--cream);display:block}
-.card h5{font-family:var(--serif);font-size:17px;margin-bottom:6px}.card p{color:var(--cream-d);font-size:12px;margin-bottom:10px}
+.card h5{font-family:var(--serif);font-weight:400;font-size:19px;margin-bottom:6px}.card p{color:var(--cream-d);font-size:12px;margin-bottom:10px}
 .proc{position:absolute;inset:0;z-index:6;background:rgba(14,26,51,.88);display:none;place-items:center}
 .proc.on{display:grid}
 .proc div.in{width:320px}
@@ -160,7 +179,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .mini{display:flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--line2);background:rgba(10,18,38,.85);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .mini input{width:54px;background:var(--navy-dd);border:1px solid var(--line);padding:4px 5px;font-size:12px;color:var(--cream);letter-spacing:0}
 .edhint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;background:rgba(10,18,38,.85);border:1px solid var(--line);padding:6px 12px;font-size:11px;color:var(--cream-d);display:none;max-width:55%;text-align:center}.edhint.on{display:block}
-.tg.edit.on{background:var(--cream);color:var(--navy-dd);font-weight:700}
+.tg.edit.on{background:var(--cream);color:var(--navy-dd);font-weight:500}
 .det{font-size:11.5px;line-height:1.5;color:var(--cream-d);margin-top:10px}.det:empty{display:none}
 .proc li.ok{color:var(--cream)}.proc li.ok::after{content:"✓"}
 .proc li:not(.ok)::after{content:"…";opacity:.5}
@@ -183,12 +202,12 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 @media(max-width:1000px){.hero{grid-template-columns:1fr;padding-right:22px}.hero .cv{margin-right:0}.steps,.disc,.stats,.show{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
-<link rel="stylesheet" href="account.css?v=7">
-<link rel="stylesheet" href="shop.css?v=7">
+<link rel="stylesheet" href="account.css?v=8">
+<link rel="stylesheet" href="shop.css?v=8">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="config.js?v=7"></script>
-<script src="cloud.js?v=7"></script>
-<script src="models.js?v=7"></script>
+<script src="config.js?v=8"></script>
+<script src="cloud.js?v=8"></script>
+<script src="models.js?v=8"></script>
 </head>
 <body>
 
@@ -200,7 +219,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   </header>
   <section class="hero">
     <div>
-      <div class="eyebrow">Planung · Sourcing · Eröffnung</div>
+      <div class="kicker">Planung <span class="spark">✦</span> Sourcing <span class="spark">✦</span> Eröffnung</div>
       <h1>Plane dein Gym.<br><em>Gerät für Gerät.</em></h1>
       <p>Grundriss hochladen, Wände und Türen erkennen lassen, Geräte in Originalmaßen von Technogym, Life Fitness und Hammer Strength platzieren – und in 3D durch dein Studio gehen. Mit Kapazitätsrechnung und Stückliste für den Einkauf.</p>
       <div class="cta"><button class="btn solid" data-open>Kostenlos planen →</button><button class="btn" data-demo>Demo-Studio ansehen</button></div>
@@ -229,7 +248,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   </section>
   <section class="block" id="leist">
     <div class="kicker">No. 01 · Leistungen</div>
-    <h2>Alles für dein Studio – aus einer Hand</h2>
+    <h2>Alles für dein Studio.<br><em>Aus einer Hand.</em></h2>
     <p class="lead">Von der ersten Skizze bis zum ersten Training: Ausstattung, Planung, Finanzierung und Montage, abgestimmt auf Fläche, Konzept und Budget.</p>
     <div class="pill4">
       <article><span class="n">01 · Ausstattung</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX und Kampfsport – herstellerunabhängig ausgewählt und passend zur Fläche, die du geplant hast.</p><button class="btn sm" data-go="katalog">Zum Katalog</button></article>
@@ -239,9 +258,9 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     </div>
     <div class="segs"><button data-quote="seg" data-segment="Fitnessstudio">Fitnessstudios</button><button data-quote="seg" data-segment="Boutique- / Personal-Training-Studio">Boutique & Personal Training</button><button data-quote="seg" data-segment="CrossFit- / HYROX-Box">CrossFit & HYROX</button><button data-quote="seg" data-segment="Kampfsportschule">Kampfsport</button><button data-quote="seg" data-segment="Hotel & Resort">Hotels & Resorts</button><button data-quote="seg" data-segment="Firmenfitness">Firmenfitness</button><button data-quote="seg" data-segment="Verein / Schule / Hochschule">Vereine & Schulen</button><button data-quote="seg" data-segment="Polizei, Feuerwehr, Bundeswehr">Polizei, Feuerwehr, Bundeswehr</button><button data-quote="seg" data-segment="Physio & Reha">Physio & Reha</button></div>
   </section>
-  <section class="block" id="how" style="padding-top:0">
+  <section class="block paper" id="how">
     <div class="kicker">No. 02 · Ablauf</div>
-    <h2>Vom Plan zur Eröffnung in drei Schritten</h2>
+    <h2>Vom Plan zur Eröffnung.<br><em>In drei Schritten.</em></h2>
     <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
     <div class="steps">
       <article><div class="n">01</div><h3>Plan hochladen</h3><p>Gebäudeplan oder Raumplan als Bild. Die Software bereinigt ihn, erkennt Außenmaße und lässt dich den Maßstab mit einer Referenzstrecke kalibrieren.</p></article>
@@ -249,22 +268,22 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
       <article><div class="n">03</div><h3>Beschaffen</h3><p>Aus dem Layout entsteht die Stückliste. Beratung und Hersteller-Netzwerk führen zu den passenden Fabrikanten und Gerätesuppliern.</p></article>
     </div>
   </section>
-  <section class="block" id="show" style="padding-top:0">
+  <section class="block" id="show">
     <div class="kicker">No. 03 · Geräte</div>
-    <h2>Echte Geräte. Echte Maße.</h2>
+    <h2>Echte Geräte.<br><em>Echte Maße.</em></h2>
     <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
     <div class="show" id="showGrid"></div>
   </section>
   <section class="block" id="katalog" style="padding-top:0">
     <div class="kicker">No. 04 · Katalog</div>
-    <h2>Geräte-Katalog</h2>
+    <h2>Geräte-Katalog.<br><em>Kein Gerät ohne Papiere.</em></h2>
     <p class="lead">Die Auswahl wächst. Bis Hersteller, Bilder und Preise feststehen, sind die Produkte als Platzhalter angelegt – du kannst sie trotzdem anfragen oder direkt im Planer platzieren.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
-  <section class="block" id="install" style="padding-top:0">
+  <section class="block paper" id="install">
     <div class="kicker">No. 05 · Service</div>
-    <h2>Von der Lieferung bis zum ersten Training</h2>
+    <h2>Von der Lieferung<br><em>bis zum ersten Training.</em></h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
       <div><b>Boden</b><span>Gummi-, Turf- und Mattenflächen passend zu den Bereichen im Plan verlegen.</span></div>
@@ -272,10 +291,11 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
       <div><b>Prüfung & Abnahme</b><span>Sicherheitsprüfung jedes Geräts vor der Eröffnung, mit Protokoll. Kein Gerät ohne Papiere.</span></div>
       <div><b>Einweisung & Wartung</b><span>Einweisung des Teams, Pflegehinweise und auf Wunsch ein Wartungsplan.</span></div>
     </div>
+    <p class="signoff"><span class="spark">✦</span> Prüfung nach EN ISO 20957 · Protokoll für jedes Gerät</p>
   </section>
-  <section class="block" id="disc" style="padding-top:0">
+  <section class="block" id="disc">
     <div class="kicker">No. 06 · Disziplinen</div>
-    <h2>Eine Planung, jede Disziplin</h2>
+    <h2>Eine Planung.<br><em>Jede Disziplin.</em></h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
       <div><b>Krafttraining</b><span>Racks, Pressen, Kabelzug, Freihantelzone</span></div>
@@ -290,7 +310,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   </section>
   <div class="bandcta" id="start">
     <img src="assets/tigris-mark-ink.webp" alt="" aria-hidden="true" width="907" height="1000" loading="lazy">
-    <h2>Erst planen. Dann gezielt einkaufen.</h2>
+    <h2>Erst planen.<br><em>Dann gezielt einkaufen.</em></h2>
     <p class="sub">Kraft trifft Präzision.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-open>Planer öffnen →</button><button class="btn" data-quote="band">Unverbindliches Angebot anfordern</button></div>
   </div>
@@ -1343,7 +1363,7 @@ $('#home').onclick=openLanding;
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 </script>
-<script src="shop.js?v=7"></script>
-<script src="account.js?v=7"></script>
+<script src="shop.js?v=8"></script>
+<script src="account.js?v=8"></script>
 </body>
 </html>

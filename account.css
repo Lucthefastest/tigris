@@ -21,7 +21,7 @@
 .dlg .or{display:flex;align-items:center;gap:10px;color:var(--cream-d);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin:16px 0 4px}
 .dlg .or::before,.dlg .or::after{content:"";flex:1;height:1px;background:var(--line2)}
 .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:10px 14px;border:1px solid var(--cream);background:var(--cream);color:var(--navy-dd);font-weight:600;font-size:13px;border-radius:2px}
-.gbtn:hover{background:#fff}
+.gbtn:hover{background:var(--linen)}
 .gbtn svg{width:18px;height:18px}
 .msg{font-size:12.5px;margin-top:12px;line-height:1.5}
 .msg.err{color:var(--red)}.msg.ok{color:var(--cream)}

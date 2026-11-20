@@ -7,6 +7,7 @@
   --sans:"Instrument Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;
   --mono:"DM Mono",ui-monospace,Menlo,monospace;
   --cobalt:#2C4F9E; --koi:#4B66B8; --ice:#D7E1EE; --linen:#E3D8C3; --amber:#D99A3A;
+  --muted-p:#56607A; --muted-l:#4A5470; --pline:rgba(14,26,51,.16); --pline2:rgba(14,26,51,.32);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--navy-dd);color:var(--cream);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -16,7 +17,7 @@ input,select{font:inherit;color:var(--cream)}
 h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--cream);border-radius:2px;font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:12px;transition:.15s}
 .btn:hover{background:var(--cream);color:var(--navy-dd)}
-.btn.solid{background:var(--cream);color:var(--navy-dd)}.btn.solid:hover{background:#fff}
+.btn.solid{background:var(--cream);color:var(--navy-dd)}.btn.solid:hover{background:var(--linen)}
 .btn.sm{padding:6px 10px;font-size:11px}
 .btn.ghost{border-color:var(--line2);color:var(--cream-d)}
 .fld{display:flex;flex-direction:column;gap:3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
@@ -26,20 +27,24 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .top{display:flex;justify-content:space-between;align-items:center;padding:18px 32px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
 /* Rechtsseiten */
 .legal{max-width:820px;margin:0 auto;padding:40px 32px 80px}
-.legal h1{font-size:38px;margin-bottom:6px}
-.legal .meta{color:var(--cream-d);font-size:13px;margin-bottom:22px}
+.legal h1{font-size:clamp(34px,5vw,54px);font-weight:300;line-height:1.02;margin-bottom:10px}.legal h1 em{font-style:italic;color:var(--ice)}
+.legal .meta{color:var(--cream-d);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px}
 .legal .draft{border:1px solid var(--red);color:var(--cream);padding:12px 14px;font-size:13px;margin-bottom:28px;background:rgba(224,98,90,.08)}
-.legal h2{font-size:22px;margin:34px 0 10px;padding-top:10px;border-top:1px solid var(--line)}
-.legal h3{font-size:16px;margin:20px 0 6px;font-family:var(--sans);font-weight:700}
-.legal p,.legal li{color:#E3DAC4;font-size:14.5px;line-height:1.7;margin-bottom:10px}
+.legal h2{font-size:24px;font-weight:400;margin:38px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+.legal h3{font-size:11px;margin:22px 0 8px;font-family:var(--mono);font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+.legal p,.legal li{color:var(--linen);font-size:14.5px;line-height:1.7;margin-bottom:10px}
 .legal ul,.legal ol{padding-left:22px;margin-bottom:12px}
-.legal .ph{background:rgba(224,98,90,.18);color:#fff;padding:0 4px;border-radius:2px;font-weight:600}
+.legal .ph{background:rgba(224,98,90,.18);color:var(--cream);padding:0 4px;border-radius:2px;font-weight:600}
 .legal table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:13.5px}
 .legal td,.legal th{border:1px solid var(--line2);padding:8px 10px;text-align:left;vertical-align:top}
 .legal th{background:rgba(239,231,214,.06)}
 .legal nav.toc{columns:2;column-gap:28px;font-size:13px;margin-bottom:8px}
 .legal nav.toc a{display:block;color:var(--cream-d);text-decoration:none;padding:2px 0}
 .legal nav.toc a:hover{color:var(--cream)}
-footer.lf{border-top:1px solid var(--line);padding:18px 32px;display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--cream-d)}
-footer.lf a{color:var(--cream-d)}
+footer.lf{border-top:1px solid var(--line);padding:22px 32px;display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d);background:var(--ink)}
+footer.lf a{color:var(--cream-d);text-decoration:none}footer.lf a:hover{color:var(--cream)}
+footer.lf .mark{font-size:22px;text-transform:none;letter-spacing:-.02em;color:var(--cream);margin-right:auto}
+.kicker{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
+.kicker::before{content:"";width:40px;height:1px;background:currentColor}
+.spark{color:var(--amber)}
 @media(max-width:640px){.legal{padding:28px 16px 60px}.legal h1{font-size:30px}.top,footer.lf{padding-left:16px;padding-right:16px}.legal nav.toc{columns:1}.legal table{display:block;overflow-x:auto}}
