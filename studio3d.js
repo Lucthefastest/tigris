@@ -2,7 +2,7 @@
    Das Modell (models/studio-schnittmodell.glb) wird erst geladen, wenn es gebraucht wird.
    Koordinaten: Planer x = glTF x + OX, Planer y = glTF z + OZ (Draufsicht, y nach unten). */
 (() => {
-  const GLB = 'models/studio-schnittmodell.glb';
+  const GLB = '3d/models/fitx-biesdorf-schnittmodell.glb';
   const OX = 0.15, OZ = 59.42, ROOM = { w: 55.9, d: 59.57 };
 
   /* Gerätetypen aus dem Modell: Mesh-Name → Planer-Typ.

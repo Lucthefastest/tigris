@@ -1,0 +1,175 @@
+{
+ "projekt": "Tigris 3D-Raumplan – FitX Berlin-Biesdorf",
+ "stand": "2026-11-22",
+ "einheit": "Meter",
+ "achsen_gltf": "Y oben",
+ "viewer_einstieg": "viewer/index.html",
+ "web_modell": "models/fitx-biesdorf-web.glb",
+ "zielordner_vorschlag": {
+  "statisch": "3d/",
+  "vite_next_react": "public/3d/"
+ },
+ "dateien": [
+  {
+   "pfad": "INTEGRATION.md",
+   "zweck": "Dokumentation",
+   "format": "Markdown",
+   "bytes": 3851,
+   "fuer_website": true
+  },
+  {
+   "pfad": "README.md",
+   "zweck": "Dokumentation",
+   "format": "Markdown",
+   "bytes": 2424,
+   "fuer_website": true
+  },
+  {
+   "pfad": "data/geraeteliste.json",
+   "zweck": "Geräteliste nach Typ und Bereich",
+   "format": "JSON",
+   "bytes": 2532,
+   "fuer_website": true
+  },
+  {
+   "pfad": "data/plan-geometrie.json",
+   "zweck": "Grundriss-Geometrie in Metern",
+   "format": "JSON",
+   "bytes": 7116,
+   "fuer_website": true
+  },
+  {
+   "pfad": "data/zonen.json",
+   "zweck": "Zonen mit Flächen und Label-Positionen",
+   "format": "JSON",
+   "bytes": 1171,
+   "fuer_website": true
+  },
+  {
+   "pfad": "models/fitx-biesdorf-komplett.glb",
+   "zweck": "Realistisches 3D-Modell mit Decke",
+   "format": "glTF 2.0 binary",
+   "bytes": 8076364,
+   "fuer_website": true
+  },
+  {
+   "pfad": "models/fitx-biesdorf-schnittmodell.glb",
+   "zweck": "Realistisches Schnittmodell, Wände 2,80 m, ohne Decke",
+   "format": "glTF 2.0 binary",
+   "bytes": 7356740,
+   "fuer_website": true
+  },
+  {
+   "pfad": "models/fitx-biesdorf-web.glb",
+   "zweck": "3D-Modell für den Web-Viewer (komplett + Schnitt + Decke als umschaltbare Gruppen)",
+   "format": "glTF 2.0 binary",
+   "bytes": 8201364,
+   "fuer_website": true
+  },
+  {
+   "pfad": "plaene/grundriss-fitx-biesdorf-m1-200-a2-index-a.pdf",
+   "zweck": "Grundriss M 1:200 A2",
+   "format": "PDF",
+   "bytes": 71871,
+   "fuer_website": false
+  },
+  {
+   "pfad": "plaene/grundriss-fitx-biesdorf.dxf",
+   "zweck": "Grundriss für CAD, Einheit Meter",
+   "format": "DXF R2018",
+   "bytes": 68953,
+   "fuer_website": false
+  },
+  {
+   "pfad": "source/fitx-biesdorf.blend",
+   "zweck": "Blender-Quelldatei (Blender 5.0)",
+   "format": "Blender",
+   "bytes": 19307135,
+   "fuer_website": false
+  },
+  {
+   "pfad": "viewer/index.html",
+   "zweck": "Interaktiver 3D-Viewer, lädt ../models/fitx-biesdorf-web.glb",
+   "format": "HTML",
+   "bytes": 22873,
+   "fuer_website": true
+  },
+  {
+   "pfad": "viewer/vendor/GLTFLoader.js",
+   "zweck": "three.js Bibliothek (lokal)",
+   "format": "JavaScript",
+   "bytes": 103311,
+   "fuer_website": true
+  },
+  {
+   "pfad": "viewer/vendor/OrbitControls.js",
+   "zweck": "three.js Bibliothek (lokal)",
+   "format": "JavaScript",
+   "bytes": 26660,
+   "fuer_website": true
+  },
+  {
+   "pfad": "viewer/vendor/RoomEnvironment.js",
+   "zweck": "three.js Bibliothek (lokal)",
+   "format": "JavaScript",
+   "bytes": 3718,
+   "fuer_website": true
+  },
+  {
+   "pfad": "viewer/vendor/three-LICENSE.txt",
+   "zweck": "three.js Bibliothek (lokal)",
+   "format": "JavaScript",
+   "bytes": 1081,
+   "fuer_website": true
+  },
+  {
+   "pfad": "viewer/vendor/three.min.js",
+   "zweck": "three.js Bibliothek (lokal)",
+   "format": "JavaScript",
+   "bytes": 607784,
+   "fuer_website": true
+  },
+  {
+   "pfad": "vorschau/Geraetebibliothek_Uebersicht.jpg",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 278370,
+   "fuer_website": false
+  },
+  {
+   "pfad": "vorschau/viewer_innenansicht.png",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 737210,
+   "fuer_website": false
+  },
+  {
+   "pfad": "vorschau/viewer_uebersicht.png",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 703331,
+   "fuer_website": false
+  },
+  {
+   "pfad": "vorschau/vorschau_innen_ausdauer.jpg",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 198136,
+   "fuer_website": false
+  },
+  {
+   "pfad": "vorschau/vorschau_innen_freihantel.jpg",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 166708,
+   "fuer_website": false
+  },
+  {
+   "pfad": "vorschau/vorschau_schnitt_detail.jpg",
+   "zweck": "Vorschaubild",
+   "format": "Bild",
+   "bytes": 281172,
+   "fuer_website": false
+  }
+ ]
+}
