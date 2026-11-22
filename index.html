@@ -184,6 +184,14 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .proc li.ok{color:var(--cream)}.proc li.ok::after{content:"✓"}
 .proc li:not(.ok)::after{content:"…";opacity:.5}
 .bar{height:2px;background:var(--line);margin-top:16px}.bar i{display:block;height:100%;width:0;background:var(--cream);transition:width 1.6s linear}
+.r3host{position:absolute;inset:0;display:none;z-index:1}.r3host.on{display:block}.r3host canvas{position:absolute;inset:0;touch-action:none}
+.li .g3{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--blue);border:1px solid var(--line2);padding:1px 4px;border-radius:2px}
+.sm3{position:relative;height:min(68vh,640px);border:1px solid var(--line);background:var(--navy-dd);overflow:hidden}
+.sm3 canvas{display:block;touch-action:none}
+.sm3c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px}
+.sm3c p,.sm3n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-d)}
+.sm3a{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:18px}
+@media(max-width:640px){.sm3{height:58vh}}
 .empty{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2}
 .empty div{text-align:center;color:var(--cream-d);max-width:360px;pointer-events:auto}
 .empty h3{font-size:26px;color:var(--cream);margin-bottom:8px}.empty p{margin-bottom:18px}
@@ -208,6 +216,8 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <script src="config.js?v=8"></script>
 <script src="cloud.js?v=8"></script>
 <script src="models.js?v=8"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js"}}</script>
+<script src="studio3d.js?v=9"></script>
 </head>
 <body>
 
@@ -274,15 +284,22 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
     <div class="show" id="showGrid"></div>
   </section>
+  <section class="block" id="modell" style="padding-top:0">
+    <div class="kicker">No. 04 · Schnittmodell</div>
+    <h2>Ein ganzes Studio.<br><em>Im Schnitt.</em></h2>
+    <p class="lead">Ein komplettes Beispielstudio als 3D-Schnittmodell: Wände, Böden, Treppen und jedes Gerät maßstäblich nachgebaut. Die Geräte daraus stehen im Planer als Detailmodelle bereit – einzeln setzbar oder als ganzes Studio zum Weiterplanen.</p>
+    <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Modell laden · 7 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
+    <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><span class="sm3n" id="sm3n"></span></div>
+  </section>
   <section class="block" id="katalog" style="padding-top:0">
-    <div class="kicker">No. 04 · Katalog</div>
+    <div class="kicker">No. 05 · Katalog</div>
     <h2>Geräte-Katalog.<br><em>Kein Gerät ohne Papiere.</em></h2>
     <p class="lead">Die Auswahl wächst. Bis Hersteller, Bilder und Preise feststehen, sind die Produkte als Platzhalter angelegt – du kannst sie trotzdem anfragen oder direkt im Planer platzieren.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
   <section class="block paper" id="install">
-    <div class="kicker">No. 05 · Service</div>
+    <div class="kicker">No. 06 · Service</div>
     <h2>Von der Lieferung<br><em>bis zum ersten Training.</em></h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
@@ -294,7 +311,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <p class="signoff"><span class="spark">✦</span> Prüfung nach EN ISO 20957 · Protokoll für jedes Gerät</p>
   </section>
   <section class="block" id="disc">
-    <div class="kicker">No. 06 · Disziplinen</div>
+    <div class="kicker">No. 07 · Disziplinen</div>
     <h2>Eine Planung.<br><em>Jede Disziplin.</em></h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
@@ -336,6 +353,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
         <h4><i>1</i>Plan</h4>
         <label class="drop" id="drop"><b>Plan hochladen</b>PNG / JPG · Ziehen oder klicken<input id="file" type="file" accept="image/*" hidden></label>
         <div class="row"><button class="btn sm" id="bDemo" style="justify-content:center">Demo-Grundriss</button><button class="btn sm ghost" id="bBlank" style="justify-content:center">Leerer Raum</button></div>
+        <div class="row"><button class="btn sm" id="bStudio" style="justify-content:center">Studio-Schnittmodell</button></div>
       </div>
       <div class="sec">
         <h4><i>2</i>Maßstab & Raum</h4>
@@ -356,8 +374,9 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 
     <div class="stage" id="stage">
       <canvas id="cv"></canvas>
+      <div class="r3host" id="r3host"></div>
       <div class="tools">
-        <div class="seg"><button id="m2" class="on">2D Plan</button><button id="m3">3D Ansicht</button></div>
+        <div class="seg"><button id="m2" class="on">2D Plan</button><button id="m3">3D Ansicht</button><button id="m4">3D Detail</button></div>
         <button class="tg on" id="tSnap">Raster 0,1 m</button>
         <button class="tg on" id="tClr">Abstände</button>
         <button class="tg on" id="tPlan">Plan</button>
@@ -383,7 +402,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
         <div class="row" id="propAct" style="display:none"><button class="btn sm" id="propOk" style="justify-content:center">Übernehmen</button><button class="btn sm ghost" id="propNo" style="justify-content:center">Verwerfen</button></div>
         <p class="help" style="margin:10px 0 0">Ersetzt alle nicht gesperrten Elemente. Stützen und gesperrte Elemente bleiben stehen.</p></div>
       <div class="proc" id="proc"><div class="in"><h5>Plan wird verarbeitet</h5><ul><li id="p1">Bild einlesen & entzerren</li><li id="p2">Linien extrahieren</li><li id="p3">Außenmaße schätzen</li></ul><div class="bar"><i id="pbar"></i></div></div></div>
-      <div class="empty" id="empty"><div><h3>Beginne mit deinem Plan</h3><p>Lade links einen Gebäude- oder Raumplan hoch – oder starte mit dem Demo-Grundriss.</p><button class="btn solid" id="bDemo2">Demo-Grundriss laden</button></div></div>
+      <div class="empty" id="empty"><div><h3>Beginne mit deinem Plan</h3><p>Lade links einen Gebäude- oder Raumplan hoch – oder starte mit dem Demo-Grundriss.</p><button class="btn solid" id="bDemo2">Demo-Grundriss laden</button> <button class="btn" id="bStudio2">Studio-Schnittmodell laden</button></div></div>
       <div class="hud" id="hud">x 0,0 · y 0,0 m</div>
       <div class="legend" id="legend"></div>
     </div>
@@ -488,12 +507,15 @@ const TPL={
    items:[['locker6',-2,-1.7],['locker6',0,-1.7],['locker6',2,-1.7],['locker12',-2,1.7,{rot:180}],['locker12',0,1.7,{rot:180}],['lbench',-1,0],['lbench',1.2,0]]},
  tpl_drinks:{name:'Getränke-Station',w:3,d:1.2,ref:'Wasserspender, Getränkekühlschrank, Automat',items:[['water',-1.1,0],['fridge',-.3,0],['vending',.75,0]]}
 };
+// Detailmodelle aus dem Studio-Schnittmodell (studio3d.js); bis das Modell geladen ist, zeichnet der Planer ein ähnliches Gerät
+const isDet=it=>typeof it.type==='string'&&it.type.startsWith('d_');
+Studio3D.DEVICES.forEach(d=>{LIB.push({id:d.id,name:d.name,cat:d.cat,w:d.w,d:d.d,h:d.h,clr:d.clr,zone:false,p:d.p,round:false,ref:d.ref,mount:false,glb:true});if(d.like&&MODELS[d.like]&&!MODELS[d.id])MODELS[d.id]=MODELS[d.like]});
 Object.entries(TPL).forEach(([id,t])=>LIB.unshift({id,name:t.name,cat:'bereich',w:t.w,d:t.d,h:0,clr:0,zone:false,p:0,ref:t.ref,tpl:t.items}));
 const T=id=>LIB.find(t=>t.id===id);
 const persons=it=>it.p??(T(it.type)||{}).p??0;
 const isMount=it=>!!(T(it.type)||{}).mount;
 // Montierbare Teile (Zielscheiben) rasten an Rig, Rack oder Calisthenics-Gerüst ein und kollidieren nicht mit ihrem Träger
-const HOSTS=['rig','rack','halfrack','smith','cali','trx'];
+const HOSTS=['rig','rack','halfrack','smith','cali','trx','d_rig','d_rack'];
 function snapMount(it){if(!it||!isMount(it))return false;let best=null;
   S.items.forEach(h=>{if(!HOSTS.includes(h.type))return;const[lx,ly]=toLocal(h,it.x,it.y);if(Math.abs(lx)>h.w/2+.4||Math.abs(ly)>h.d/2+.9)return;
     const side=ly<0?-1:1,tx=Math.max(-h.w/2+it.w/2,Math.min(h.w/2-it.w/2,lx)),ty=side*(h.d/2-it.d/2),dd=Math.hypot(tx-lx,ty-ly);
@@ -819,8 +841,9 @@ function draw2D(){
     const[cx,cy]=w2s(it.x,it.y),col=CATS[it.cat].c,bad=st.coll.has(it.id)||st.oob.has(it.id);
     c.save();c.translate(cx,cy);c.rotate(rad(it.rot));
     const w=it.w*z,d=it.d*z;
-    const parts=it.zone?null:modelOf(it);
-    if(it.zone){const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},.45)`:hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);if(zm)zoneMarks2D(c,it,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
+    const parts=it.zone?null:modelOf(it),spr=!it.zone&&isDet(it)?Studio3D.sprite(it.type):null;
+    if(spr){c.fillStyle=hexA(col,.1);c.fillRect(-w/2,-d/2,w,d);c.drawImage(spr,-w/2,-d/2,w,d);c.lineWidth=bad?2.5:1;c.strokeStyle=bad?COL.red:hexA(col,.55);c.strokeRect(-w/2,-d/2,w,d);if(bad){c.fillStyle='rgba(224,98,90,.3)';c.fillRect(-w/2,-d/2,w,d)}}
+    else if(it.zone){const zm=ZMAT[it.type];c.fillStyle=zm?`rgba(${MAT[zm]},.45)`:hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);if(zm)zoneMarks2D(c,it,w,d);c.setLineDash([8,5]);c.strokeStyle=hexA(col,.8);c.lineWidth=1.5;c.strokeRect(-w/2,-d/2,w,d);c.setLineDash([])}
     else if(parts){c.fillStyle=hexA(col,.16);c.fillRect(-w/2,-d/2,w,d);drawParts2D(c,parts,w,d);c.lineWidth=bad?2.5:1;c.strokeStyle=bad?COL.red:hexA(col,.9);c.strokeRect(-w/2,-d/2,w,d);if(bad){c.fillStyle='rgba(224,98,90,.3)';c.fillRect(-w/2,-d/2,w,d)}}
     else{const shp=()=>{c.beginPath();if(it.round)c.ellipse(0,0,w/2,d/2,0,0,Math.PI*2);else c.rect(-w/2,-d/2,w,d)};
       c.fillStyle=it.type==='block'&&!it.locked?'rgba(239,231,214,.18)':hexA(col,.9);shp();c.fill();
@@ -833,7 +856,7 @@ function draw2D(){
     if(isMount(it)&&z>=28&&!S.items.some(o=>o!==it&&isMount(o)&&o.id<it.id&&Math.hypot(o.x-it.x,o.y-it.y)*z<80)){c.save();c.font='600 10px Helvetica,Arial';c.textAlign='center';c.lineJoin='round';c.lineWidth=3;c.strokeStyle='rgba(10,18,38,.85)';c.fillStyle='#FFDE00';const ly=cy-Math.max(6,it.w*z*.6)-5;c.strokeText('Zielscheibe',cx,ly);c.fillText('Zielscheibe',cx,ly);c.restore()}
     // Beschriftung
     if(Math.min(it.w,it.d)*z>26||Math.max(it.w,it.d)*z>70){c.save();c.translate(cx,cy);c.textAlign='center';c.textBaseline='middle';
-      const mdl=!it.zone&&MODELS[it.type],dark=!mdl&&!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
+      const mdl=!it.zone&&(MODELS[it.type]||isDet(it)),dark=!mdl&&!it.zone&&['kraft','cardio','func','kampf','platz'].includes(it.cat)&&it.type!=='block';c.fillStyle=it.zone?hexA(col,1):(dark?COL.ink:COL.cream);
       if(mdl){c.strokeStyle='rgba(10,18,38,.85)';c.lineWidth=3;c.lineJoin='round'}
       const fs=Math.max(9,Math.min(13,z*.42));c.font=`600 ${fs}px Helvetica,Arial`;
       const big=Math.max(it.w,it.d)*z>fs*it.name.length*.55;if(big){const ly=it.zone?-it.d*z/2+14:(mdl?it.d*z/2+fs*.9:0);if(mdl){c.strokeText(it.name,0,ly)}c.fillText(it.name,0,ly);if(mdl){c.restore();return}if(!it.zone&&Math.min(it.w,it.d)*z>fs*3.2){c.font=`${fs-2}px Helvetica,Arial`;c.globalAlpha=.7;c.fillText(`${fmt(it.w)} × ${fmt(it.d)}`,0,fs+1);c.globalAlpha=1}}c.restore()}
@@ -944,6 +967,7 @@ function render3D(c,W,H,cam,room,items,o={}){
 let C3=null;
 function drawMain(){
   analyze();
+  if(S.mode==='real'){if(RV)RV.sync(S.items,S.room,CATS,S.sel);return}
   if(S.mode==='2d')draw2D();else{C3=render3D(ctx,CW,CH,S.cam,S.room,S.items,{dpr:DPR,labels:true,status:STAT,sel:S.sel})}
 }
 (function loop(){if(dirty){dirty=false;drawMain()}requestAnimationFrame(loop)})();
@@ -1187,13 +1211,30 @@ function commit(){save();renderStats();renderInspector();req()}
 function delItem(it){trk('remove_item',{item:it.type,name:it.name});pushUndo();S.items=S.items.filter(i=>i!==it);S.sel=null;commit()}
 function dupItem(it){pushUndo();const n=Object.assign({},it,{id:uid++,x:it.x+1,y:it.y+1,locked:false});S.items.push(n);S.sel=n.id;commit()}
 function undo(){const s=S.undo.pop();if(!s){toast('Nichts zum Rückgängigmachen');return}const v=JSON.parse(s);if(Array.isArray(v))S.items=v;else{S.items=v.items;S.room=migrateRoom(v.room);syncRoom()}S.esel=null;S.edPrev=null;if(!S.items.find(i=>i.id===S.sel))S.sel=null;commit()}
-function addType(id){const t=T(id);pushUndo();let x,y;if(S.mode==='2d'){[x,y]=s2w(CW/2,CH/2)}else{x=S.room.w/2;y=S.room.d/2}
+function addType(id){const t=T(id);if(t.glb)detLoad();pushUndo();let x,y;if(S.mode==='2d'){[x,y]=s2w(CW/2,CH/2)}else{x=S.room.w/2;y=S.room.d/2}
   x=Math.min(S.room.w-t.w/2,Math.max(t.w/2,x));y=Math.min(S.room.d-t.d/2,Math.max(t.d/2,y));
   if(t.tpl){x=snapv(x);y=snapv(y);const add=t.tpl.map(([ty,dx,dy,o])=>mk(ty,+(x+dx).toFixed(2),+(y+dy).toFixed(2),Object.assign({},o||{})));S.items.push(...add);
     trk('add_template',{tpl:id,name:t.name,n:add.length});add.forEach(i=>trk('add_item',{item:i.type,name:i.name,cat:i.cat,tpl:id}));S.sel=null;$('#empty').style.display='none';commit();toast(`${t.name} eingefügt – ${add.length} Elemente`);return}
   const it=mk(id,snapv(x),snapv(y));S.items.push(it);trk('add_item',{item:id,name:t.name,cat:t.cat});S.sel=it.id;S.esel=null;snapMount(it);$('#empty').style.display='none';commit()}
-function setMode(m){S.mode=m;$('#m2').classList.toggle('on',m==='2d');$('#m3').classList.toggle('on',m==='3d');$('#tPlan').style.display=m==='2d'?'':'none';if(m==='3d')closeCal();$('#edBar').classList.toggle('on',!!S.edit&&m==='2d');$('#edHint').classList.toggle('on',!!S.edit&&m==='2d');req()}
-$('#m2').onclick=()=>{setMode('2d');trk('view_mode',{mode:'2d'})};$('#m3').onclick=()=>{setMode('3d');trk('view_mode',{mode:'3d'})};
+function setMode(m){S.mode=m;$('#m2').classList.toggle('on',m==='2d');$('#m3').classList.toggle('on',m==='3d');$('#m4').classList.toggle('on',m==='real');$('#r3host').classList.toggle('on',m==='real');$('#hud').style.display=m==='real'?'none':'';$('#tPlan').style.display=m==='2d'?'':'none';if(m!=='2d')closeCal();if(m==='real')realView();$('#edBar').classList.toggle('on',!!S.edit&&m==='2d');$('#edHint').classList.toggle('on',!!S.edit&&m==='2d');req()}
+$('#m2').onclick=()=>{setMode('2d');trk('view_mode',{mode:'2d'})};$('#m3').onclick=()=>{setMode('3d');trk('view_mode',{mode:'3d'})};$('#m4').onclick=()=>{setMode('real');trk('view_mode',{mode:'real'})};
+/* ============ 3D-Detailansicht (three.js) ============ */
+let RV=null,RD3=null,rvLoading=false;
+function detLoad(){if(Studio3D.loaded())return Promise.resolve();return Studio3D.load().then(()=>req(),()=>toast('3D-Modell konnte nicht geladen werden'))}
+async function realView(){if(RV){RV.resize();req();return}if(rvLoading)return;rvLoading=true;toast('3D-Detailansicht wird geladen …');
+  try{await Studio3D.load()}catch(e){rvLoading=false;toast('3D-Modell konnte nicht geladen werden');setMode('2d');return}
+  rvLoading=false;const host=$('#r3host');RV=Studio3D.view(host,{planner:true,parts:modelOf,mat:matRGB,alpha:MAT_ALPHA});
+  host.addEventListener('pointerdown',e=>{if(e.button!==0||spaceDown)return;const id=RV.pick(e);RD3={x:e.clientX,y:e.clientY,id,moved:false};
+    const it=id!=null&&S.items.find(i=>i.id===id);if(it){select(it.id);if(!it.locked){RV.controls.enabled=false;const g=RV.groundAt(e);pushUndo();RD3.it=it;RD3.g=g;RD3.gx=it.x;RD3.gy=it.y}}},{capture:true});
+  host.addEventListener('pointermove',e=>{if(!RD3)return;if(Math.hypot(e.clientX-RD3.x,e.clientY-RD3.y)>3)RD3.moved=true;if(!RD3.it||!RD3.g)return;const g=RV.groundAt(e);if(!g)return;
+    RD3.it.x=snapv(RD3.gx+g.x-RD3.g.x);RD3.it.y=snapv(RD3.gy+g.y-RD3.g.y);syncFields();req()});
+  addEventListener('pointerup',()=>{if(!RD3)return;const r=RD3;RD3=null;RV.controls.enabled=true;if(r.it){if(r.moved){if(snapMount(r.it))toast('Zielscheibe am Rig montiert');save();renderStats();renderInspector()}else S.undo.pop();req()}else if(!r.moved&&r.id==null)select(null)});
+  setMode(S.mode);req()}
+async function loadStudio(){trk('studio_load');openApp();toast('Studio-Schnittmodell wird geladen …');
+  try{const r=await Studio3D.importStudio();resetShape();setPlanToggle(true);S.plan=r.plan;S.items=r.items.map(p=>mk(p.type,p.x,p.y,{rot:p.rot}));S.undo=[];S.sel=null;S.name='Studio-Schnittmodell';$('#projName').value=S.name;
+    setRoom(r.room.w,r.room.d);S.room.bg='studio';$('#empty').style.display='none';commit();
+    toast(`Schnittmodell geladen – ${S.items.length} Detailgeräte auf ${fmt(r.room.w)} × ${fmt(r.room.d)} m`)}
+  catch(e){toast('Modell konnte nicht geladen werden')}}
 $('#tSnap').onclick=e=>{S.snap=!S.snap;e.target.classList.toggle('on',S.snap)};
 $('#tClr').onclick=e=>{S.clr=!S.clr;e.target.classList.toggle('on',S.clr);req()};
 $('#tPlan').onclick=e=>{S.showPlan=!S.showPlan;e.target.classList.toggle('on',S.showPlan);req()};
@@ -1206,7 +1247,7 @@ const PROC={start(labels){$('#proc').classList.add('on');labels.forEach((t,i)=>{
 function process(cb){PROC.start(STEPS_DEMO);const b=$('#pbar');void b.offsetWidth;b.style.transition='width 1.5s linear';b.style.width='100%';
   [0,1,2].forEach(i=>setTimeout(()=>PROC.done(i),400+i*480));setTimeout(()=>{cb();PROC.end()},1900)}
 function setRoom(w,d){S.room.w=w;S.room.d=d;syncRoom();fit()}
-function resetShape(){S.room={w:S.room.w,d:S.room.d};S.planXf=null;S.det=null;detInfo()}
+function resetShape(){if(S.name==='Studio-Schnittmodell'){S.name='Neues Studio';$('#projName').value=S.name}S.room={w:S.room.w,d:S.room.d};S.planXf=null;S.det=null;detInfo()}
 function setPlanToggle(on){S.showPlan=on;$('#tPlan').classList.toggle('on',on)}
 function loadDemo(){trk('demo_load');process(()=>{resetShape();setPlanToggle(true);S.plan=demoPlan();S.items=demoItems();S.undo=[];S.sel=null;setRoom(26,15);$('#empty').style.display='none';commit();toast('Demo-Grundriss geladen – Maße 26 × 15 m')})}
 function blank(){trk('blank_room');resetShape();S.plan=null;S.items=[];S.sel=null;S.undo=[];setRoom(24,14);$('#empty').style.display='none';commit()}
@@ -1253,7 +1294,7 @@ function handleFile(f){if(!f)return;trk('upload',{file:f.name,size:f.size,mime:f
 $('#file').onchange=e=>handleFile(e.target.files[0]);
 const dz=$('#drop');['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));
 dz.addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
-$('#bDemo').onclick=loadDemo;$('#bDemo2').onclick=loadDemo;$('#bBlank').onclick=blank;
+$('#bStudio').onclick=loadStudio;$('#bStudio2').onclick=loadStudio;$('#bDemo').onclick=loadDemo;$('#bDemo2').onclick=loadDemo;$('#bBlank').onclick=blank;
 function syncRoom(){$('#rw').value=S.room.w;$('#rd').value=S.room.d}
 $('#rw').onchange=e=>{let w=Math.max(3,+e.target.value||S.room.w);if(S.room.poly){scaleAll(w/S.room.w);if(S.det)S.det.src='cal';detInfo();commit();return}if(S.plan){const asp=S.plan.width/S.plan.height;setRoom(w,+(w/asp).toFixed(1))}else setRoom(w,S.room.d);save()};
 $('#rd').onchange=e=>{let d=Math.max(3,+e.target.value||S.room.d);if(S.room.poly){scaleAll(d/S.room.d);if(S.det)S.det.src='cal';detInfo();commit();return}if(S.plan){const asp=S.plan.width/S.plan.height;setRoom(+(d*asp).toFixed(1),d)}else setRoom(S.room.w,d);save()};
@@ -1267,10 +1308,10 @@ $('#calOk').onclick=()=>{const P=S.calib&&S.calib.pts;if(!P||P.length<2){toast('
 
 /* ============ Panels ============ */
 function renderLib(){
-  $('#cats').innerHTML=[['all','Alle'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="cat ${S.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
-  $$('#cats .cat').forEach(b=>b.onclick=()=>{S.cat=b.dataset.c;renderLib()});
+  $('#cats').innerHTML=[['all','Alle'],['detail','Detailmodelle 3D'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="cat ${S.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
+  $$('#cats .cat').forEach(b=>b.onclick=()=>{S.cat=b.dataset.c;renderLib();if(S.cat==='detail')detLoad()});
   const q=S.q.toLowerCase();
-  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat)&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}" title="${(t.ref||'').replace(/"/g,'&quot;')}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span><span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
+  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat||(S.cat==='detail'&&t.glb))&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}" title="${(t.ref||'').replace(/"/g,'&quot;')}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span>${t.glb?'<span class="g3">3D</span>':''}<span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
   $$('#lib .li').forEach(b=>b.onclick=()=>addType(b.dataset.id));
 }
 $('#q').oninput=e=>{S.q=e.target.value;renderLib()};
@@ -1362,6 +1403,16 @@ $('#home').onclick=openLanding;
 /* Start */
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
+// Gespeichertes Projekt mit Detailmodellen: Modell im Hintergrund nachladen, beim Schnittmodell auch die Grundriss-Unterlage
+if(S.room.bg==='studio'||S.items.some(isDet))Studio3D.load().then(()=>{if(S.room.bg==='studio'&&!S.plan)Studio3D.importStudio().then(r=>{S.plan=r.plan;req()});req()}).catch(()=>{});
+/* Schnittmodell auf der Startseite: lädt erst nach Klick */
+(function showcase(){const box=$('#sm3'),btn=$('#sm3Load'),n=$('#sm3n');let SV=null;
+  n.textContent=`${Studio3D.DEVICES.length} Gerätetypen als Detailmodell im Planer`;
+  btn.onclick=async()=>{if(SV)return;btn.disabled=true;trk('studio_view');
+    try{const d=await Studio3D.load(p=>{btn.textContent=`Lädt … ${Math.round(p*100)} %`});$('#sm3c').remove();SV=Studio3D.view(box,{spin:true});
+      n.textContent=`${d.place.length} Geräte · ${Studio3D.DEVICES.length} Gerätetypen · ziehen zum Drehen, Mausrad zum Zoomen`}
+    catch(e){btn.disabled=false;btn.textContent='Erneut versuchen';toast('3D-Modell konnte nicht geladen werden')}};
+  $('#sm3Plan').onclick=loadStudio})();
 </script>
 <script src="shop.js?v=8"></script>
 <script src="account.js?v=8"></script>
