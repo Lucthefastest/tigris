@@ -1,0 +1,153 @@
+{
+ "gesamt": 128,
+ "typen": [
+  {
+   "id": "Crosstrainer",
+   "name": "Crosstrainer",
+   "anzahl": 26
+  },
+  {
+   "id": "Laufband",
+   "name": "Laufband",
+   "anzahl": 12
+  },
+  {
+   "id": "Ergometer",
+   "name": "Ergometer",
+   "anzahl": 10
+  },
+  {
+   "id": "Sitzergometer",
+   "name": "Sitzergometer",
+   "anzahl": 10
+  },
+  {
+   "id": "Brustpresse",
+   "name": "Brustpresse",
+   "anzahl": 10
+  },
+  {
+   "id": "Latzug",
+   "name": "Latzug",
+   "anzahl": 9
+  },
+  {
+   "id": "Beinstrecker",
+   "name": "Beinstrecker",
+   "anzahl": 9
+  },
+  {
+   "id": "Flachbank",
+   "name": "Flachbank",
+   "anzahl": 7
+  },
+  {
+   "id": "Rudern_Kabel",
+   "name": "Kabelrudern",
+   "anzahl": 6
+  },
+  {
+   "id": "Schraegbank",
+   "name": "Schrägbank",
+   "anzahl": 6
+  },
+  {
+   "id": "Plyo_Box",
+   "name": "Plyo-Box",
+   "anzahl": 4
+  },
+  {
+   "id": "Kurzhantelablage",
+   "name": "Kurzhantelablage 2,5–25 kg",
+   "anzahl": 3
+  },
+  {
+   "id": "Power_Rack",
+   "name": "Power-Rack",
+   "anzahl": 3
+  },
+  {
+   "id": "Iso_Brustpresse_PL",
+   "name": "Brustpresse Plate-Loaded",
+   "anzahl": 2
+  },
+  {
+   "id": "Iso_Rudern_hoch_PL",
+   "name": "Rudern hoch Plate-Loaded",
+   "anzahl": 2
+  },
+  {
+   "id": "Beinpresse_45",
+   "name": "Beinpresse 45°",
+   "anzahl": 2
+  },
+  {
+   "id": "Kurzhantelablage_schwer",
+   "name": "Kurzhantelablage 27,5–75 kg",
+   "anzahl": 2
+  },
+  {
+   "id": "Scheibenstaender",
+   "name": "Scheibenständer",
+   "anzahl": 2
+  },
+  {
+   "id": "Functional_Rig",
+   "name": "Functional-Rig",
+   "anzahl": 1
+  },
+  {
+   "id": "Kettlebell_Regal",
+   "name": "Kettlebell-Regal",
+   "anzahl": 1
+  },
+  {
+   "id": "Kurzhantelablage_klein",
+   "name": "Kurzhantelablage 1–16 kg",
+   "anzahl": 1
+  }
+ ],
+ "nach_bereich": {
+  "Ausdauer": {
+   "Laufband": 12,
+   "Crosstrainer": 26,
+   "Ergometer": 10,
+   "Sitzergometer": 10
+  },
+  "Geraetetraining": {
+   "Brustpresse": 7,
+   "Latzug": 7,
+   "Beinstrecker": 6,
+   "Kabelrudern": 3
+  },
+  "Zirkel": {
+   "Brustpresse": 3,
+   "Kabelrudern": 3,
+   "Beinstrecker": 3,
+   "Latzug": 2
+  },
+  "Basics": {
+   "Brustpresse Plate-Loaded": 2,
+   "Rudern hoch Plate-Loaded": 2,
+   "Beinpresse 45°": 2
+  },
+  "Freihantel": {
+   "Kurzhantelablage 2,5–25 kg": 3,
+   "Kurzhantelablage 27,5–75 kg": 2,
+   "Flachbank": 6,
+   "Schrägbank": 5,
+   "Power-Rack": 3,
+   "Scheibenständer": 2
+  },
+  "Turnecke": {
+   "Functional-Rig": 1,
+   "Plyo-Box": 4,
+   "Kettlebell-Regal": 1
+  },
+  "Lady_Gym": {
+   "Kurzhantelablage 1–16 kg": 1,
+   "Schrägbank": 1,
+   "Flachbank": 1
+  }
+ }
+}

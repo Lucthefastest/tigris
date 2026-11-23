@@ -186,12 +186,12 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .bar{height:2px;background:var(--line);margin-top:16px}.bar i{display:block;height:100%;width:0;background:var(--cream);transition:width 1.6s linear}
 .r3host{position:absolute;inset:0;display:none;z-index:1}.r3host.on{display:block}.r3host canvas{position:absolute;inset:0;touch-action:none}
 .li .g3{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--blue);border:1px solid var(--line2);padding:1px 4px;border-radius:2px}
-.sm3{position:relative;height:min(68vh,640px);border:1px solid var(--line);background:var(--navy-dd);overflow:hidden}
-.sm3 canvas{display:block;touch-action:none}
+.sm3{position:relative;width:100%;aspect-ratio:16/10;max-height:85vh;border:1px solid var(--line);background:var(--navy-dd);overflow:hidden}
+.sm3 iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .sm3c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:16px}
 .sm3c p,.sm3n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-d)}
-.sm3a{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:18px}
-@media(max-width:640px){.sm3{height:58vh}}
+.sm3a{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:18px}.sm3a a.btn{text-decoration:none}
+@media(max-width:640px){.sm3{aspect-ratio:auto;height:80vh}}
 .empty{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2}
 .empty div{text-align:center;color:var(--cream-d);max-width:360px;pointer-events:auto}
 .empty h3{font-size:26px;color:var(--cream);margin-bottom:8px}.empty p{margin-bottom:18px}
@@ -217,7 +217,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <script src="cloud.js?v=8"></script>
 <script src="models.js?v=8"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js"}}</script>
-<script src="studio3d.js?v=9"></script>
+<script src="studio3d.js?v=10"></script>
 </head>
 <body>
 
@@ -287,9 +287,9 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   <section class="block" id="modell" style="padding-top:0">
     <div class="kicker">No. 04 · Schnittmodell</div>
     <h2>Ein ganzes Studio.<br><em>Im Schnitt.</em></h2>
-    <p class="lead">Ein komplettes Beispielstudio als 3D-Schnittmodell: Wände, Böden, Treppen und jedes Gerät maßstäblich nachgebaut. Die Geräte daraus stehen im Planer als Detailmodelle bereit – einzeln setzbar oder als ganzes Studio zum Weiterplanen.</p>
-    <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Modell laden · 7 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
-    <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><span class="sm3n" id="sm3n"></span></div>
+    <p class="lead">Ein komplettes Beispielstudio als 3D-Raumplan: Wände, Böden, Treppen und jedes Gerät maßstäblich nachgebaut. Schalte zwischen Übersicht, Draufsicht und Innenansicht, blende die Decke ein, miss Strecken nach und finde jede Zone. Die Geräte daraus stehen im Planer als Detailmodelle bereit.</p>
+    <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Raumplan laden · 8 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
+    <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><a class="btn ghost" href="3d/viewer/index.html" target="_blank" rel="noopener">Als eigene Seite ↗</a><span class="sm3n" id="sm3n"></span></div>
   </section>
   <section class="block" id="katalog" style="padding-top:0">
     <div class="kicker">No. 05 · Katalog</div>
@@ -1406,12 +1406,12 @@ renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
 // Gespeichertes Projekt mit Detailmodellen: Modell im Hintergrund nachladen, beim Schnittmodell auch die Grundriss-Unterlage
 if(S.room.bg==='studio'||S.items.some(isDet))Studio3D.load().then(()=>{if(S.room.bg==='studio'&&!S.plan)Studio3D.importStudio().then(r=>{S.plan=r.plan;req()});req()}).catch(()=>{});
 /* Schnittmodell auf der Startseite: lädt erst nach Klick */
-(function showcase(){const box=$('#sm3'),btn=$('#sm3Load'),n=$('#sm3n');let SV=null;
+(function showcase(){const box=$('#sm3'),btn=$('#sm3Load'),n=$('#sm3n');
   n.textContent=`${Studio3D.DEVICES.length} Gerätetypen als Detailmodell im Planer`;
-  btn.onclick=async()=>{if(SV)return;btn.disabled=true;trk('studio_view');
-    try{const d=await Studio3D.load(p=>{btn.textContent=`Lädt … ${Math.round(p*100)} %`});$('#sm3c').remove();SV=Studio3D.view(box,{spin:true});
-      n.textContent=`${d.place.length} Geräte · ${Studio3D.DEVICES.length} Gerätetypen · ziehen zum Drehen, Mausrad zum Zoomen`}
-    catch(e){btn.disabled=false;btn.textContent='Erneut versuchen';toast('3D-Modell konnte nicht geladen werden')}};
+  // 3D-Raumplan (3d/viewer) als iframe, erst nach Klick
+  btn.onclick=()=>{if(box.querySelector('iframe'))return;trk('studio_view');const f=document.createElement('iframe');
+    f.src='3d/viewer/index.html?embed=1';f.title='3D-Raumplan';f.allow='fullscreen';f.setAttribute('allowfullscreen','');box.appendChild(f);$('#sm3c').remove();
+    n.textContent='Ziehen dreht · Mausrad oder zwei Finger zoomen · Zonen und Geräte anklicken'};
   $('#sm3Plan').onclick=loadStudio})();
 </script>
 <script src="shop.js?v=8"></script>
