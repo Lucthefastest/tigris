@@ -49,7 +49,8 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .hero{grid-template-columns:.9fr 1.25fr;gap:10px;padding-right:0;overflow:hidden}
 .hero .cv{position:relative;aspect-ratio:1.25/1;margin-right:-6%;-webkit-mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%)}
 .hero .cv canvas{width:100%;height:100%;display:block}
-.hero .cv .tag{position:absolute;left:12%;top:9%;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
+.hero .cv canvas.r3{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}.hero .cv.real canvas.r3{opacity:1}.hero .cv.real #heroCv{opacity:0;transition:opacity 1.2s ease}
+.hero .cv .tag{position:absolute;z-index:2;left:12%;top:9%;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .hero .chips span{border:1px solid var(--line2);border-radius:2px;padding:7px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips b{color:var(--cream);font-weight:500}
@@ -217,7 +218,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <script src="cloud.js?v=8"></script>
 <script src="models.js?v=8"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js"}}</script>
-<script src="studio3d.js?v=10"></script>
+<script src="studio3d.js?v=11"></script>
 </head>
 <body>
 
@@ -231,11 +232,11 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <div>
       <div class="kicker">Planung <span class="spark">✦</span> Sourcing <span class="spark">✦</span> Eröffnung</div>
       <h1>Plane dein Gym.<br><em>Gerät für Gerät.</em></h1>
-      <p>Grundriss hochladen, Wände und Türen erkennen lassen, Geräte in Originalmaßen von Technogym, Life Fitness und Hammer Strength platzieren – und in 3D durch dein Studio gehen. Mit Kapazitätsrechnung und Stückliste für den Einkauf.</p>
+      <p>Vom großen Studio mit mehreren Bereichen bis zum kleinen Boutique-Gym: Grundriss hochladen, Wände und Türen erkennen lassen, Geräte in Originalmaßen von Technogym, Life Fitness und Hammer Strength platzieren – und in 3D durch dein Studio gehen. Mit Kapazitätsrechnung und Stückliste für den Einkauf.</p>
       <div class="cta"><button class="btn solid" data-open>Kostenlos planen →</button><button class="btn" data-demo>Demo-Studio ansehen</button></div>
       <div class="chips"><span><b>70+</b> Geräte &amp; Zonen</span><span><b>10</b> Bereichsvorlagen</span><span><b>47</b> Personen gleichzeitig im Demo-Studio</span></div>
     </div>
-    <div class="cv"><span class="tag">Demo-Studio · 390 m² · Live-3D</span><canvas id="heroCv"></canvas></div>
+    <div class="cv" id="heroBox"><span class="tag" id="heroTag">Demo-Studio · 390 m² · Live-3D</span><canvas id="heroCv"></canvas></div>
   </section>
   <div class="stats">
     <div><b>2D + 3D</b><span>Grundriss & Raumansicht</span></div>
@@ -1385,8 +1386,14 @@ $$('[data-go]').forEach(a=>a.onclick=()=>{if($('#app').classList.contains('on'))
 $('#home').onclick=openLanding;
 
 /* Hero 3D */
-(function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0,last=0;
-  function frame(ts){const r=cvH.getBoundingClientRect();if(r.width>0&&$('#landing').style.display!=='none'&&ts-last>30){last=ts;const dpr=Math.min(2,devicePixelRatio||1);if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
+(function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0,last=0,real=false;
+  // Schnelle Zeichnung sofort; das realistische Schnittmodell wird nach dem Seitenaufbau nachgeladen und eingeblendet
+  const box=$('#heroBox'),hidden=()=>$('#landing').style.display==='none'||box.getBoundingClientRect().bottom<0,
+    still=matchMedia('(prefers-reduced-motion: reduce)').matches,slow=navigator.connection&&(navigator.connection.saveData||/2g/.test(navigator.connection.effectiveType||''));
+  function upgrade(){if(slow)return;Studio3D.load().then(()=>{Studio3D.view(box,{hero:true,spin:!still,paused:hidden});
+    requestAnimationFrame(()=>{box.classList.add('real');$('#heroTag').textContent='Beispielstudio · Live-3D';setTimeout(()=>{real=true},1300)})},()=>{})}
+  const go=()=>(window.requestIdleCallback||setTimeout)(upgrade,{timeout:2500});if(document.readyState==='complete')go();else addEventListener('load',go,{once:true});
+  function frame(ts){if(real)return;const r=cvH.getBoundingClientRect();if(r.width>0&&$('#landing').style.display!=='none'&&ts-last>30){last=ts;const dpr=Math.min(2,devicePixelRatio||1);if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
     t+=.0028;render3D(c,r.width,r.height,{yaw:.45+Math.sin(t)*.55,pitch:.66+Math.sin(t*.7)*.05,dist:25.5},room,items,{dpr,labels:false,pretty:true})}requestAnimationFrame(frame)}requestAnimationFrame(frame)})();
 /* Geräte-Showroom auf der Startseite */
 (function showroom(){const grid=$('#showGrid');if(!grid)return;

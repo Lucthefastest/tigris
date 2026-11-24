@@ -165,12 +165,13 @@
 
   /* 3D-Ansicht in einem Container. opts.planner: Szene folgt S.items; sonst Schaufenster des ganzen Modells. */
   function view(host, opts = {}) {
-    const R = new THREE.WebGLRenderer({ antialias: true }); R.outputColorSpace = THREE.SRGBColorSpace;
-    R.setPixelRatio(Math.min(2, devicePixelRatio || 1)); R.setClearColor(css('--navy-dd'));
+    const R = new THREE.WebGLRenderer({ antialias: true, alpha: !!opts.hero }); R.outputColorSpace = THREE.SRGBColorSpace;
+    R.setPixelRatio(Math.min(2, devicePixelRatio || 1)); if (opts.hero) R.setClearColor(0, 0); else R.setClearColor(css('--navy-dd'));
     host.appendChild(R.domElement); R.domElement.className = 'r3';
     const sc = new THREE.Scene(); lights(sc);
     const cam = new THREE.PerspectiveCamera(45, 1, .1, 600), ctl = new Orbit(cam, R.domElement);
     ctl.enableDamping = true; ctl.maxPolarAngle = Math.PI * .49; ctl.screenSpacePanning = false;
+    if (opts.hero) { ctl.enabled = false; R.domElement.style.pointerEvents = 'none' }
     const world = new THREE.Group(); sc.add(world);
     let bgOn = null, roomSig = '', alive = true, need = true;
     const itemsG = new THREE.Group(), roomG = new THREE.Group(); world.add(roomG, itemsG);
@@ -278,11 +279,12 @@
     function groundAt(e, y = 0) { setRay(e); floor.constant = -y; const p = new THREE.Vector3(); return ray.ray.intersectPlane(floor, p) ? { x: p.x, y: p.z } : null }
 
     ctl.addEventListener('change', () => { need = true });
-    (function tick() { if (!alive) return; ctl.update(); if (need || opts.spin) { if (opts.spin && !opts.spinStop) { ctl.autoRotate = true; ctl.autoRotateSpeed = .5 } need = false; R.render(sc, cam) } requestAnimationFrame(tick) })();
+    (function tick() { if (!alive) return; if (opts.paused && opts.paused()) { requestAnimationFrame(tick); return } ctl.update(); if (need || opts.spin) { if (opts.spin && !opts.spinStop) { ctl.autoRotate = true; ctl.autoRotateSpeed = .5 } need = false; R.render(sc, cam) } requestAnimationFrame(tick) })();
     const ro = new ResizeObserver(resize); ro.observe(host); resize();
 
-    if (!opts.planner && data) { const g = data.backdrop.clone(); world.add(g); const it = new THREE.Group(); data.place.forEach(p => { const o = deviceObject(p.type); if (o) { o.position.set(p.x - OX, 0, p.y - OZ); o.rotation.y = -p.rot * Math.PI / 180; it.add(o) } }); world.add(it); ctl.target.set(ROOM.w / 2 - OX, 0, ROOM.d / 2 - OZ); cam.position.set(ROOM.w / 2 - OX - 30, 42, ROOM.d / 2 - OZ + 50); ctl.update();
-      R.domElement.addEventListener('pointerdown', () => { ctl.autoRotate = false; opts.spinStop = true }, { once: true }) }
+    if (!opts.planner && data) { const g = data.backdrop.clone(); world.add(g); const it = new THREE.Group(); data.place.forEach(p => { const o = deviceObject(p.type); if (o) { o.position.set(p.x - OX, 0, p.y - OZ); o.rotation.y = -p.rot * Math.PI / 180; it.add(o) } }); world.add(it); ctl.target.set(ROOM.w / 2 - OX, 0, ROOM.d / 2 - OZ);
+      if (opts.hero) cam.position.set(ROOM.w / 2 - OX - 46, 54, ROOM.d / 2 - OZ + 60); else cam.position.set(ROOM.w / 2 - OX - 30, 42, ROOM.d / 2 - OZ + 50); ctl.update();
+      if (!opts.hero) R.domElement.addEventListener('pointerdown', () => { ctl.autoRotate = false; opts.spinStop = true }, { once: true }) }
 
     return {
       el: R.domElement, controls: ctl, sync, frame, pick, groundAt, resize,
