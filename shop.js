@@ -1,77 +1,13 @@
-/* TIGRIS – Geräte-Katalog (Platzhalter) und Anfrage / Angebot.
-   Nutzt aus index.html: LIB, T, S, mk, CATS, openApp, addType, commit, toast, trk, fmt, capacity, analyze, roomArea. */
+/* TIGRIS – Geräte-Katalog (Importgeräte aus produkte.js), Produktseiten und Anfrage / Angebot.
+   Nutzt aus index.html: LIB, T, S, mk, CATS, openApp, openLanding, addType, commit, toast, trk, fmt, capacity, analyze, roomArea. */
 (function () {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v) } catch (e) { return d } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) { } } };
 
-  /* ---------- Katalog: Platzhalter-Produkte (noch ohne Hersteller, Bild und Preis) ---------- */
-  const KCAT = {
-    racks: 'Power Racks & Rigs', stationen: 'Kraftstationen', maschinen: 'Kraftmaschinen', cardio: 'Cardio',
-    baenke: 'Hantelbänke', kurzhanteln: 'Kurzhanteln', scheiben: 'Hantelscheiben', stangen: 'Hantelstangen',
-    functional: 'Functional & HYROX', kampf: 'Kampfsport', boden: 'Bodenschutz', service: 'Ausstattung & Service'
-  };
-  // [id, Name, Kategorie, LIB-Typ für den Planer (oder ''), Einheit, Hinweis]
-  const KAT = [
-    ['k_rack', 'Power Rack', 'racks', 'rack', 'Stk', 'Mit Klimmzugstange und Sicherheitsablagen'],
-    ['k_halfrack', 'Half Rack', 'racks', 'halfrack', 'Stk', 'Offene Bauweise, Hantelablagen'],
-    ['k_smith', 'Multipresse (Smith Machine)', 'racks', 'smith', 'Stk', 'Geführte Langhantel'],
-    ['k_rig', 'CrossFit-Rig, modular', 'racks', 'rig', 'Stk', 'Felder à 1,2 m, erweiterbar'],
-    ['k_crossover', 'Kabel-Crossover', 'stationen', 'crossover', 'Stk', 'Zwei verstellbare Zugtürme'],
-    ['k_cable', 'Kabelzug Dual Pulley', 'stationen', 'cable', 'Stk', 'Zwei Gewichtsblöcke'],
-    ['k_multi', 'Multistation 4-fach', 'stationen', 'multi', 'Stk', 'Vier Trainingsplätze an einem Turm'],
-    ['k_cali', 'Calisthenics-Station', 'stationen', 'cali', 'Stk', 'Klimmzug, Dips, Barren'],
-    ['k_chest', 'Brustpresse', 'maschinen', 'chest', 'Stk', 'Selektorisiert'],
-    ['k_latpull', 'Latzug', 'maschinen', 'latpull', 'Stk', 'Selektorisiert'],
-    ['k_row', 'Ruderzug sitzend', 'maschinen', 'row', 'Stk', 'Selektorisiert'],
-    ['k_legpress', 'Beinpresse', 'maschinen', 'legpress', 'Stk', 'Selektorisiert oder Plate-loaded'],
-    ['k_legext', 'Beinstrecker', 'maschinen', 'legext', 'Stk', 'Selektorisiert'],
-    ['k_legcurl', 'Beinbeuger', 'maschinen', 'legcurl', 'Stk', 'Selektorisiert'],
-    ['k_hacksq', 'Hackenschmidt', 'maschinen', 'hacksq', 'Stk', 'Plate-loaded'],
-    ['k_hip', 'Hip-Thrust-Station', 'maschinen', 'hip', 'Stk', ''],
-    ['k_ghd', 'Glute-Ham-Bank', 'maschinen', 'ghd', 'Stk', ''],
-    ['k_tread', 'Laufband', 'cardio', 'tread', 'Stk', 'Gewerbliche Nutzung, mit Konsole'],
-    ['k_curve', 'Curve-Laufband', 'cardio', 'curve', 'Stk', 'Ohne Motor'],
-    ['k_cross', 'Crosstrainer', 'cardio', 'cross', 'Stk', ''],
-    ['k_bike', 'Indoor-Cycling-Bike', 'cardio', 'bike', 'Stk', ''],
-    ['k_airbike', 'Air-Bike', 'cardio', 'airbike', 'Stk', 'Luftwiderstand'],
-    ['k_rower', 'Rudergerät', 'cardio', 'rower', 'Stk', 'Luftwiderstand'],
-    ['k_ski', 'SkiErg mit Standfuß', 'cardio', 'ski', 'Stk', ''],
-    ['k_stair', 'Treppensteiger', 'cardio', 'stair', 'Stk', ''],
-    ['k_bench', 'Flachbank', 'baenke', 'bench', 'Stk', ''],
-    ['k_adjbench', 'Schrägbank verstellbar', 'baenke', 'adjbench', 'Stk', 'Flach bis 90°'],
-    ['k_dbset', 'Kurzhantelsatz 2,5–50 kg', 'kurzhanteln', '', 'Satz', '20 Paare in 2,5-kg-Schritten'],
-    ['k_dbrack', 'Kurzhantelablage 3-stufig', 'kurzhanteln', 'dbrack', 'Stk', 'Für bis zu 15 Paare'],
-    ['k_bumper', 'Bumper Plates 150 kg', 'scheiben', '', 'Satz', '2 × 5, 10, 15, 20, 25 kg'],
-    ['k_plates', 'Scheibenständer', 'scheiben', 'plates', 'Stk', ''],
-    ['k_bar20', 'Olympia-Langhantel 20 kg', 'stangen', '', 'Stk', '2,20 m, 50-mm-Hülsen'],
-    ['k_bar15', 'Olympia-Langhantel 15 kg', 'stangen', '', 'Stk', '2,01 m, 25-mm-Griff'],
-    ['k_ez', 'SZ-Curlstange', 'stangen', '', 'Stk', ''],
-    ['k_barholder', 'Wandhalter für Langhanteln', 'stangen', '', 'Stk', 'Für 6 Stangen'],
-    ['k_plyo', 'Plyo-Boxen (Satz)', 'functional', 'plyo', 'Satz', '3 Höhen'],
-    ['k_kbrack', 'Kettlebells mit Regal', 'functional', 'kbrack', 'Satz', '4–32 kg'],
-    ['k_wallball', 'Wallball-Zielscheibe (Rig-Montage)', 'functional', 'wallball', 'Stk', 'Markierungen 2,70 / 3,00 m'],
-    ['k_wallballs', 'Wallballs (Satz)', 'functional', '', 'Satz', '4, 6 und 9 kg'],
-    ['k_hxsled', 'Power-Schlitten', 'functional', 'hxsled', 'Stk', 'Für Turf-Bahnen'],
-    ['k_rope', 'Battle Rope mit Anker', 'functional', 'rope', 'Stk', ''],
-    ['k_trx', 'Suspension-Rig', 'functional', 'trx', 'Stk', ''],
-    ['k_bag', 'Boxsack hängend', 'kampf', 'bag', 'Stk', '120 cm'],
-    ['k_halfbag', 'Halbboxsack', 'kampf', 'halfbag', 'Stk', '60–80 cm'],
-    ['k_standbag', 'Standboxsack', 'kampf', 'standbag', 'Stk', ''],
-    ['k_ring', 'Boxring 6 × 6 m', 'kampf', 'ring', 'Stk', 'Podest 30 cm'],
-    ['k_cage', 'MMA-Käfig (Octagon)', 'kampf', 'cage', 'Stk', ''],
-    ['k_mat', 'Matten BJJ / Judo', 'kampf', '', 'm²', 'Puzzlematten 4 cm'],
-    ['k_rubber', 'Gummiboden 20 mm', 'boden', '', 'm²', 'Für Freihantel- und Functional-Bereiche'],
-    ['k_platform', 'Gewichtheber-Plattform', 'boden', 'platform', 'Stk', '2,44 × 2,44 m'],
-    ['k_turf', 'Turf-Bahn', 'boden', 'sled', 'm²', 'Für Schlitten und Lunges'],
-    ['k_locker', 'Spindreihe (6 Spinde)', 'service', 'locker6', 'Stk', ''],
-    ['k_reception', 'Empfangstheke', 'service', 'reception', 'Stk', ''],
-    ['k_water', 'Wasserspender', 'service', 'water', 'Stk', '']
-  ].map(a => ({ id: a[0], name: a[1], cat: a[2], lib: a[3], unit: a[4], note: a[5] }));
-  const KBY = Object.fromEntries(KAT.map(k => [k.id, k]));
-  const libOf = k => k.lib && typeof T === 'function' ? T(k.lib) : null;
-  const cm = v => Math.round(v * 100);
-  const specs = k => { const t = libOf(k); return t ? `${cm(t.d)} × ${cm(t.w)} × ${cm(t.h)} cm` : '' };
+  /* ---------- Katalog: Importgeräte aus produkte.js ---------- */
+  const PR = window.PRODUKTE, KCAT = PR.cats, KAT = PR.list, KBY = PR.byId;
+  const srcNote = p => p.dimsSrc === 'richtwert' ? 'Richtwert' : 'Herstellerangabe';
 
   /* ---------- Anfragekorb ---------- */
   let cart = LS.get('tigris.quote', []);
@@ -79,25 +15,95 @@
   const count = () => cart.reduce((s, c) => s + 1, 0);
   function addToCart(id, qty = 1, name) {
     const k = KBY[id], c = cart.find(x => x.id === id);
-    if (c) c.qty += qty; else cart.push({ id, name: name || (k ? k.name : id), unit: k ? k.unit : 'Stk', qty });
+    if (c) c.qty += qty; else cart.push({ id, name: name || (k ? k.name : id), unit: 'Stk', qty });
     saveCart(); trk('quote_add', { id, name: name || (k && k.name) });
   }
   function badge() { $$('.qbadge').forEach(b => { b.textContent = count(); b.style.display = count() ? '' : 'none' }) }
+  const toPlan = id => { closeProduct(true); openApp(); setTimeout(() => { addType(id); toast('Im Planer eingefügt – in Originalmaßen, verschieben und drehen möglich') }, 80) };
+  const askFor = p => { addToCart(p.id); toast(`${p.name} zur Anfrage hinzugefügt`) };
 
   /* ---------- Katalog rendern ---------- */
   let kc = 'all';
   function renderCatalog() {
     const el = $('#katGrid'); if (!el) return;
-    $('#katCats').innerHTML = [['all', 'Alle'], ...Object.entries(KCAT)].map(([k, n]) => `<button class="${k === kc ? 'on' : ''}" data-kc="${k}">${esc(n)}</button>`).join('');
+    $('#katCats').innerHTML = [['all', 'Alle'], ...Object.entries(KCAT).filter(([k]) => KAT.some(p => p.cat === k))].map(([k, n]) => `<button class="${k === kc ? 'on' : ''}" data-kc="${k}">${esc(n)}</button>`).join('');
     $$('#katCats [data-kc]').forEach(b => b.onclick = () => { kc = b.dataset.kc; renderCatalog() });
-    el.innerHTML = KAT.filter(k => kc === 'all' || k.cat === kc).map(k => `<article class="kp">
-      <div class="ph"><span>${esc(KCAT[k.cat])}</span><i>Produktbild folgt</i></div>
-      <div class="kb"><b>${esc(k.name)}</b><span>${esc([specs(k), k.note].filter(Boolean).join(' · ') || '&nbsp;')}</span>
-      <em>Platzhalter · Hersteller & Preis auf Anfrage</em>
-      <div class="ka"><button class="btn sm solid" data-qadd="${k.id}">+ Anfrage</button>${k.lib ? `<button class="btn sm ghost" data-plan="${k.lib}">Im Planer</button>` : ''}</div></div></article>`).join('');
-    $$('[data-qadd]', el).forEach(b => b.onclick = () => { addToCart(b.dataset.qadd); toast(`${KBY[b.dataset.qadd].name} zur Anfrage hinzugefügt`) });
-    $$('[data-plan]', el).forEach(b => b.onclick = () => { openApp(); setTimeout(() => { addType(b.dataset.plan); toast('Im Planer eingefügt – verschieben, drehen, Abstände prüfen') }, 80) });
+    el.innerHTML = KAT.filter(p => kc === 'all' || p.cat === kc).map(p => `<article class="kp">
+      <a class="kimg" href="#produkt/${p.slug}" aria-label="${esc(p.name)} ansehen"><img src="${p.thumb}" alt="${esc(p.alt)}" width="480" height="480" loading="lazy"><span>${esc(KCAT[p.cat])}</span></a>
+      <div class="kb"><a class="kn" href="#produkt/${p.slug}">${esc(p.name)}</a>
+      <dl class="km"><dt>Maße</dt><dd>${esc(p.mass)}</dd><dt>Gewicht</dt><dd>${esc(p.gewicht)}</dd></dl>
+      <em>Import · Preis auf Anfrage${p.dimsSrc === 'richtwert' ? ' · Maße Richtwert' : ''}</em>
+      <div class="ka"><a class="btn sm" href="#produkt/${p.slug}">Details</a><button class="btn sm solid" data-qadd="${p.id}">+ Anfrage</button></div></div></article>`).join('');
+    $$('[data-qadd]', el).forEach(b => b.onclick = () => askFor(KBY[b.dataset.qadd]));
   }
+
+  /* ---------- Produktseite (#produkt/<slug>) ---------- */
+  const row = (k, v) => v ? `<tr><th>${esc(k)}</th><td>${v}</td></tr>` : '';
+  function productHTML(p) {
+    const farben = p.farben.length ? p.farben.map(f => `<li>${esc(f)}</li>`).join('') : '';
+    const more = KAT.filter(x => x.cat === p.cat && x.id !== p.id).concat(KAT.filter(x => x.cat !== p.cat)).slice(0, 4);
+    return `<div class="pd" role="dialog" aria-modal="true" aria-labelledby="pdT">
+      <div class="pdbar"><nav class="crumb"><a href="#katalog">Katalog</a><span>›</span><a href="#katalog" data-kcat="${p.cat}">${esc(KCAT[p.cat])}</a><span>›</span><b>${esc(p.name)}</b></nav><button class="qx" aria-label="Schließen">×</button></div>
+      <div class="pdtop">
+        <figure class="pdimg"><img src="${p.img}" alt="${esc(p.alt)}" width="1000" height="1000"></figure>
+        <div class="pdbuy">
+          <div class="eyebrow">Import · ${esc(KCAT[p.cat])}</div>
+          <h2 id="pdT">${esc(p.name)}</h2>
+          <p class="pdlead">${esc(p.text)}</p>
+          <div class="pdprice"><span>Preis</span><b>Auf Anfrage</b><small>Angebot inklusive Fracht, Zoll und Lieferzeit – unverbindlich und kostenlos</small></div>
+          <ul class="pdfacts">
+            <li><span>Maße</span><b>${esc(p.mass)}</b></li>
+            <li><span>Gewicht</span><b>${esc(p.gewicht)}</b></li>
+            <li><span>Max. Nutzergewicht</span><b>${p.maxUser} kg</b></li>
+          </ul>
+          <div class="pdcol"><span>Rahmenfarbe</span>${farben ? `<ul>${farben}</ul>` : ''}<small>${esc(p.farbenHinweis)}</small></div>
+          <div class="pdcta"><button class="btn solid" data-pask>Angebot anfragen</button><button class="btn" data-pplan>Im Planer platzieren</button></div>
+          <p class="pdimp">Importgerät · gefertigt in Shandong, China · Lieferzeit auf Anfrage</p>
+        </div>
+      </div>
+      <div class="pdtabs" role="tablist"><button role="tab" class="on" data-tab="spec">Spezifikationen</button><button role="tab" data-tab="desc">Beschreibung</button><button role="tab" data-tab="imp">Import & Lieferung</button></div>
+      <div class="pdpane on" data-pane="spec"><table class="pdspec"><tbody>
+        ${row('Abmessungen Gerät', `${esc(p.mass)}<small>${p.dimsSrc === 'richtwert' ? 'Richtwert: Der Hersteller nennt keine Aufstellmaße. Die Werte stammen vom Vorbildgerät und werden vor der Bestellung bestätigt.' : 'Herstellerangabe (L = Tiefe, B = Breite, H = Höhe). Wird vor der Bestellung bestätigt.'}</small>`)}
+        ${row('Gerätegewicht', `${esc(p.gewicht)}<small>${srcNote(p)}</small>`)}
+        ${row('Maximales Nutzergewicht', `${p.maxUser} kg`)}
+        ${row('Materialzusammensetzung', esc(p.material))}
+        ${row('Bauart', 'Scheibenbelastet (Plate Loaded) – Hantelscheiben nicht enthalten')}
+        ${row('Trainierte Muskeln', esc(p.muskeln))}
+        ${row('Rahmenfarben', esc((p.farben.length ? p.farben.join(', ') + ' · ' : '') + p.farbenHinweis))}
+        ${row('Modell', esc(p.modell))}
+        ${row('Herkunft', 'Shandong, China')}
+        ${row('Kennzeichnung', 'CE (laut Hersteller)')}
+        ${row('Garantie', p.garantie ? esc(p.garantie) : '')}
+        ${row('Verpackung', p.verpackung ? esc(p.verpackung) : '')}
+      </tbody></table></div>
+      <div class="pdpane" data-pane="desc"><p>${esc(p.text)}</p><p>Im TIGRIS-Planer steht das Gerät in Originalmaßen bereit: platzieren, drehen und Abstände zu anderen Geräten prüfen, bevor du bestellst.</p><p class="pdfine">* Hantelscheiben, Langhantel und Zubehör sind nicht enthalten.</p></div>
+      <div class="pdpane" data-pane="imp"><ol class="pdsteps">
+        <li><b>Anfrage</b><span>Du fragst das Gerät mit Stückzahl und Rahmenfarbe an.</span></li>
+        <li><b>Angebot</b><span>Wir nennen Preis, Fracht, Zoll und Lieferzeit und bestätigen Maße und Gewicht beim Hersteller.</span></li>
+        <li><b>Import</b><span>Fertigung und Seefracht aus China, Verzollung in Deutschland.</span></li>
+        <li><b>Lieferung</b><span>Auf Wunsch mit Montage und Einweisung – siehe Service.</span></li></ol></div>
+      <div class="pdmore"><h4>Weitere Importgeräte</h4><div class="pdmg">${more.map(x => `<a href="#produkt/${x.slug}"><img src="${x.thumb}" alt="${esc(x.alt)}" width="480" height="480" loading="lazy"><b>${esc(x.name)}</b><span>${esc(x.mass)}</span></a>`).join('')}</div></div>
+    </div>`;
+  }
+  let pdBack = null;
+  function openProduct(slug) {
+    const p = PR.bySlug[slug]; if (!p) return closeProduct();
+    if (typeof openLanding === 'function' && $('#app') && $('#app').classList.contains('on')) openLanding();
+    const ov = $('#prod'); ov.innerHTML = productHTML(p); ov.classList.add('on'); ov.scrollTop = 0; document.body.style.overflow = 'hidden';
+    document.title = `${p.name} · TIGRIS`; trk('product_view', { id: p.id });
+    $('.qx', ov).onclick = () => closeProduct();
+    $('[data-pask]', ov).onclick = () => { askFor(p); closeProduct(true); open({ from: 'product' }) };
+    $('[data-pplan]', ov).onclick = () => toPlan(p.id);
+    $$('[data-kcat]', ov).forEach(a => a.onclick = () => { kc = a.dataset.kcat; renderCatalog() });
+    $$('.pdtabs [data-tab]', ov).forEach(b => b.onclick = () => { $$('.pdtabs [data-tab]', ov).forEach(x => x.classList.toggle('on', x === b)); $$('.pdpane', ov).forEach(x => x.classList.toggle('on', x.dataset.pane === b.dataset.tab)) });
+  }
+  function closeProduct(silent) {
+    const ov = $('#prod'); if (!ov || !ov.classList.contains('on')) return;
+    ov.classList.remove('on'); ov.innerHTML = ''; document.body.style.overflow = ''; if (pdBack) document.title = pdBack;
+    if (/^#produkt\//.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
+    if (!silent) { const k = $('#katalog'); if (k) k.scrollIntoView() }
+  }
+  function route() { const m = location.hash.match(/^#produkt\/([a-z0-9-]+)$/); if (m) openProduct(m[1]); else closeProduct(true) }
 
   /* ---------- Anfrage-Dialog ---------- */
   const SEG = ['Fitnessstudio', 'Boutique- / Personal-Training-Studio', 'CrossFit- / HYROX-Box', 'Kampfsportschule', 'Hotel & Resort', 'Firmenfitness', 'Verein / Schule / Hochschule', 'Polizei, Feuerwehr, Bundeswehr', 'Physio & Reha', 'Wohnanlage / Home Gym', 'Sonstiges'];
@@ -195,9 +201,12 @@
 
   /* ---------- Einhängen ---------- */
   const host = document.createElement('div'); host.id = 'quote'; host.className = 'qov'; document.body.appendChild(host);
+  const pov = document.createElement('div'); pov.id = 'prod'; pov.className = 'pov'; document.body.appendChild(pov); pdBack = document.title;
+  pov.onclick = e => { if (e.target.id === 'prod') closeProduct() };
+  addEventListener('hashchange', route);
   const fab = document.createElement('button'); fab.className = 'qfab'; fab.id = 'qFab'; fab.innerHTML = 'Anfrage <span class="qbadge"></span>'; fab.onclick = () => open({ from: 'fab' }); document.body.appendChild(fab);
   $$('[data-quote]').forEach(b => b.onclick = () => open({ from: b.dataset.quote, service: b.dataset.service, segment: b.dataset.segment }));
-  addEventListener('keydown', e => { if (e.key === 'Escape' && $('#quote').classList.contains('on')) close() });
-  renderCatalog(); badge();
+  addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#quote').classList.contains('on')) close(); else closeProduct() });
+  renderCatalog(); badge(); route();
   window.Quote = { open, add: addToCart };
 })();
