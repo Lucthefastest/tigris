@@ -64,10 +64,17 @@
       text: 'Trizepsstrecken mit Armauflage und Hebelarm. Gewicht über Hantelscheiben, Sitzhöhe verstellbar.' }
   ];
   const CAT = { brust: 'Brust', ruecken: 'Rücken', schultern: 'Schultern', arme: 'Arme', beine: 'Beine' };
+  /* Zweites Produktbild: Strichzeichnung mit Aufstellmaßen. Schulterpresse und Trizeps-Curl fehlen noch
+     (die gelieferten Maßbilder tragen die Werte des jeweils anderen Geräts). */
+  const MASSBILD = ['p_brust_flach_prm', 'p_brust_flach_yt402', 'p_brust_schraeg_yt403', 'p_lat_combo', 'p_lat_b105',
+    'p_hochrudern', 'p_rudern_sitzend', 'p_hack_yt412', 'p_bizeps_b110'];
   const num = v => String(Math.round(v * 10) / 10).replace('.', ',');
   P.forEach(p => {
-    p.img = `assets/produkte/${p.slug}.webp`; p.thumb = `assets/produkte/${p.slug}-480.webp`;
+    const a = `assets/produkte/${p.slug}`;
+    p.img = `${a}.webp`; p.thumb = `${a}-480.webp`;
     p.alt = `${p.name}, Produktfoto auf weißem Hintergrund`;
+    p.bilder = [{ src: p.img, mini: `${a}-160.webp`, alt: p.alt, label: 'Produktfoto' }];
+    if (MASSBILD.includes(p.id)) p.bilder.push({ src: `${a}-masse.webp`, mini: `${a}-masse-160.webp`, alt: `${p.name}, Zeichnung mit Aufstellmaßen Länge, Breite und Höhe`, label: 'Maße' });
     p.mass = `L ${num(p.l)} × B ${num(p.b)} × H ${num(p.h)} cm`; p.gewicht = `${num(p.kg)} kg`;
   });
   window.PRODUKTE = { list: P, cats: CAT, num, byId: Object.fromEntries(P.map(p => [p.id, p])), bySlug: Object.fromEntries(P.map(p => [p.slug, p])) };
