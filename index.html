@@ -212,13 +212,14 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
 </style>
 <link rel="stylesheet" href="account.css?v=8">
-<link rel="stylesheet" href="shop.css?v=8">
+<link rel="stylesheet" href="shop.css?v=9">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="config.js?v=8"></script>
 <script src="cloud.js?v=8"></script>
 <script src="models.js?v=8"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js"}}</script>
 <script src="studio3d.js?v=11"></script>
+<script src="produkte.js?v=1"></script>
 </head>
 <body>
 
@@ -279,28 +280,22 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
       <article><div class="n">03</div><h3>Beschaffen</h3><p>Aus dem Layout entsteht die Stückliste. Beratung und Hersteller-Netzwerk führen zu den passenden Fabrikanten und Gerätesuppliern.</p></article>
     </div>
   </section>
-  <section class="block" id="show">
-    <div class="kicker">No. 03 · Geräte</div>
-    <h2>Echte Geräte.<br><em>Echte Maße.</em></h2>
-    <p class="lead">Jedes Modell entspricht den Datenblättern der Hersteller – oder dem Durchschnitt mehrerer Hersteller, wenn du dich noch nicht festgelegt hast. Maus darüber bewegen zum Drehen.</p>
-    <div class="show" id="showGrid"></div>
-  </section>
   <section class="block" id="modell" style="padding-top:0">
-    <div class="kicker">No. 04 · Schnittmodell</div>
+    <div class="kicker">No. 03 · Schnittmodell</div>
     <h2>Ein ganzes Studio.<br><em>Im Schnitt.</em></h2>
     <p class="lead">Ein komplettes Beispielstudio als 3D-Raumplan: Wände, Böden, Treppen und jedes Gerät maßstäblich nachgebaut. Schalte zwischen Übersicht, Draufsicht und Innenansicht, blende die Decke ein, miss Strecken nach und finde jede Zone. Die Geräte daraus stehen im Planer als Detailmodelle bereit.</p>
     <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Raumplan laden · 8 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
     <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><a class="btn ghost" href="3d/viewer/index.html" target="_blank" rel="noopener">Als eigene Seite ↗</a><span class="sm3n" id="sm3n"></span></div>
   </section>
   <section class="block" id="katalog" style="padding-top:0">
-    <div class="kicker">No. 05 · Katalog</div>
-    <h2>Geräte-Katalog.<br><em>Kein Gerät ohne Papiere.</em></h2>
-    <p class="lead">Die Auswahl wächst. Bis Hersteller, Bilder und Preise feststehen, sind die Produkte als Platzhalter angelegt – du kannst sie trotzdem anfragen oder direkt im Planer platzieren.</p>
+    <div class="kicker">No. 04 · Katalog</div>
+    <h2>Importgeräte.<br><em>Mit Maß und Gewicht.</em></h2>
+    <p class="lead">Scheibenbelastete Kraftgeräte, die wir direkt aus China importieren. Jedes Gerät mit Aufstellmaßen und Gewicht – im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
   <section class="block paper" id="install">
-    <div class="kicker">No. 06 · Service</div>
+    <div class="kicker">No. 05 · Service</div>
     <h2>Von der Lieferung<br><em>bis zum ersten Training.</em></h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
@@ -312,7 +307,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <p class="signoff"><span class="spark">✦</span> Prüfung nach EN ISO 20957 · Protokoll für jedes Gerät</p>
   </section>
   <section class="block" id="disc">
-    <div class="kicker">No. 07 · Disziplinen</div>
+    <div class="kicker">No. 06 · Disziplinen</div>
     <h2>Eine Planung.<br><em>Jede Disziplin.</em></h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
@@ -511,6 +506,8 @@ const TPL={
 // Detailmodelle aus dem Studio-Schnittmodell (studio3d.js); bis das Modell geladen ist, zeichnet der Planer ein ähnliches Gerät
 const isDet=it=>typeof it.type==='string'&&it.type.startsWith('d_');
 Studio3D.DEVICES.forEach(d=>{LIB.push({id:d.id,name:d.name,cat:d.cat,w:d.w,d:d.d,h:d.h,clr:d.clr,zone:false,p:d.p,round:false,ref:d.ref,mount:false,glb:true});if(d.like&&MODELS[d.like]&&!MODELS[d.id])MODELS[d.id]=MODELS[d.like]});
+// Importgeräte aus produkte.js in Originalmaßen (B = Breite → w, L = Tiefe → d); gezeichnet mit einem ähnlichen Modell
+PRODUKTE.list.forEach(p=>{LIB.push({id:p.id,name:p.name,cat:'kraft',w:p.b/100,d:p.l/100,h:p.h/100,clr:.6,zone:false,p:1,round:false,ref:`Importgerät · ${p.mass} · ${p.gewicht}${p.dimsSrc==='richtwert'?' · Maße Richtwert':''}`,mount:false,imp:true});if(MODELS[p.like]&&!MODELS[p.id])MODELS[p.id]=MODELS[p.like]});
 Object.entries(TPL).forEach(([id,t])=>LIB.unshift({id,name:t.name,cat:'bereich',w:t.w,d:t.d,h:0,clr:0,zone:false,p:0,ref:t.ref,tpl:t.items}));
 const T=id=>LIB.find(t=>t.id===id);
 const persons=it=>it.p??(T(it.type)||{}).p??0;
@@ -1309,10 +1306,10 @@ $('#calOk').onclick=()=>{const P=S.calib&&S.calib.pts;if(!P||P.length<2){toast('
 
 /* ============ Panels ============ */
 function renderLib(){
-  $('#cats').innerHTML=[['all','Alle'],['detail','Detailmodelle 3D'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="cat ${S.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
+  $('#cats').innerHTML=[['all','Alle'],['import','Importgeräte'],['detail','Detailmodelle 3D'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="cat ${S.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
   $$('#cats .cat').forEach(b=>b.onclick=()=>{S.cat=b.dataset.c;renderLib();if(S.cat==='detail')detLoad()});
   const q=S.q.toLowerCase();
-  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat||(S.cat==='detail'&&t.glb))&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}" title="${(t.ref||'').replace(/"/g,'&quot;')}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span>${t.glb?'<span class="g3">3D</span>':''}<span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
+  $('#lib').innerHTML=LIB.filter(t=>(S.cat==='all'||t.cat===S.cat||(S.cat==='detail'&&t.glb)||(S.cat==='import'&&t.imp))&&t.name.toLowerCase().includes(q)).map(t=>`<button class="li" data-id="${t.id}" title="${(t.ref||'').replace(/"/g,'&quot;')}"><span class="sw" style="background:${CATS[t.cat].c};${t.zone?'opacity:.35;border-style:dashed':''}"></span><span class="nm">${t.name}</span>${t.glb?'<span class="g3">3D</span>':''}${t.imp?'<span class="g3">Import</span>':''}<span class="dm">${fmt(t.w)} × ${fmt(t.d)}</span></button>`).join('');
   $$('#lib .li').forEach(b=>b.onclick=()=>addType(b.dataset.id));
 }
 $('#q').oninput=e=>{S.q=e.target.value;renderLib()};
@@ -1396,18 +1393,6 @@ $('#chipDet').textContent=Studio3D.DEVICES.length;
   const go=()=>(window.requestIdleCallback||setTimeout)(upgrade,{timeout:2500});if(document.readyState==='complete')go();else addEventListener('load',go,{once:true});
   function frame(ts){if(real)return;const r=cvH.getBoundingClientRect();if(r.width>0&&$('#landing').style.display!=='none'&&ts-last>30){last=ts;const dpr=Math.min(2,devicePixelRatio||1);if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
     t+=.0028;render3D(c,r.width,r.height,{yaw:.45+Math.sin(t)*.55,pitch:.66+Math.sin(t*.7)*.05,dist:25.5},room,items,{dpr,labels:false,pretty:true})}requestAnimationFrame(frame)}requestAnimationFrame(frame)})();
-/* Geräte-Showroom auf der Startseite */
-(function showroom(){const grid=$('#showGrid');if(!grid)return;
-  const list=['tread_tg','rack','bike_lf','chest','cross','legpress','bag','dbrack'];
-  grid.innerHTML=list.map(id=>{const t=T(id),cm=v=>Math.round(v*100);return `<figure><canvas data-m="${id}"></canvas><figcaption><b>${t.name}</b><span>${t.ref||(cm(t.d)+' × '+cm(t.w)+' × '+cm(t.h)+' cm')}</span></figcaption></figure>`}).join('');
-  const cvs=$$('#showGrid canvas');let ang=0,hover=null;
-  function paint(cv,yaw){const id=cv.dataset.m,t=T(id),r=cv.getBoundingClientRect();if(!r.width)return;const dpr=Math.min(2,devicePixelRatio||1);if(cv.width!==Math.round(r.width*dpr)){cv.width=r.width*dpr;cv.height=r.height*dpr}
-    const m=Math.max(t.w,t.d),room={w:t.w+1.6,d:t.d+1.6},it=mk(id,room.w/2,room.d/2);render3D(cv.getContext('2d'),r.width,r.height,{yaw,pitch:.52,dist:Math.max(3.2,m*1.25+t.h*.75)},room,[it],{dpr,labels:false,pretty:true,bare:true})}
-  cvs.forEach(cv=>{cv.onmouseenter=()=>hover=cv;cv.onmouseleave=()=>{hover=null;paint(cv,.65)}});
-  const all=()=>cvs.forEach(cv=>paint(cv,.65));addEventListener('resize',all);setTimeout(all,60);
-  (function spin(){if(hover){ang+=.02;paint(hover,.65+ang)}requestAnimationFrame(spin)})();
-})();
-
 /* Start */
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
@@ -1422,7 +1407,7 @@ if(S.room.bg==='studio'||S.items.some(isDet))Studio3D.load().then(()=>{if(S.room
     n.textContent='Ziehen dreht · Mausrad oder zwei Finger zoomen · Zonen und Geräte anklicken'};
   $('#sm3Plan').onclick=loadStudio})();
 </script>
-<script src="shop.js?v=8"></script>
+<script src="shop.js?v=9"></script>
 <script src="account.js?v=8"></script>
 </body>
 </html>
