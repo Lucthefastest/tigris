@@ -45,7 +45,8 @@
     return `<div class="pd" role="dialog" aria-modal="true" aria-labelledby="pdT">
       <div class="pdbar"><nav class="crumb"><a href="#katalog">Katalog</a><span>›</span><a href="#katalog" data-kcat="${p.cat}">${esc(KCAT[p.cat])}</a><span>›</span><b>${esc(p.name)}</b></nav><button class="qx" aria-label="Schließen">×</button></div>
       <div class="pdtop">
-        <figure class="pdimg"><img src="${p.img}" alt="${esc(p.alt)}" width="1000" height="1000"></figure>
+        <div class="pdgal"><figure class="pdimg"><img src="${p.img}" alt="${esc(p.alt)}" width="1000" height="1000"></figure>${p.bilder.length > 1 ? `
+          <div class="pdthumbs" role="group" aria-label="Produktbilder">${p.bilder.map((b, i) => `<button type="button" data-img="${i}" aria-pressed="${i === 0}" aria-label="${esc(b.label)} anzeigen"><img src="${b.mini}" alt="" width="160" height="160"><span>${esc(b.label)}</span></button>`).join('')}</div>` : ''}</div>
         <div class="pdbuy">
           <div class="eyebrow">Import · ${esc(KCAT[p.cat])}</div>
           <h2 id="pdT">${esc(p.name)}</h2>
@@ -95,6 +96,9 @@
     $('[data-pask]', ov).onclick = () => { askFor(p); closeProduct(true); open({ from: 'product' }) };
     $('[data-pplan]', ov).onclick = () => toPlan(p.id);
     $$('[data-kcat]', ov).forEach(a => a.onclick = () => { kc = a.dataset.kcat; renderCatalog() });
+    const big = $('.pdimg img', ov), pick = i => { const b = p.bilder[i]; big.src = b.src; big.alt = b.alt; $$('[data-img]', ov).forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.img === i))) };
+    $$('[data-img]', ov).forEach(x => x.onclick = () => pick(+x.dataset.img));
+    p.bilder.slice(1).forEach(b => { const im = new Image(); im.src = b.src });
     $$('.pdtabs [data-tab]', ov).forEach(b => b.onclick = () => { $$('.pdtabs [data-tab]', ov).forEach(x => x.classList.toggle('on', x === b)); $$('.pdpane', ov).forEach(x => x.classList.toggle('on', x.dataset.pane === b.dataset.tab)) });
   }
   function closeProduct(silent) {

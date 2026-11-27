@@ -35,7 +35,14 @@
 .crumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d);min-width:0}
 .crumb a{color:var(--cream-d);text-decoration:none}.crumb a:hover{color:var(--cream)}.crumb b{font-weight:400;color:var(--cream);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46vw}
 .pdtop{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;padding:28px}
-.pdimg{margin:0;border:1px solid var(--line);align-self:start}.pdimg img{display:block;width:100%;height:auto;aspect-ratio:1/1}
+.pdgal{align-self:start;min-width:0}.pdimg{margin:0;border:1px solid var(--line)}
+.pdthumbs{display:flex;gap:10px;margin-top:10px}
+.pdthumbs button{padding:0;border:1px solid var(--line);background:none;cursor:pointer;width:88px;text-align:center;font:inherit}
+.pdthumbs button img{display:block;width:100%;height:auto;aspect-ratio:1/1}
+.pdthumbs button span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 0;font-family:var(--mono);color:var(--cream-d)}
+.pdthumbs button[aria-pressed="true"]{border-color:var(--cream);box-shadow:0 0 0 1px var(--cream)}
+.pdthumbs button[aria-pressed="true"] span{color:var(--cream)}.pdthumbs button:hover span{color:var(--cream)}
+.pdthumbs button:focus-visible{outline:2px solid var(--cream);outline-offset:2px}.pdimg img{display:block;width:100%;height:auto;aspect-ratio:1/1}
 .pdbuy{display:flex;flex-direction:column;gap:14px}
 .pdbuy h2{font-size:clamp(30px,3.4vw,44px);font-weight:300;line-height:1.05;margin:0}
 .pdlead{color:var(--cream-d);margin:0}
