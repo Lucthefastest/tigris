@@ -73,7 +73,6 @@
   let pdBack = null;
   function openProduct(slug) {
     const p = PR.bySlug[slug]; if (!p) return closeProduct();
-    if (typeof openLanding === 'function' && $('#app') && $('#app').classList.contains('on')) openLanding();
     const ov = $('#prod'); ov.innerHTML = productHTML(p); ov.classList.add('on'); ov.scrollTop = 0; document.body.style.overflow = 'hidden';
     document.title = `${p.name} · TIGRIS`; trk('product_view', { id: p.id });
     $('.qx', ov).onclick = () => closeProduct();
@@ -88,10 +87,19 @@
   function closeProduct(silent) {
     const ov = $('#prod'); if (!ov || !ov.classList.contains('on')) return;
     ov.classList.remove('on'); ov.innerHTML = ''; document.body.style.overflow = ''; if (pdBack) document.title = pdBack;
-    if (/^#produkt\//.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
-    if (!silent) { const k = $('#katalog'); if (k) k.scrollIntoView() }
+    if (/^#produkt\//.test(location.hash)) history.replaceState(null, '', location.pathname + location.search + '#katalog');
   }
-  function route() { const m = location.hash.match(/^#produkt\/([a-z0-9-]+)$/); if (m) openProduct(m[1]); else closeProduct(true) }
+  /* Katalog ist eine eigene Seite (#katalog); Produktseiten liegen darüber */
+  function showKat(on) {
+    const kp = $('#katPage'); if (!kp) return;
+    if (on) { const app = $('#app'); if (app) app.classList.remove('on'); $('#landing').style.display = 'none'; if (kp.hidden) { kp.hidden = false; scrollTo(0, 0) } }
+    else if (!kp.hidden) { kp.hidden = true; $('#landing').style.display = '' }
+  }
+  function route() {
+    const h = location.hash, m = h.match(/^#produkt\/([a-z0-9-]+)$/);
+    if (m) { showKat(true); openProduct(m[1]) } else { closeProduct(true); showKat(h === '#katalog') }
+  }
+  const goKat = () => { if (location.hash === '#katalog') route(); else location.hash = '#katalog' };
 
   /* ---------- Anfrage-Dialog ---------- */
   const SEG = ['Fitnessstudio', 'Boutique- / Personal-Training-Studio', 'CrossFit- / HYROX-Box', 'Kampfsportschule', 'Hotel & Resort', 'Firmenfitness', 'Verein / Schule / Hochschule', 'Polizei, Feuerwehr, Bundeswehr', 'Physio & Reha', 'Wohnanlage / Home Gym', 'Sonstiges'];
@@ -146,7 +154,7 @@
     f.addEventListener('input', keepDraft); f.addEventListener('change', keepDraft);
     $('.qx', f).onclick = close; $('#quote').onclick = e => { if (e.target.id === 'quote') close() };
     const qp = $('#qPlan'); if (qp) qp.onclick = () => { planBom().forEach(b => { const c = cart.find(x => x.id === b.id); if (c) c.qty = b.qty; else cart.push(b) }); saveCart(); renderItems(); trk('quote_plan_bom', { n: planBom().length }) };
-    $('#qKat').onclick = () => { close(); if (typeof openLanding === 'function') openLanding(); setTimeout(() => $('#katalog').scrollIntoView({ behavior: 'smooth' }), 60) };
+    $('#qKat').onclick = () => { close(); goKat() };
     $('#qSend').onclick = send;
   }
   function keepDraft() {
@@ -196,5 +204,5 @@
   $$('[data-quote]').forEach(b => b.onclick = () => open({ from: b.dataset.quote, service: b.dataset.service, segment: b.dataset.segment }));
   addEventListener('keydown', e => { if (e.key !== 'Escape') return; if ($('#quote').classList.contains('on')) close(); else closeProduct() });
   renderCatalog(); badge(); route();
-  window.Quote = { open, add: addToCart };
+  window.Quote = { open, add: addToCart }; window.Katalog = { go: goKat };
 })();
