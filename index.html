@@ -47,10 +47,6 @@ h1,h2,h3,.serif{font-family:var(--serif);font-weight:400;letter-spacing:-.015em}
 .hero p{max-width:520px;color:var(--cream-d);font-size:16px;margin-bottom:34px}
 .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
 .hero{grid-template-columns:.9fr 1.25fr;gap:10px;padding-right:0;overflow:hidden}
-.hero .cv{position:relative;aspect-ratio:1.25/1;margin-right:-6%;-webkit-mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(75% 70% at 52% 50%,#000 60%,transparent 100%)}
-.hero .cv canvas{width:100%;height:100%;display:block}
-.hero .cv canvas.r3{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}.hero .cv.real canvas.r3{opacity:1}.hero .cv.real #heroCv{opacity:0;transition:opacity 1.2s ease}
-.hero .cv .tag{position:absolute;z-index:2;left:12%;top:9%;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .hero .chips span{border:1px solid var(--line2);border-radius:2px;padding:7px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-d)}
 .hero .chips b{color:var(--cream);font-weight:500}
@@ -235,6 +231,36 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
 .ftags span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--line2);border-radius:2px}
 @media(max-width:1000px){.why{grid-template-columns:1fr 1fr}.qual{grid-template-columns:1fr}.steps.six{grid-template-columns:1fr 1fr}#landing nav{gap:18px}}
 @media(max-width:640px){.why,.steps.six{grid-template-columns:1fr}.qual article,.why article{padding:24px 20px}.qual h3{font-size:24px}}
+/* ---------- Aufbau Text | Bild, Menü, Katalogseite ---------- */
+.hero{grid-template-columns:1fr 1fr;gap:0;padding:0;background:var(--ink);align-items:stretch;min-height:calc(100vh - 88px);overflow:hidden}
+.hero>div:first-child{align-self:center;padding:40px 56px 72px 48px;min-width:0}
+.hero-img,.sp-img{margin:0;position:relative;overflow:hidden;background:var(--navy-dd)}
+.hero-img img,.sp-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+section.split{display:grid;grid-template-columns:1fr 1fr;padding:0;align-items:stretch}
+.split .sp-txt{padding:90px 56px 90px 48px;min-width:0}.split.left .sp-txt{padding:90px 48px 90px 56px}
+.split .sp-img{min-height:680px}.split .qual{grid-template-columns:1fr}
+.burger{width:44px;height:44px;display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;background:none;border:1px solid var(--line2);border-radius:2px;cursor:pointer;padding:0}
+.burger span{display:block;width:20px;height:2px;background:var(--cream)}.burger:hover{border-color:var(--cream)}
+.burger:focus-visible,.mclose:focus-visible,.mlist button:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+body.mopen{overflow:hidden}
+.menu{position:fixed;inset:0;z-index:170;background:var(--ink);display:flex;flex-direction:column;padding:22px 48px 36px;overflow:auto}
+.menu[hidden]{display:none}.menu:focus{outline:none}
+.mhead{display:flex;justify-content:space-between;align-items:center}
+.mclose{width:44px;height:44px;background:none;border:1px solid var(--line2);border-radius:2px;color:var(--cream);font-size:26px;line-height:1;cursor:pointer}
+.mlist{display:flex;flex-direction:column;margin:auto 0;padding:40px 0;max-width:1100px}
+.mlist button{display:flex;align-items:baseline;gap:28px;width:100%;padding:20px 0;background:none;border:0;border-bottom:1px solid var(--line);color:var(--cream);font-family:var(--serif);font-weight:300;font-size:clamp(40px,7vw,96px);line-height:1;letter-spacing:-.02em;text-align:left;cursor:pointer}
+.mlist button:first-child{border-top:1px solid var(--line)}
+.mlist button span{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--amber);min-width:2.6em}
+.mlist button:hover{color:var(--ice)}
+.mfoot{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
+#katPage header{display:flex;justify-content:space-between;align-items:center;padding:22px 48px;border-bottom:1px solid var(--line)}
+#katPage .mark{color:var(--cream);text-decoration:none;cursor:pointer}
+#katPage nav{display:flex;gap:24px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
+#katPage nav a{cursor:pointer}#katPage nav a:hover{color:var(--cream)}
+#katPage section.block{min-height:70vh}
+@media(max-width:900px){.hero,section.split{grid-template-columns:1fr}.hero{min-height:0}.hero-img{order:-1;height:62vh;min-height:340px}.hero>div:first-child{padding:32px 22px 48px}
+  .split .sp-img{order:-1;min-height:0;height:72vh}.split .sp-txt,.split.left .sp-txt{padding:56px 22px}#katPage header{padding:16px 22px}}
+@media(max-width:640px){.split .sp-txt,.split.left .sp-txt{padding:48px 16px}.hero>div:first-child{padding:28px 16px 40px}.menu{padding:16px}.mlist button{gap:18px;padding:16px 0}#katPage header{padding:16px}#katPage .mark small{display:none}}
 </style>
 <link rel="stylesheet" href="account.css?v=8">
 <link rel="stylesheet" href="shop.css?v=10">
@@ -252,7 +278,7 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
 <div id="landing">
   <header>
     <div class="mark">Tigris<i class="dot">.</i><small>Gym Layout Studio</small></div>
-    <nav><a data-go="warum">Warum Tigris</a><a data-go="qualitaet">Qualität</a><a data-go="how">Ablauf</a><a data-go="gruender">Gründer</a><a data-go="leist">Leistungen</a><a data-go="katalog">Katalog</a><button class="btn sm" data-quote="nav">Beratung anfragen</button><button class="btn sm solid" data-open>Planer öffnen</button></nav>
+    <nav><button class="burger" type="button" data-menu aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button></nav>
   </header>
   <section class="hero">
     <div>
@@ -261,7 +287,7 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
       <p>Tigris importiert personalisierbare Fitnessgeräte direkt von ausgewählten, von uns geprüften Herstellern. Wir beraten, verhandeln und begleiten dich vom ersten Gespräch bis zum ersten Training – zum besten Preis und mit bis zu 2 Jahren Garantie.</p>
       <div class="cta"><button class="btn solid" data-quote="hero" data-service="Beratung & Studiokonzept">Kostenlose Beratung →</button><button class="btn" data-go="how">So funktioniert's</button></div>
     </div>
-    <div class="cv" id="heroBox"><span class="tag" id="heroTag">Demo-Studio · 390 m² · Live-3D</span><canvas id="heroCv"></canvas></div>
+    <figure class="hero-img"><img src="assets/start/main.webp" srcset="assets/start/main-640.webp 640w, assets/start/main.webp 1024w" sizes="(max-width:900px) 100vw, 50vw" alt="Dunkles Studio in blauem Licht mit Hantelbank, Kurzhanteln, Battle Rope und Sprintbahn" width="1024" height="1536" fetchpriority="high"></figure>
   </section>
   <div class="stats prom">
     <div><b>Bestpreisgarantie</b><span>Direkt ab Fabrik, ohne Zwischenhändler.</span></div>
@@ -280,7 +306,8 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
       <article><span class="n">04 · Bestpreisgarantie</span><h3>Fabrikpreis statt Händleraufschlag</h3><p>Du kaufst direkt beim Hersteller, ohne Zwischenhändler.</p></article>
     </div>
   </section>
-  <section class="block linen" id="qualitaet">
+  <section class="block linen split" id="qualitaet">
+   <div class="sp-txt">
     <div class="kicker">No. 02 · Qualität</div>
     <h2>Wir prüfen die Hersteller.<br><em>Und ihre Produkte.</em></h2>
     <p class="lead">Wir verlassen uns nicht auf Datenblätter. Bevor wir mit einem Hersteller zusammenarbeiten, prüfen wir ihn und seine Produkte selbst. Was unsere Prüfung besteht, erhält ein eigenes Tigris-Zertifikat und bis zu 2 Jahre Garantie.</p>
@@ -289,6 +316,8 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
       <article><span class="n">Produkte &amp; Gewichte</span><h3>Voll beladen. Unter Stress getestet.</h3><ul><li>Jedes Modell in der Qualitätsprüfung ausführlich getestet</li><li>Geräte unter voller Beladung und im Stresstest geprüft</li><li>Gewichte genau bestimmt</li><li>Eigene Tigris-Zertifizierung nach unseren Standards</li></ul></article>
     </div>
     <p class="signoff"><span class="spark">✦</span> Den vollständigen Kriterienkatalog schicken wir dir auf Wunsch gern vorab.</p>
+   </div>
+   <figure class="sp-img"><img src="assets/start/studio.webp" srcset="assets/start/studio-640.webp 640w, assets/start/studio.webp 941w" sizes="(max-width:900px) 100vw, 50vw" alt="Studio mit Racks, Kurzhanteln und beleuchteter Treppe in blauem Licht" width="941" height="1671" loading="lazy"></figure>
   </section>
   <section class="block" id="how">
     <div class="kicker">No. 03 · Ablauf</div>
@@ -303,7 +332,9 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
       <article><div class="n">06</div><h3>Eröffnung</h3><p>Montage, Einweisung – und wir bleiben erreichbar.</p></article>
     </div>
   </section>
-  <section class="block deep" id="gruender">
+  <section class="block deep split left" id="gruender">
+   <figure class="sp-img"><img src="assets/start/athlet.webp" srcset="assets/start/athlet-640.webp 640w, assets/start/athlet.webp 1123w" sizes="(max-width:900px) 100vw, 50vw" alt="Athlet sitzt nach dem Training auf der Trainingsfläche, daneben eine Kettlebell" width="1123" height="1401" loading="lazy"></figure>
+   <div class="sp-txt">
     <div class="kicker">No. 04 · Gründer</div>
     <div class="founder">
       <h2>Jan Yong Ou Wu</h2>
@@ -313,13 +344,14 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
       <p>Sport begleitet ihn sein ganzes Leben, beruflich war er bereits in der Fitnessbranche tätig. Diese Kombination prägt Tigris: analytisch bei Preisen und Prüfkriterien, verlässlich bei Verhandlungen und mit dem Blick eines Sportlers dafür, was ein Gerät im Studioalltag aushalten muss.</p>
       <div class="ftags"><span>Mathematik</span><span>Ex-Investmentbanker</span><span>Strategieberater</span><span>Fitnessbranche</span><span>Zweisprachig</span></div>
     </div>
+   </div>
   </section>
   <section class="block" id="leist">
     <div class="kicker">No. 05 · Leistungen</div>
     <h2>Alles für dein Studio.<br><em>Aus einer Hand.</em></h2>
     <p class="lead">Von der ersten Skizze bis zum ersten Training: Ausstattung, Planung, Finanzierung und Montage, abgestimmt auf Fläche, Konzept und Budget.</p>
     <div class="pill4">
-      <article><span class="n">01 · Sourcing</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX, Kampfsport – personalisierbar, direkt von geprüften Herstellern.</p><button class="btn sm" data-go="katalog">Zum Katalog</button></article>
+      <article><span class="n">01 · Sourcing</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX, Kampfsport – personalisierbar, direkt von geprüften Herstellern.</p><button class="btn sm" data-kat>Zum Katalog</button></article>
       <article><span class="n">02 · Planung</span><h3>Planung & Beratung</h3><p>Layout, Kapazität und 3D-Ansicht im Tigris-Planer – kostenlos.</p><button class="btn sm" data-quote="leist" data-service="Beratung & Studiokonzept">Beratung anfragen</button></article>
       <article><span class="n">03 · Finanzierung</span><h3>Leasing & Mietkauf</h3><p>Leasing und Mietkauf über Partner, individuell abgestimmt.</p><button class="btn sm" data-quote="leist" data-service="Finanzierung / Leasing">Finanzierung anfragen</button></article>
       <article><span class="n">04 · Montage</span><h3>Lieferung & Montage</h3><p>Lieferung, Boden, Aufbau, Kalibrierung und Einweisung.</p><button class="btn sm" data-quote="leist" data-service="Montage & Kalibrierung">Angebot anfordern</button></article>
@@ -333,15 +365,8 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
     <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Raumplan laden · 8 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
     <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><a class="btn ghost" href="3d/viewer/index.html" target="_blank" rel="noopener">Als eigene Seite ↗</a><span class="sm3n" id="sm3n"></span></div>
   </section>
-  <section class="block" id="katalog" style="padding-top:0">
-    <div class="kicker">No. 07 · Katalog</div>
-    <h2>Importgeräte und Zubehör.<br><em>Mit Maß und Gewicht.</em></h2>
-    <p class="lead">Scheibenbelastete Kraftgeräte, Smith Machine, Langhanteln und Hantelscheiben, die wir direkt aus China importieren. Jedes Produkt mit Maßen und Gewicht, die Geräte im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
-    <div class="kcats" id="katCats"></div>
-    <div class="kgrid" id="katGrid"></div>
-  </section>
   <section class="block paper" id="install">
-    <div class="kicker">No. 08 · Service</div>
+    <div class="kicker">No. 07 · Service</div>
     <h2>Von der Lieferung<br><em>bis zum ersten Training.</em></h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
@@ -353,7 +378,7 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
     <p class="signoff"><span class="spark">✦</span> Prüfung nach EN ISO 20957 · Protokoll für jedes Gerät</p>
   </section>
   <section class="block" id="disc">
-    <div class="kicker">No. 09 · Disziplinen</div>
+    <div class="kicker">No. 08 · Disziplinen</div>
     <h2>Eine Planung.<br><em>Jede Disziplin.</em></h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
@@ -374,6 +399,34 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-quote="band" data-service="Beratung & Studiokonzept">Beratung anfragen →</button><button class="btn" data-open>Planer öffnen</button></div>
   </div>
   <footer class="f"><span class="mark">Tigris<i class="dot">.</i></span><span>Beratung · Import · Qualitätsprüfung · bis zu 2 Jahre Garantie</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
+</div>
+
+<!-- ======================= KATALOG (eigene Seite, #katalog) ======================= -->
+<div id="katPage" hidden>
+  <header>
+    <a class="mark" data-home>Tigris<i class="dot">.</i><small>Katalog</small></a>
+    <nav><a data-home>← Startseite</a><button class="burger" type="button" data-menu aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button></nav>
+  </header>
+  <section class="block" aria-labelledby="katT">
+    <div class="kicker">Katalog · Importprodukte</div>
+    <h2 id="katT">Importgeräte und Zubehör.<br><em>Mit Maß und Gewicht.</em></h2>
+    <p class="lead">Scheibenbelastete Kraftgeräte, Smith Machine, Langhanteln und Hantelscheiben, die wir direkt aus China importieren. Jedes Produkt mit Maßen und Gewicht, die Geräte im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
+    <div class="kcats" id="katCats"></div>
+    <div class="kgrid" id="katGrid"></div>
+  </section>
+  <footer class="f"><span class="mark">Tigris<i class="dot">.</i></span><span>Preise auf Anfrage · inklusive Fracht, Zoll und Lieferzeit</span><span class="legal-links"><a data-legal="impressum">Impressum</a><a data-legal="datenschutz">Datenschutz</a><a data-legal="agb">AGB</a><a data-legal="cookies">Cookie-Einstellungen</a></span></footer>
+</div>
+
+<!-- ======================= MENÜ ======================= -->
+<div id="menu" class="menu" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Menü">
+  <div class="mhead"><span class="mark">Tigris<i class="dot">.</i></span><button class="mclose" type="button" data-menu-close aria-label="Menü schließen">×</button></div>
+  <nav class="mlist">
+    <button type="button" data-m="about"><span>00</span>Über uns</button>
+    <button type="button" data-m="plan"><span>01</span>Planer</button>
+    <button type="button" data-m="ber"><span>02</span>Beratung</button>
+    <button type="button" data-m="kat"><span>03</span>Katalog</button>
+  </nav>
+  <p class="mfoot">Beratung · Import · Qualitätsprüfung · bis zu 2 Jahre Garantie</p>
 </div>
 
 <!-- ======================= PLANER ======================= -->
@@ -1421,24 +1474,23 @@ $('#projName').oninput=e=>{S.name=e.target.value};
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),3200)}
 
 /* ============ Landing / Navigation ============ */
-function openApp(){$('#landing').style.display='none';$('#app').classList.add('on');scrollTo(0,0);setTimeout(()=>{resize();fit();req()},30)}
-function openLanding(){$('#app').classList.remove('on');$('#landing').style.display='';}
+function openApp(){$('#landing').style.display='none';if($('#katPage'))$('#katPage').hidden=true;$('#app').classList.add('on');scrollTo(0,0);setTimeout(()=>{resize();fit();req()},30)}
+function openLanding(){$('#app').classList.remove('on');$('#landing').style.display='';if($('#katPage'))$('#katPage').hidden=true;if(/^#(katalog|produkt\/)/.test(location.hash))history.replaceState(null,'',location.pathname+location.search)}
 $$('[data-open]').forEach(b=>b.onclick=()=>{openApp();if(!S.items.length&&!S.plan)renderStats()});
 $$('[data-demo]').forEach(b=>b.onclick=()=>{openApp();setTimeout(loadDemo,80)});
 $$('[data-go]').forEach(a=>a.onclick=()=>{if($('#app').classList.contains('on'))openLanding();document.getElementById(a.dataset.go).scrollIntoView({behavior:'smooth'})});
 $('#home').onclick=openLanding;
+/* Menü: 00 Über uns · 01 Planer · 02 Beratung · 03 Katalog */
+(function menu(){const m=$('#menu');let back=null;
+  const set=o=>{m.hidden=!o;document.body.classList.toggle('mopen',o);$$('[data-menu]').forEach(b=>b.setAttribute('aria-expanded',String(o)));if(o){back=document.activeElement;m.focus()}else if(back&&back.focus)back.focus()};
+  $$('[data-menu]').forEach(b=>b.onclick=()=>set(true));$('[data-menu-close]',m).onclick=()=>set(false);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden){e.stopImmediatePropagation();set(false)}},true);
+  const act={about:()=>{openLanding();$('#warum').scrollIntoView()},plan:()=>openApp(),ber:()=>Quote.open({from:'menu',service:'Beratung & Studiokonzept'}),kat:()=>Katalog.go()};
+  $$('[data-m]',m).forEach(b=>b.onclick=()=>{back=null;set(false);act[b.dataset.m]()});
+  $$('[data-home]').forEach(a=>a.onclick=()=>{openLanding();scrollTo(0,0)});
+  $$('[data-kat]').forEach(b=>b.onclick=()=>Katalog.go());})();
 
-/* Hero 3D */
 if($('#chipDet'))$('#chipDet').textContent=Studio3D.DEVICES.length;
-(function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0,last=0,real=false;
-  // Schnelle Zeichnung sofort; das realistische Schnittmodell wird nach dem Seitenaufbau nachgeladen und eingeblendet
-  const box=$('#heroBox'),hidden=()=>$('#landing').style.display==='none'||box.getBoundingClientRect().bottom<0,
-    still=matchMedia('(prefers-reduced-motion: reduce)').matches,slow=navigator.connection&&(navigator.connection.saveData||/2g/.test(navigator.connection.effectiveType||''));
-  function upgrade(){if(slow)return;Studio3D.load().then(()=>{Studio3D.view(box,{hero:true,spin:!still,paused:hidden});
-    requestAnimationFrame(()=>{box.classList.add('real');$('#heroTag').textContent='Beispielstudio · Live-3D';setTimeout(()=>{real=true},1300)})},()=>{})}
-  const go=()=>(window.requestIdleCallback||setTimeout)(upgrade,{timeout:2500});if(document.readyState==='complete')go();else addEventListener('load',go,{once:true});
-  function frame(ts){if(real)return;const r=cvH.getBoundingClientRect();if(r.width>0&&$('#landing').style.display!=='none'&&ts-last>30){last=ts;const dpr=Math.min(2,devicePixelRatio||1);if(cvH.width!==Math.round(r.width*dpr)){cvH.width=r.width*dpr;cvH.height=r.height*dpr}
-    t+=.0028;render3D(c,r.width,r.height,{yaw:.45+Math.sin(t)*.55,pitch:.66+Math.sin(t*.7)*.05,dist:25.5},room,items,{dpr,labels:false,pretty:true})}requestAnimationFrame(frame)}requestAnimationFrame(frame)})();
 /* Start */
 try{const sv=JSON.parse(localStorage.getItem('tigris.v1')||'null');if(sv&&sv.room&&(sv.items&&sv.items.length||sv.room.poly)){S.room=migrateRoom(sv.room);S.items=sv.items;S.name=sv.name||S.name;if(sv.capM2)S.capM2=sv.capM2;uid=Math.max(0,...S.items.map(i=>i.id))+1;S.items.forEach(i=>{if(i.type==='wallball'&&i.w>=.9)Object.assign(i,{w:.29,d:.25,h:3.3,clr:0,name:T('wallball').name})});$('#empty').style.display='none';$('#projName').value=S.name}}catch(e){}
 renderLib();renderInspector();renderStats();syncRoom();setMode('2d');
@@ -1453,7 +1505,7 @@ if(S.room.bg==='studio'||S.items.some(isDet))Studio3D.load().then(()=>{if(S.room
     n.textContent='Ziehen dreht · Mausrad oder zwei Finger zoomen · Zonen und Geräte anklicken'};
   $('#sm3Plan').onclick=loadStudio})();
 </script>
-<script src="shop.js?v=11"></script>
+<script src="shop.js?v=12"></script>
 <script src="account.js?v=8"></script>
 </body>
 </html>
