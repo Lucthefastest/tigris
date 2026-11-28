@@ -1,5 +1,7 @@
-/* TIGRIS – Importgeräte (Kraft, scheibenbelastet). Einzige Datenquelle für Katalog, Produktseiten und Planer.
-   Maße in cm (L = Tiefe, B = Breite quer zum Gerät, H = Höhe), Gewicht in kg.
+/* TIGRIS – Importprodukte. Einzige Datenquelle für Katalog, Produktseiten und Planer.
+   art 'geraet':   Kraftgeräte und Smith Machine. Maße in cm (L = Tiefe, B = Breite quer zum Gerät, H = Höhe),
+                   Gewicht in kg, im Planer in Originalgröße platzierbar.
+   art 'zubehoer': Langhanteln und Hantelscheiben. Eigene Kennwerte, nicht im Planer.
    dimsSrc: 'hersteller' = Angabe des Herstellers, noch nicht bestätigt
             'richtwert'  = Hersteller nennt keine Maße; Werte des Vorbildgeräts als Planungswert
    Preise gibt es nur auf Anfrage. */
@@ -61,21 +63,88 @@
       l: 125, b: 122, h: 133, kg: 136, dimsSrc: 'richtwert', maxUser: 200, material: 'Q235-Stahlrohr',
       farben: ['Schwarz'], farbenHinweis: 'Weitere Rahmenfarben auf Anfrage',
       muskeln: 'Trizeps',
-      text: 'Trizepsstrecken mit Armauflage und Hebelarm. Gewicht über Hantelscheiben, Sitzhöhe verstellbar.' }
+      text: 'Trizepsstrecken mit Armauflage und Hebelarm. Gewicht über Hantelscheiben, Sitzhöhe verstellbar.' },
+    { id: 'p_smith', slug: 'smith-machine', name: 'Smith Machine', cat: 'smith', modell: 'Vertical Smith Machine', like: 'smith',
+      l: 137, b: 213, h: 213, kg: 173, dimsSrc: 'richtwert', maxUser: 200, material: 'Q235-Stahlrohr',
+      farben: ['Schwarz'], farbenHinweis: 'Weitere Rahmenfarben auf Anfrage',
+      muskeln: 'Ganzkörper: Beine, Gesäß, Brust, Schultern, Rücken',
+      bauart: 'Geführte Langhantel, scheibenbelastet – Hantelscheiben nicht enthalten',
+      extra: [['Max. Hantellast', '244 kg', 'Richtwert vom Vorbildgerät'],
+              ['Startgewicht der Stange', 'ca. 7 kg', 'Richtwert vom Vorbildgerät'],
+              ['Hakenleiste', '18 Positionen im Abstand von 10 cm', 'Richtwert vom Vorbildgerät']],
+      text: 'Senkrecht geführte Langhantel für Kniebeuge, Bankdrücken, Schulterdrücken und Rudern. Die Stange lässt sich in jeder Höhe in die Hakenleiste einhängen, seitliche Ablagen nehmen die Hantelscheiben auf.' },
+    /* ---------- Zubehör: Langhanteln und Hantelscheiben ---------- */
+    ...[[1500, 680.4, '8NK'], [2000, 907.2, '10NK']].map(([lb, kgMax, lager]) => ({
+      id: `p_langhantel_${lb}`, slug: `olympia-langhantel-20kg-${lb}lb`, name: `Olympia-Langhantel 20 kg · ${lb.toLocaleString('de-DE')} lb`,
+      cat: 'hanteln', art: 'zubehoer', modell: `Power Bar ${lb.toLocaleString('de-DE')} lb`, kg: 20, mass: 'L 220 cm · Griff-Ø 28 mm',
+      farben: ['Schwarz'], farbenHinweis: 'Hantelaufnahmen in Stahloptik',
+      facts: [['Länge', '220 cm'], ['Gewicht', '20 kg'], ['Max. Belastung', `ca. ${Math.round(kgMax)} kg`]],
+      spec: [['Gesamtlänge', '220 cm', 'Herstellerangabe'],
+             ['Griffbereich', '131 cm', 'Zwischen den Aufnahmebünden'],
+             ['Länge der Hantelaufnahme', '43,2 cm je Seite'],
+             ['Griff-Ø', '28 mm', 'Umfang ca. 88 mm'],
+             ['Aufnahme-Ø', '50 mm', 'Für olympische Hantelscheiben, Umfang ca. 157 mm'],
+             ['Eigengewicht', '20 kg', 'Toleranz ±1 % laut Hersteller'],
+             ['Max. Belastung', `${lb.toLocaleString('de-DE')} lb (ca. ${num(kgMax)} kg)`, 'Laut Hersteller'],
+             ['Lagerung', `${lager} (laut Hersteller)`],
+             ['Material', 'Federstahl, Hartchrom-Oberfläche'],
+             ['Farbe', 'Schaft schwarz, Hantelaufnahmen in Stahloptik'],
+             ['Modell', `Power Bar ${lb.toLocaleString('de-DE')} lb`],
+             ['Herkunft', 'Qingdao, Shandong, China']],
+      fine: 'Hantelscheiben und Verschlüsse sind nicht enthalten.',
+      text: `Power Bar für Kniebeuge, Bankdrücken und Kreuzheben. Schaft aus Federstahl, 28 mm Griff, belastbar bis ${lb.toLocaleString('de-DE')} lb laut Hersteller.` })),
+    ...[5, 10, 15, 20].map(kg => ({
+      id: `p_bumper_${kg}`, slug: `bumper-plate-${kg}kg`, name: `Bumper Plate ${kg} kg`,
+      cat: 'hanteln', art: 'zubehoer', modell: 'Competition Bumper Plate', kg, mass: 'Ø 450 mm', uebersicht: true,
+      farben: ['Schwarz'], farbenHinweis: 'Ohne Logo und Beschriftung',
+      facts: [['Gewicht', `${kg} kg`], ['Außen-Ø', '450 mm'], ['Aufnahme-Ø', '50,6 mm']],
+      spec: [['Gewicht je Scheibe', `${kg} kg`],
+             ['Außen-Ø', '450 mm', 'Toleranz ±3 mm laut Hersteller, Umfang ca. 141,4 cm'],
+             ['Aufnahme-Ø', '50,6 ± 0,2 mm', 'Für olympische 50-mm-Hantelaufnahmen'],
+             ['Scheibendicke', 'Auf Anfrage'],
+             ['Material', kg === 5 ? 'Gummi mit kleiner Stahlbuchse' : 'Gummi mit Stahleinsatz'],
+             ['Farbe', 'Schwarz, ohne Logo und Beschriftung'],
+             ['Erhältliche Gewichte', '5 kg, 10 kg, 15 kg, 20 kg'],
+             ['Modell', 'Competition Bumper Plate'],
+             ['Herkunft', 'Qingdao, Shandong, China']],
+      fine: 'Langhantel und Verschlüsse sind nicht enthalten. Angebot je Scheibe oder als Satz.',
+      text: `Bumper Plate mit ${kg} kg aus Gummi mit ${kg === 5 ? 'Stahlbuchse' : 'Stahleinsatz'}. Alle Gewichte haben denselben Außendurchmesser von 450 mm und passen auf olympische 50-mm-Hantelaufnahmen.` }))
   ];
-  const CAT = { brust: 'Brust', ruecken: 'Rücken', schultern: 'Schultern', arme: 'Arme', beine: 'Beine' };
-  /* Zweites Produktbild: Strichzeichnung mit Aufstellmaßen. Schulterpresse und Trizeps-Curl fehlen noch
+  const CAT = { brust: 'Brust', ruecken: 'Rücken', schultern: 'Schultern', arme: 'Arme', beine: 'Beine', smith: 'Smith Machine', hanteln: 'Hanteln & Scheiben' };
+  /* Zweites Produktbild: Strichzeichnung mit Maßen. Schulterpresse und Trizeps-Curl fehlen noch
      (die gelieferten Maßbilder tragen die Werte des jeweils anderen Geräts). */
-  const MASSBILD = ['p_brust_flach_prm', 'p_brust_flach_yt402', 'p_brust_schraeg_yt403', 'p_lat_combo', 'p_lat_b105',
-    'p_hochrudern', 'p_rudern_sitzend', 'p_hack_yt412', 'p_bizeps_b110'];
-  const num = v => String(Math.round(v * 10) / 10).replace('.', ',');
+  const OHNE_MASSBILD = ['p_schulterpresse', 'p_trizeps'];
+  function num(v) { return String(Math.round(v * 10) / 10).replace('.', ',') }
   P.forEach(p => {
     const a = `assets/produkte/${p.slug}`;
+    p.art = p.art || 'geraet'; p.planbar = p.art === 'geraet';
     p.img = `${a}.webp`; p.thumb = `${a}-480.webp`;
     p.alt = `${p.name}, Produktfoto auf weißem Hintergrund`;
     p.bilder = [{ src: p.img, mini: `${a}-160.webp`, alt: p.alt, label: 'Produktfoto' }];
-    if (MASSBILD.includes(p.id)) p.bilder.push({ src: `${a}-masse.webp`, mini: `${a}-masse-160.webp`, alt: `${p.name}, Zeichnung mit Aufstellmaßen Länge, Breite und Höhe`, label: 'Maße' });
-    p.mass = `L ${num(p.l)} × B ${num(p.b)} × H ${num(p.h)} cm`; p.gewicht = `${num(p.kg)} kg`;
+    if (!OHNE_MASSBILD.includes(p.id)) p.bilder.push({ src: `${a}-masse.webp`, mini: `${a}-masse-160.webp`, alt: p.planbar ? `${p.name}, Zeichnung mit Aufstellmaßen Länge, Breite und Höhe` : `${p.name}, Zeichnung mit Maßen`, label: 'Maße' });
+    if (p.uebersicht) p.bilder.push({ src: 'assets/produkte/bumper-plates-uebersicht.webp', mini: 'assets/produkte/bumper-plates-uebersicht-160.webp', alt: 'Bumper Plates mit 5, 10, 15 und 20 kg nebeneinander', label: 'Übersicht' });
+    p.gewicht = `${num(p.kg)} kg`;
+    if (p.planbar) {
+      p.mass = `L ${num(p.l)} × B ${num(p.b)} × H ${num(p.h)} cm`;
+      const src = p.dimsSrc === 'richtwert' ? 'Richtwert' : 'Herstellerangabe';
+      p.facts = [['Maße', p.mass], ['Gewicht', p.gewicht], ['Max. Nutzergewicht', `${p.maxUser} kg`]];
+      p.spec = [['Abmessungen Gerät', p.mass, p.dimsSrc === 'richtwert' ? 'Richtwert: Der Hersteller nennt keine Aufstellmaße. Die Werte stammen vom Vorbildgerät und werden vor der Bestellung bestätigt.' : 'Herstellerangabe (L = Tiefe, B = Breite, H = Höhe). Wird vor der Bestellung bestätigt.'],
+        ['Gerätegewicht', p.gewicht, src],
+        ['Maximales Nutzergewicht', `${p.maxUser} kg`],
+        ...(p.extra || []),
+        ['Materialzusammensetzung', p.material],
+        ['Bauart', p.bauart || 'Scheibenbelastet (Plate Loaded) – Hantelscheiben nicht enthalten'],
+        ['Trainierte Muskeln', p.muskeln],
+        ['Rahmenfarben', (p.farben.length ? p.farben.join(', ') + ' · ' : '') + p.farbenHinweis],
+        ['Modell', p.modell], ['Herkunft', 'Shandong, China'], ['Kennzeichnung', 'CE (laut Hersteller)'],
+        ['Garantie', p.garantie], ['Verpackung', p.verpackung]].filter(r => r[1]);
+      p.farbLabel = 'Rahmenfarbe';
+      p.impLine = 'Importgerät · gefertigt in Shandong, China · Lieferzeit auf Anfrage';
+      p.fine = p.fine || 'Hantelscheiben, Langhantel und Zubehör sind nicht enthalten.';
+    } else {
+      p.farbLabel = 'Farbe';
+      p.impLine = 'Importartikel · gefertigt in Qingdao, China · Lieferzeit auf Anfrage';
+    }
   });
   window.PRODUKTE = { list: P, cats: CAT, num, byId: Object.fromEntries(P.map(p => [p.id, p])), bySlug: Object.fromEntries(P.map(p => [p.slug, p])) };
 })();

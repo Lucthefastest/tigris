@@ -244,7 +244,7 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
 <script src="models.js?v=8"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js"}}</script>
 <script src="studio3d.js?v=11"></script>
-<script src="produkte.js?v=2"></script>
+<script src="produkte.js?v=3"></script>
 </head>
 <body>
 
@@ -335,8 +335,8 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
   </section>
   <section class="block" id="katalog" style="padding-top:0">
     <div class="kicker">No. 07 · Katalog</div>
-    <h2>Importgeräte.<br><em>Mit Maß und Gewicht.</em></h2>
-    <p class="lead">Scheibenbelastete Kraftgeräte, die wir direkt aus China importieren. Jedes Gerät mit Aufstellmaßen und Gewicht – im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
+    <h2>Importgeräte und Zubehör.<br><em>Mit Maß und Gewicht.</em></h2>
+    <p class="lead">Scheibenbelastete Kraftgeräte, Smith Machine, Langhanteln und Hantelscheiben, die wir direkt aus China importieren. Jedes Produkt mit Maßen und Gewicht, die Geräte im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
@@ -553,7 +553,7 @@ const TPL={
 const isDet=it=>typeof it.type==='string'&&it.type.startsWith('d_');
 Studio3D.DEVICES.forEach(d=>{LIB.push({id:d.id,name:d.name,cat:d.cat,w:d.w,d:d.d,h:d.h,clr:d.clr,zone:false,p:d.p,round:false,ref:d.ref,mount:false,glb:true});if(d.like&&MODELS[d.like]&&!MODELS[d.id])MODELS[d.id]=MODELS[d.like]});
 // Importgeräte aus produkte.js in Originalmaßen (B = Breite → w, L = Tiefe → d); gezeichnet mit einem ähnlichen Modell
-PRODUKTE.list.forEach(p=>{LIB.push({id:p.id,name:p.name,cat:'kraft',w:p.b/100,d:p.l/100,h:p.h/100,clr:.6,zone:false,p:1,round:false,ref:`Importgerät · ${p.mass} · ${p.gewicht}${p.dimsSrc==='richtwert'?' · Maße Richtwert':''}`,mount:false,imp:true});if(MODELS[p.like]&&!MODELS[p.id])MODELS[p.id]=MODELS[p.like]});
+PRODUKTE.list.filter(p=>p.planbar).forEach(p=>{LIB.push({id:p.id,name:p.name,cat:'kraft',w:p.b/100,d:p.l/100,h:p.h/100,clr:.6,zone:false,p:1,round:false,ref:`Importgerät · ${p.mass} · ${p.gewicht}${p.dimsSrc==='richtwert'?' · Maße Richtwert':''}`,mount:false,imp:true});if(MODELS[p.like]&&!MODELS[p.id])MODELS[p.id]=MODELS[p.like]});
 Object.entries(TPL).forEach(([id,t])=>LIB.unshift({id,name:t.name,cat:'bereich',w:t.w,d:t.d,h:0,clr:0,zone:false,p:0,ref:t.ref,tpl:t.items}));
 const T=id=>LIB.find(t=>t.id===id);
 const persons=it=>it.p??(T(it.type)||{}).p??0;
@@ -1453,7 +1453,7 @@ if(S.room.bg==='studio'||S.items.some(isDet))Studio3D.load().then(()=>{if(S.room
     n.textContent='Ziehen dreht · Mausrad oder zwei Finger zoomen · Zonen und Geräte anklicken'};
   $('#sm3Plan').onclick=loadStudio})();
 </script>
-<script src="shop.js?v=10"></script>
+<script src="shop.js?v=11"></script>
 <script src="account.js?v=8"></script>
 </body>
 </html>
