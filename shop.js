@@ -7,7 +7,6 @@
 
   /* ---------- Katalog: Importgeräte aus produkte.js ---------- */
   const PR = window.PRODUKTE, KCAT = PR.cats, KAT = PR.list, KBY = PR.byId;
-  const srcNote = p => p.dimsSrc === 'richtwert' ? 'Richtwert' : 'Herstellerangabe';
 
   /* ---------- Anfragekorb ---------- */
   let cart = LS.get('tigris.quote', []);
@@ -38,7 +37,7 @@
   }
 
   /* ---------- Produktseite (#produkt/<slug>) ---------- */
-  const row = (k, v) => v ? `<tr><th>${esc(k)}</th><td>${v}</td></tr>` : '';
+  const row = ([k, v, note]) => `<tr><th>${esc(k)}</th><td>${esc(v)}${note ? `<small>${esc(note)}</small>` : ''}</td></tr>`;
   function productHTML(p) {
     const farben = p.farben.length ? p.farben.map(f => `<li>${esc(f)}</li>`).join('') : '';
     const more = KAT.filter(x => x.cat === p.cat && x.id !== p.id).concat(KAT.filter(x => x.cat !== p.cat)).slice(0, 4);
@@ -52,38 +51,23 @@
           <h2 id="pdT">${esc(p.name)}</h2>
           <p class="pdlead">${esc(p.text)}</p>
           <div class="pdprice"><span>Preis</span><b>Auf Anfrage</b><small>Angebot inklusive Fracht, Zoll und Lieferzeit – unverbindlich und kostenlos</small></div>
-          <ul class="pdfacts">
-            <li><span>Maße</span><b>${esc(p.mass)}</b></li>
-            <li><span>Gewicht</span><b>${esc(p.gewicht)}</b></li>
-            <li><span>Max. Nutzergewicht</span><b>${p.maxUser} kg</b></li>
-          </ul>
-          <div class="pdcol"><span>Rahmenfarbe</span>${farben ? `<ul>${farben}</ul>` : ''}<small>${esc(p.farbenHinweis)}</small></div>
-          <div class="pdcta"><button class="btn solid" data-pask>Angebot anfragen</button><button class="btn" data-pplan>Im Planer platzieren</button></div>
-          <p class="pdimp">Importgerät · gefertigt in Shandong, China · Lieferzeit auf Anfrage</p>
+          <ul class="pdfacts">${p.facts.map(([k, v]) => `<li><span>${esc(k)}</span><b>${esc(v)}</b></li>`).join('')}</ul>
+          <div class="pdcol"><span>${esc(p.farbLabel)}</span>${farben ? `<ul>${farben}</ul>` : ''}<small>${esc(p.farbenHinweis)}</small></div>
+          <div class="pdcta"><button class="btn solid" data-pask>Angebot anfragen</button>${p.planbar ? '<button class="btn" data-pplan>Im Planer platzieren</button>' : ''}</div>
+          <p class="pdimp">${esc(p.impLine)}</p>
         </div>
       </div>
       <div class="pdtabs" role="tablist"><button role="tab" class="on" data-tab="spec">Spezifikationen</button><button role="tab" data-tab="desc">Beschreibung</button><button role="tab" data-tab="imp">Import & Lieferung</button></div>
       <div class="pdpane on" data-pane="spec"><table class="pdspec"><tbody>
-        ${row('Abmessungen Gerät', `${esc(p.mass)}<small>${p.dimsSrc === 'richtwert' ? 'Richtwert: Der Hersteller nennt keine Aufstellmaße. Die Werte stammen vom Vorbildgerät und werden vor der Bestellung bestätigt.' : 'Herstellerangabe (L = Tiefe, B = Breite, H = Höhe). Wird vor der Bestellung bestätigt.'}</small>`)}
-        ${row('Gerätegewicht', `${esc(p.gewicht)}<small>${srcNote(p)}</small>`)}
-        ${row('Maximales Nutzergewicht', `${p.maxUser} kg`)}
-        ${row('Materialzusammensetzung', esc(p.material))}
-        ${row('Bauart', 'Scheibenbelastet (Plate Loaded) – Hantelscheiben nicht enthalten')}
-        ${row('Trainierte Muskeln', esc(p.muskeln))}
-        ${row('Rahmenfarben', esc((p.farben.length ? p.farben.join(', ') + ' · ' : '') + p.farbenHinweis))}
-        ${row('Modell', esc(p.modell))}
-        ${row('Herkunft', 'Shandong, China')}
-        ${row('Kennzeichnung', 'CE (laut Hersteller)')}
-        ${row('Garantie', p.garantie ? esc(p.garantie) : '')}
-        ${row('Verpackung', p.verpackung ? esc(p.verpackung) : '')}
+        ${p.spec.map(row).join('')}
       </tbody></table></div>
-      <div class="pdpane" data-pane="desc"><p>${esc(p.text)}</p><p>Im TIGRIS-Planer steht das Gerät in Originalmaßen bereit: platzieren, drehen und Abstände zu anderen Geräten prüfen, bevor du bestellst.</p><p class="pdfine">* Hantelscheiben, Langhantel und Zubehör sind nicht enthalten.</p></div>
+      <div class="pdpane" data-pane="desc"><p>${esc(p.text)}</p>${p.planbar ? '<p>Im TIGRIS-Planer steht das Gerät in Originalmaßen bereit: platzieren, drehen und Abstände zu anderen Geräten prüfen, bevor du bestellst.</p>' : ''}<p class="pdfine">* ${esc(p.fine)}</p></div>
       <div class="pdpane" data-pane="imp"><ol class="pdsteps">
-        <li><b>Anfrage</b><span>Du fragst das Gerät mit Stückzahl und Rahmenfarbe an.</span></li>
+        <li><b>Anfrage</b><span>Du fragst ${p.planbar ? 'das Gerät mit Stückzahl und Rahmenfarbe' : 'den Artikel mit Stückzahl'} an.</span></li>
         <li><b>Angebot</b><span>Wir nennen Preis, Fracht, Zoll und Lieferzeit und bestätigen Maße und Gewicht beim Hersteller.</span></li>
         <li><b>Import</b><span>Fertigung und Seefracht aus China, Verzollung in Deutschland.</span></li>
         <li><b>Lieferung</b><span>Auf Wunsch mit Montage und Einweisung – siehe Service.</span></li></ol></div>
-      <div class="pdmore"><h4>Weitere Importgeräte</h4><div class="pdmg">${more.map(x => `<a href="#produkt/${x.slug}"><img src="${x.thumb}" alt="${esc(x.alt)}" width="480" height="480" loading="lazy"><b>${esc(x.name)}</b><span>${esc(x.mass)}</span></a>`).join('')}</div></div>
+      <div class="pdmore"><h4>${p.planbar ? 'Weitere Importgeräte' : 'Weitere Importprodukte'}</h4><div class="pdmg">${more.map(x => `<a href="#produkt/${x.slug}"><img src="${x.thumb}" alt="${esc(x.alt)}" width="480" height="480" loading="lazy"><b>${esc(x.name)}</b><span>${esc(x.mass)}</span></a>`).join('')}</div></div>
     </div>`;
   }
   let pdBack = null;
@@ -94,7 +78,7 @@
     document.title = `${p.name} · TIGRIS`; trk('product_view', { id: p.id });
     $('.qx', ov).onclick = () => closeProduct();
     $('[data-pask]', ov).onclick = () => { askFor(p); closeProduct(true); open({ from: 'product' }) };
-    $('[data-pplan]', ov).onclick = () => toPlan(p.id);
+    if (p.planbar) $('[data-pplan]', ov).onclick = () => toPlan(p.id);
     $$('[data-kcat]', ov).forEach(a => a.onclick = () => { kc = a.dataset.kcat; renderCatalog() });
     const big = $('.pdimg img', ov), pick = i => { const b = p.bilder[i]; big.src = b.src; big.alt = b.alt; $$('[data-img]', ov).forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.img === i))) };
     $$('[data-img]', ov).forEach(x => x.onclick = () => pick(+x.dataset.img));
