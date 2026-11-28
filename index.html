@@ -234,7 +234,7 @@ section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt
 /* ---------- Aufbau Text | Bild, Menü, Katalogseite ---------- */
 .hero{grid-template-columns:1fr 1fr;gap:0;padding:0;background:var(--ink);align-items:stretch;min-height:calc(100vh - 88px);overflow:hidden}
 .hero>div:first-child{align-self:center;padding:40px 56px 72px 48px;min-width:0}
-.hero-img,.sp-img{margin:0;position:relative;overflow:hidden;background:var(--navy-dd)}
+.hero-img,.sp-img{margin:0;position:relative;overflow:hidden}
 .hero-img img,.sp-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 section.split{display:grid;grid-template-columns:1fr 1fr;padding:0;align-items:stretch}
 .split .sp-txt{padding:90px 56px 90px 48px;min-width:0}.split.left .sp-txt{padding:90px 48px 90px 56px}
@@ -253,6 +253,10 @@ body.mopen{overflow:hidden}
 .mlist button span{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--amber);min-width:2.6em}
 .mlist button:hover{color:var(--ice)}
 .mfoot{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
+/* Weicher Übergang vom Bild zum Text: Bildkante läuft in den Seitenhintergrund aus */
+.hero-img img,.split:not(.left) .sp-img img{-webkit-mask-image:linear-gradient(to right,transparent 0,black 38%);mask-image:linear-gradient(to right,transparent 0,black 38%)}
+.split.left .sp-img img{-webkit-mask-image:linear-gradient(to left,transparent 0,black 38%);mask-image:linear-gradient(to left,transparent 0,black 38%)}
+@media(max-width:900px){.hero-img img,.split:not(.left) .sp-img img,.split.left .sp-img img{-webkit-mask-image:linear-gradient(to top,transparent 0,black 34%);mask-image:linear-gradient(to top,transparent 0,black 34%)}}
 #katPage header{display:flex;justify-content:space-between;align-items:center;padding:22px 48px;border-bottom:1px solid var(--line)}
 #katPage .mark{color:var(--cream);text-decoration:none;cursor:pointer}
 #katPage nav{display:flex;gap:24px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-d)}
