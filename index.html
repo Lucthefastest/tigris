@@ -210,6 +210,31 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 .help kbd{border:1px solid var(--line2);padding:0 5px;border-radius:2px;font-family:inherit;color:var(--cream)}
 @media(max-width:1000px){.hero{grid-template-columns:1fr;padding-right:22px}.hero .cv{margin-right:0}.steps,.disc,.stats,.show{grid-template-columns:1fr 1fr}main.work{grid-template-columns:240px 1fr 240px}#landing header,.hero,section.block{padding-left:22px;padding-right:22px}}
 .cap{display:flex;align-items:baseline;gap:8px;margin:2px 0 8px}.cap b{font-family:var(--serif);font-size:34px;font-weight:600;line-height:1}.cap span{font-size:11px;color:var(--cream-d)}
+/* ---------- Startseite: Import, Qualität, Gründer ---------- */
+.hero .kicker{flex-wrap:wrap;white-space:nowrap;row-gap:6px}
+.hero h1.long{font-size:clamp(36px,4.3vw,66px);line-height:1.02}
+.stats.prom b{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.stats.prom span{font-family:var(--sans);font-size:14px;letter-spacing:0;text-transform:none}
+section.deep{background:var(--navy-d);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.why article{border:1px solid var(--line2);padding:30px 28px}
+.why .n,.qual .n{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+.why h3{font-size:24px;line-height:1.15;margin:14px 0 10px}.why p{color:var(--cream-d);font-size:15px}
+section.linen{background:var(--linen);color:var(--navy-dd)}
+section.linen .kicker{color:var(--cobalt)}section.linen h2 em{color:var(--cobalt)}section.linen .lead,section.linen .signoff{color:var(--muted-l)}
+.qual{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.qual article{background:var(--cream);border:1px solid var(--pline);padding:34px}
+.qual .n{color:var(--cobalt)}.qual h3{font-size:28px;margin:12px 0 16px}
+.qual ul{padding-left:20px;color:var(--muted-l)}.qual li{margin-bottom:8px}
+.steps.six{grid-template-columns:repeat(3,1fr)}.steps.six .n{color:var(--amber);opacity:1}
+.founder{max-width:820px}
+.founder .role{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-top:4px}
+.founder blockquote{margin:28px 0 0;font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(20px,2vw,24px);line-height:1.35;color:var(--ice)}
+.founder p{color:var(--cream-d);margin-top:18px;font-size:16px;line-height:1.6}
+.ftags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.ftags span{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--line2);border-radius:2px}
+@media(max-width:1000px){.why{grid-template-columns:1fr 1fr}.qual{grid-template-columns:1fr}.steps.six{grid-template-columns:1fr 1fr}#landing nav{gap:18px}}
+@media(max-width:640px){.why,.steps.six{grid-template-columns:1fr}.qual article,.why article{padding:24px 20px}.qual h3{font-size:24px}}
 </style>
 <link rel="stylesheet" href="account.css?v=8">
 <link rel="stylesheet" href="shop.css?v=10">
@@ -227,75 +252,96 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
 <div id="landing">
   <header>
     <div class="mark">Tigris<i class="dot">.</i><small>Gym Layout Studio</small></div>
-    <nav><a data-go="leist">Leistungen</a><a data-go="how">Ablauf</a><a data-go="katalog">Katalog</a><a data-go="disc">Disziplinen</a><button class="btn sm" data-quote="nav">Angebot anfordern</button><button class="btn sm solid" data-open>Planer öffnen</button></nav>
+    <nav><a data-go="warum">Warum Tigris</a><a data-go="qualitaet">Qualität</a><a data-go="how">Ablauf</a><a data-go="gruender">Gründer</a><a data-go="leist">Leistungen</a><a data-go="katalog">Katalog</a><button class="btn sm" data-quote="nav">Beratung anfragen</button><button class="btn sm solid" data-open>Planer öffnen</button></nav>
   </header>
   <section class="hero">
     <div>
-      <div class="kicker">Planung <span class="spark">✦</span> Sourcing <span class="spark">✦</span> Eröffnung</div>
-      <h1>Plane dein Gym.<br><em>Gerät für Gerät.</em></h1>
-      <p>Vom großen Studio mit mehreren Bereichen bis zum kleinen Boutique-Gym: Grundriss hochladen, Wände und Türen erkennen lassen, Geräte in Originalmaßen von Technogym, Life Fitness und Hammer Strength platzieren – und in 3D durch dein Studio gehen. Mit Kapazitätsrechnung und Stückliste für den Einkauf.</p>
-      <div class="cta"><button class="btn solid" data-open>Kostenlos planen →</button><button class="btn" data-demo>Demo-Studio ansehen</button></div>
-      <div class="chips"><span><b>70+</b> Geräte &amp; Zonen</span><span><b>10</b> Bereichsvorlagen</span><span><b id="chipDet"></b> Gerätetypen als 3D-Detailmodell</span></div>
+      <div class="kicker">Importierte Studiogeräte <span class="spark">✦</span> personalisierbar <span class="spark">✦</span> geprüft</div>
+      <h1 class="long">Studiogeräte nach deinen Wünschen. <em>Geprüft, garantiert und sicher</em> bis in dein Studio.</h1>
+      <p>Tigris importiert personalisierbare Fitnessgeräte direkt von ausgewählten, von uns geprüften Herstellern. Wir beraten, verhandeln und begleiten dich vom ersten Gespräch bis zum ersten Training – zum besten Preis und mit bis zu 2 Jahren Garantie.</p>
+      <div class="cta"><button class="btn solid" data-quote="hero" data-service="Beratung & Studiokonzept">Kostenlose Beratung →</button><button class="btn" data-go="how">So funktioniert's</button></div>
     </div>
     <div class="cv" id="heroBox"><span class="tag" id="heroTag">Demo-Studio · 390 m² · Live-3D</span><canvas id="heroCv"></canvas></div>
   </section>
-  <div class="stats">
-    <div><b>2D + 3D</b><span>Grundriss & Raumansicht</span></div>
-    <div><b>1:1</b><span>Herstellermaße in Metern</span></div>
-    <div><b>Kapazität</b><span>Personen gleichzeitig, ohne Überschneidung</span></div>
-    <div><b>→ Sourcing</b><span>Stückliste zu Herstellern</span></div>
+  <div class="stats prom">
+    <div><b>Bestpreisgarantie</b><span>Direkt ab Fabrik, ohne Zwischenhändler.</span></div>
+    <div><b>Bis zu 2 Jahre Garantie</b><span>Auf geprüfte Produkte.</span></div>
+    <div><b>Geprüfte Hersteller</b><span>Mit eigenem Tigris-Zertifikat.</span></div>
+    <div><b>Ein Ansprechpartner</b><span>Du wirst nie allein gelassen.</span></div>
   </div>
-  <section class="revier" id="revier">
-    <img src="assets/tigris-mark-ink.webp" alt="Bildmarke: Tiger und Schneeleopard umkreisen sich im Kampf" width="907" height="1000" loading="lazy">
-    <div>
-      <div class="kicker">No. 00 · Haltung</div>
-      <h2>Zwei Raubkatzen.<br><em>Ein Revier.</em></h2>
-      <p class="lead">Kraft trifft Präzision. Wir bringen beides in dein Studio.</p>
-      <div class="duo">
-        <div><b>Der Tiger</b><p>Kraft und Tempo. Wir finden die passenden Hersteller, verhandeln und holen die Geräte sicher bis in dein Studio.</p></div>
-        <div><b>Der Schneeleopard</b><p>Ruhe und Präzision. Wir prüfen Fabriken und Geräte vor dem Versand und planen jede Fläche auf den Zentimeter.</p></div>
-      </div>
-      <p class="quote"><span class="spark">✦</span> Wir zählen Schrauben, damit du Mitglieder zählst.</p>
+  <section class="block deep" id="warum">
+    <div class="kicker">No. 01 · Warum Tigris</div>
+    <h2>Direkt vom Hersteller.<br><em>Ohne Umwege, ohne Risiko.</em></h2>
+    <p class="lead">Direkt beim Hersteller einzukaufen spart viel – wenn Sprache, Qualität und Logistik stimmen. Genau dort setzen wir an: Wir kennen unsere Partner persönlich, sprechen ihre Sprache fließend und übernehmen alles zwischen Werk und Studio.</p>
+    <div class="why">
+      <article><span class="n">01 · Personalisierung</span><h3>Geräte, die zu deinem Studio passen</h3><p>Farben, Polster, Ausführung und dein Branding – wir stimmen jedes Detail mit dem Hersteller ab.</p></article>
+      <article><span class="n">02 · Vermittlung</span><h3>Hersteller und Käufer an einem Tisch</h3><p>Wir übersetzen nicht nur Sprache, sondern Erwartungen, verhandeln für dich und sorgen dafür, dass beide Seiten dasselbe meinen.</p></article>
+      <article><span class="n">03 · Sicherer Import</span><h3>Vom Werk bis in dein Studio</h3><p>Vertrag, Zahlung, Verpackung, Versand, Zoll und Zustellung – wir koordinieren jeden Schritt, damit alles vollständig ankommt.</p></article>
+      <article><span class="n">04 · Bestpreisgarantie</span><h3>Fabrikpreis statt Händleraufschlag</h3><p>Du kaufst direkt beim Hersteller, ohne Zwischenhändler.</p></article>
+    </div>
+  </section>
+  <section class="block linen" id="qualitaet">
+    <div class="kicker">No. 02 · Qualität</div>
+    <h2>Wir prüfen die Hersteller.<br><em>Und ihre Produkte.</em></h2>
+    <p class="lead">Wir verlassen uns nicht auf Datenblätter. Bevor wir mit einem Hersteller zusammenarbeiten, prüfen wir ihn und seine Produkte selbst. Was unsere Prüfung besteht, erhält ein eigenes Tigris-Zertifikat und bis zu 2 Jahre Garantie.</p>
+    <div class="qual">
+      <article><span class="n">Hersteller</span><h3>Nur geprüfte Partner.</h3><ul><li>Produktion, Materialien und Prozesse von uns begutachtet</li><li>Verarbeitung, Schweißnähte, Polster und Seilzüge bewertet</li><li>Nur Hersteller, die unsere Standards erfüllen, kommen ins Sortiment</li><li>Kriterienkatalog auf Wunsch vollständig einsehbar</li></ul></article>
+      <article><span class="n">Produkte &amp; Gewichte</span><h3>Voll beladen. Unter Stress getestet.</h3><ul><li>Jedes Modell in der Qualitätsprüfung ausführlich getestet</li><li>Geräte unter voller Beladung und im Stresstest geprüft</li><li>Gewichte genau bestimmt</li><li>Eigene Tigris-Zertifizierung nach unseren Standards</li></ul></article>
+    </div>
+    <p class="signoff"><span class="spark">✦</span> Den vollständigen Kriterienkatalog schicken wir dir auf Wunsch gern vorab.</p>
+  </section>
+  <section class="block" id="how">
+    <div class="kicker">No. 03 · Ablauf</div>
+    <h2>Einfach für dich.<br><em>Wir übernehmen den Rest.</em></h2>
+    <p class="lead">Am Anfang steht immer die Beratung, nicht der Katalog. Du hast einen festen Ansprechpartner, der dich durch jeden Schritt führt – auf Deutsch, ohne Fachchinesisch.</p>
+    <div class="steps six">
+      <article><div class="n">01</div><h3>Beratung</h3><p>Fläche, Konzept, Zielgruppe und Budget verstehen.</p></article>
+      <article><div class="n">02</div><h3>Planung</h3><p>Layout und Geräteauswahl im Tigris-Planer, gemeinsam.</p></article>
+      <article><div class="n">03</div><h3>Angebot</h3><p>Hersteller auswählen, verhandeln, Bestpreis sichern.</p></article>
+      <article><div class="n">04</div><h3>Prüfung</h3><p>Geprüfter Hersteller, zertifiziertes Produkt, Garantie.</p></article>
+      <article><div class="n">05</div><h3>Import</h3><p>Versand, Zoll und Zustellung bis zur Tür.</p></article>
+      <article><div class="n">06</div><h3>Eröffnung</h3><p>Montage, Einweisung – und wir bleiben erreichbar.</p></article>
+    </div>
+  </section>
+  <section class="block deep" id="gruender">
+    <div class="kicker">No. 04 · Gründer</div>
+    <div class="founder">
+      <h2>Jan Yong Ou Wu</h2>
+      <div class="role">Founder · Tigris</div>
+      <blockquote>„Ich trainiere, seit ich denken kann. Mit Tigris bringe ich zusammen, was ich am besten kenne: Fitness, Zahlen und internationale Verhandlungen.“</blockquote>
+      <p>Geboren und aufgewachsen in Deutschland, Abitur und Studium hier – mit Abschluss in Mathematik. Danach Investmentbanking und Strategieberatung, anschließend eine strategische Position im Ausland. Jan hat in Deutschland und Asien gelebt und gearbeitet und spricht Deutsch und Chinesisch fließend.</p>
+      <p>Sport begleitet ihn sein ganzes Leben, beruflich war er bereits in der Fitnessbranche tätig. Diese Kombination prägt Tigris: analytisch bei Preisen und Prüfkriterien, verlässlich bei Verhandlungen und mit dem Blick eines Sportlers dafür, was ein Gerät im Studioalltag aushalten muss.</p>
+      <div class="ftags"><span>Mathematik</span><span>Ex-Investmentbanker</span><span>Strategieberater</span><span>Fitnessbranche</span><span>Zweisprachig</span></div>
     </div>
   </section>
   <section class="block" id="leist">
-    <div class="kicker">No. 01 · Leistungen</div>
+    <div class="kicker">No. 05 · Leistungen</div>
     <h2>Alles für dein Studio.<br><em>Aus einer Hand.</em></h2>
     <p class="lead">Von der ersten Skizze bis zum ersten Training: Ausstattung, Planung, Finanzierung und Montage, abgestimmt auf Fläche, Konzept und Budget.</p>
     <div class="pill4">
-      <article><span class="n">01 · Ausstattung</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX und Kampfsport – herstellerunabhängig ausgewählt und passend zur Fläche, die du geplant hast.</p><button class="btn sm" data-go="katalog">Zum Katalog</button></article>
-      <article><span class="n">02 · Planung</span><h3>Planung & Beratung</h3><p>Layout, Kapazität und 3D-Ansicht im Planer. Auf Wunsch prüfen Experten Zonen, Laufwege und Konzept mit dir.</p><button class="btn sm" data-quote="leist" data-service="Beratung & Studiokonzept">Beratung anfragen</button></article>
-      <article><span class="n">03 · Finanzierung</span><h3>Leasing & Mietkauf</h3><p>Ausstattung über Finanzierungspartner verteilt bezahlen. Laufzeit und Konditionen klären wir individuell mit dir.</p><button class="btn sm" data-quote="leist" data-service="Finanzierung / Leasing">Finanzierung anfragen</button></article>
-      <article><span class="n">04 · Umsetzung</span><h3>Lieferung & Montage</h3><p>Lieferung, Bodenverlegung, Aufbau, Kalibrierung und Einweisung – damit am Eröffnungstag alles läuft.</p><button class="btn sm" data-quote="leist" data-service="Montage & Kalibrierung">Angebot anfordern</button></article>
+      <article><span class="n">01 · Sourcing</span><h3>Geräte</h3><p>Kraft, Cardio, Functional, HYROX, Kampfsport – personalisierbar, direkt von geprüften Herstellern.</p><button class="btn sm" data-go="katalog">Zum Katalog</button></article>
+      <article><span class="n">02 · Planung</span><h3>Planung & Beratung</h3><p>Layout, Kapazität und 3D-Ansicht im Tigris-Planer – kostenlos.</p><button class="btn sm" data-quote="leist" data-service="Beratung & Studiokonzept">Beratung anfragen</button></article>
+      <article><span class="n">03 · Finanzierung</span><h3>Leasing & Mietkauf</h3><p>Leasing und Mietkauf über Partner, individuell abgestimmt.</p><button class="btn sm" data-quote="leist" data-service="Finanzierung / Leasing">Finanzierung anfragen</button></article>
+      <article><span class="n">04 · Montage</span><h3>Lieferung & Montage</h3><p>Lieferung, Boden, Aufbau, Kalibrierung und Einweisung.</p><button class="btn sm" data-quote="leist" data-service="Montage & Kalibrierung">Angebot anfordern</button></article>
     </div>
     <div class="segs"><button data-quote="seg" data-segment="Fitnessstudio">Fitnessstudios</button><button data-quote="seg" data-segment="Boutique- / Personal-Training-Studio">Boutique & Personal Training</button><button data-quote="seg" data-segment="CrossFit- / HYROX-Box">CrossFit & HYROX</button><button data-quote="seg" data-segment="Kampfsportschule">Kampfsport</button><button data-quote="seg" data-segment="Hotel & Resort">Hotels & Resorts</button><button data-quote="seg" data-segment="Firmenfitness">Firmenfitness</button><button data-quote="seg" data-segment="Verein / Schule / Hochschule">Vereine & Schulen</button><button data-quote="seg" data-segment="Polizei, Feuerwehr, Bundeswehr">Polizei, Feuerwehr, Bundeswehr</button><button data-quote="seg" data-segment="Physio & Reha">Physio & Reha</button></div>
   </section>
-  <section class="block paper" id="how">
-    <div class="kicker">No. 02 · Ablauf</div>
-    <h2>Vom Plan zur Eröffnung.<br><em>In drei Schritten.</em></h2>
-    <p class="lead">Wenige Eingaben, sofort sichtbares Ergebnis – für Boutique-Studio, Box, Kampfsportschule oder Großanlage.</p>
-    <div class="steps">
-      <article><div class="n">01</div><h3>Plan hochladen</h3><p>Gebäudeplan oder Raumplan als Bild. Die Software bereinigt ihn, erkennt Außenmaße und lässt dich den Maßstab mit einer Referenzstrecke kalibrieren.</p></article>
-      <article><div class="n">02</div><h3>Einplanen</h3><p>Geräte in Herstellermaßen oder ganze Bereiche als Vorlage setzen – oder per Klick einen Vorschlag erstellen, der das Maximum aus der Fläche holt. Kollisionen, Sicherheitsabstände und die Kapazität werden live geprüft.</p></article>
-      <article><div class="n">03</div><h3>Beschaffen</h3><p>Aus dem Layout entsteht die Stückliste. Beratung und Hersteller-Netzwerk führen zu den passenden Fabrikanten und Gerätesuppliern.</p></article>
-    </div>
-  </section>
   <section class="block" id="modell" style="padding-top:0">
-    <div class="kicker">No. 03 · Schnittmodell</div>
+    <div class="kicker">No. 06 · Schnittmodell</div>
     <h2>Ein ganzes Studio.<br><em>Im Schnitt.</em></h2>
     <p class="lead">Ein komplettes Beispielstudio als 3D-Raumplan: Wände, Böden, Treppen und jedes Gerät maßstäblich nachgebaut. Schalte zwischen Übersicht, Draufsicht und Innenansicht, blende die Decke ein, miss Strecken nach und finde jede Zone. Die Geräte daraus stehen im Planer als Detailmodelle bereit.</p>
     <div class="sm3" id="sm3"><div class="sm3c" id="sm3c"><button class="btn solid" id="sm3Load">3D-Raumplan laden · 8 MB</button><p>Wird erst nach dem Klick geladen</p></div></div>
     <div class="sm3a"><button class="btn" id="sm3Plan">Im Planer öffnen →</button><a class="btn ghost" href="3d/viewer/index.html" target="_blank" rel="noopener">Als eigene Seite ↗</a><span class="sm3n" id="sm3n"></span></div>
   </section>
   <section class="block" id="katalog" style="padding-top:0">
-    <div class="kicker">No. 04 · Katalog</div>
+    <div class="kicker">No. 07 · Katalog</div>
     <h2>Importgeräte.<br><em>Mit Maß und Gewicht.</em></h2>
     <p class="lead">Scheibenbelastete Kraftgeräte, die wir direkt aus China importieren. Jedes Gerät mit Aufstellmaßen und Gewicht – im Planer in Originalgröße platzierbar. Preise nennen wir auf Anfrage, zusammen mit Fracht, Zoll und Lieferzeit.</p>
     <div class="kcats" id="katCats"></div>
     <div class="kgrid" id="katGrid"></div>
   </section>
   <section class="block paper" id="install">
-    <div class="kicker">No. 05 · Service</div>
+    <div class="kicker">No. 08 · Service</div>
     <h2>Von der Lieferung<br><em>bis zum ersten Training.</em></h2>
     <p class="lead">Wählbare Leistungen – einzeln oder als Komplettpaket.</p>
     <div class="inst">
@@ -307,7 +353,7 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
     <p class="signoff"><span class="spark">✦</span> Prüfung nach EN ISO 20957 · Protokoll für jedes Gerät</p>
   </section>
   <section class="block" id="disc">
-    <div class="kicker">No. 06 · Disziplinen</div>
+    <div class="kicker">No. 09 · Disziplinen</div>
     <h2>Eine Planung.<br><em>Jede Disziplin.</em></h2>
     <p class="lead">Kein Nischentool: Jedes Gerät ist ein Baustein mit Maßen, Höhe und Abstand.</p>
     <div class="disc">
@@ -323,11 +369,11 @@ aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:var
   </section>
   <div class="bandcta" id="start">
     <img src="assets/tigris-mark-ink.webp" alt="" aria-hidden="true" width="907" height="1000" loading="lazy">
-    <h2>Erst planen.<br><em>Dann gezielt einkaufen.</em></h2>
-    <p class="sub">Kraft trifft Präzision.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-open>Planer öffnen →</button><button class="btn" data-quote="band">Unverbindliches Angebot anfordern</button></div>
+    <h2>Erst beraten.<br><em>Dann sicher einkaufen.</em></h2>
+    <p class="sub">Erzähl uns von deinem Studio. Das Erstgespräch ist kostenlos und unverbindlich.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" data-quote="band" data-service="Beratung & Studiokonzept">Beratung anfragen →</button><button class="btn" data-open>Planer öffnen</button></div>
   </div>
-  <footer class="f"><span class="mark">Tigris<i class="dot">.</i></span><span>Beratung · Sourcing · Planung</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
+  <footer class="f"><span class="mark">Tigris<i class="dot">.</i></span><span>Beratung · Import · Qualitätsprüfung · bis zu 2 Jahre Garantie</span><span>Planen kostenlos · Herstellermaße laut Datenblatt, ohne Gewähr</span></footer>
 </div>
 
 <!-- ======================= PLANER ======================= -->
@@ -1383,7 +1429,7 @@ $$('[data-go]').forEach(a=>a.onclick=()=>{if($('#app').classList.contains('on'))
 $('#home').onclick=openLanding;
 
 /* Hero 3D */
-$('#chipDet').textContent=Studio3D.DEVICES.length;
+if($('#chipDet'))$('#chipDet').textContent=Studio3D.DEVICES.length;
 (function hero(){const cvH=$('#heroCv'),c=cvH.getContext('2d');const items=demoItems(),room={w:26,d:15};let t=0,last=0,real=false;
   // Schnelle Zeichnung sofort; das realistische Schnittmodell wird nach dem Seitenaufbau nachgeladen und eingeblendet
   const box=$('#heroBox'),hidden=()=>$('#landing').style.display==='none'||box.getBoundingClientRect().bottom<0,
